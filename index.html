@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japan Sabbatical Countdown</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 15px 0 10px 0;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            background: linear-gradient(90deg, #e94560, #ff6b6b, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .japanese-title {
+            font-size: 1rem;
+            color: #e94560;
+            margin-bottom: 5px;
+        }
+
+        header > p {
+            font-size: 0.85rem;
+            color: #a0a0a0;
+        }
+
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 12px 20px;
+            text-align: center;
+            min-width: 80px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .countdown-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .countdown-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #feca57;
+            display: block;
+            line-height: 1.1;
+        }
+
+        .countdown-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #a0a0a0;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 15px 0;
+        }
+
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        .image-container {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .daily-image {
+            width: 100%;
+            height: 340px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .image-container:hover .daily-image {
+            transform: scale(1.05);
+        }
+
+        .location-badge {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            background: rgba(233, 69, 96, 0.9);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .info-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateX(5px);
+        }
+
+        .card-icon {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            color: #feca57;
+            margin-bottom: 8px;
+        }
+
+        .card-content {
+            line-height: 1.6;
+            color: #d0d0d0;
+            font-size: 0.9rem;
+        }
+
+        /* Timeline Styles */
+        .journey-section {
+            margin-top: 60px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        .journey-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #feca57;
+            text-align: center;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #e94560, #feca57);
+            border-radius: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 20px;
+            }
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-item,
+            .timeline-item:nth-child(odd) {
+                flex-direction: row;
+                padding-left: 50px;
+            }
+        }
+
+        .timeline-content {
+            width: 45%;
+            padding: 20px 25px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .timeline-content.active {
+            background: rgba(233, 69, 96, 0.2);
+            border-color: #e94560;
+            box-shadow: 0 0 30px rgba(233, 69, 96, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .timeline-content {
+                width: 100%;
+            }
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: #1a1a2e;
+            border: 4px solid #e94560;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .timeline-dot.active {
+            background: #e94560;
+            box-shadow: 0 0 20px rgba(233, 69, 96, 0.8);
+        }
+
+        @media (max-width: 768px) {
+            .timeline-dot {
+                left: 20px;
+            }
+        }
+
+        .timeline-location {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .timeline-dates {
+            font-size: 0.9rem;
+            color: #feca57;
+        }
+
+        .timeline-emoji {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .sakura {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .departure-message {
+            display: none;
+            text-align: center;
+            padding: 60px;
+            background: linear-gradient(135deg, #e94560, #ff6b6b);
+            border-radius: 20px;
+            margin: 40px 0;
+        }
+
+        .departure-message h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .departure-message p {
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Japan Sabbatical Countdown</h1>
+            <div class="japanese-title">日本への旅</div>
+            <p>March 21, 2026 at 3:00 PM</p>
+        </header>
+
+        <div class="countdown-container">
+            <div class="countdown-item">
+                <span class="countdown-number" id="days">--</span>
+                <span class="countdown-label">Days</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="hours">--</span>
+                <span class="countdown-label">Hours</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="minutes">--</span>
+                <span class="countdown-label">Minutes</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="seconds">--</span>
+                <span class="countdown-label">Seconds</span>
+            </div>
+        </div>
+
+        <div class="departure-message" id="departureMessage">
+            <h2>🎌 Your Adventure Begins! 🎌</h2>
+            <p>Safe travels to Japan!</p>
+        </div>
+
+        <div class="main-content" id="mainContent">
+            <div class="image-container">
+                <img id="dailyImage" class="daily-image" src="" alt="Daily destination">
+                <div class="location-badge" id="locationBadge">Loading...</div>
+            </div>
+            <div class="info-cards">
+                <div class="info-card">
+                    <div class="card-icon">🎋</div>
+                    <div class="card-title">Fun Fact</div>
+                    <div class="card-content" id="funFact">Loading...</div>
+                </div>
+                <div class="info-card">
+                    <div class="card-icon">🏯</div>
+                    <div class="card-title">Cultural Learning</div>
+                    <div class="card-content" id="culturalTidbit">Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="journey-section">
+            <h2 class="journey-title">Your Journey</h2>
+            <div class="timeline">
+                <div class="timeline-item" data-location="tokyo">
+                    <div class="timeline-content">
+                        <div class="timeline-location"><span class="timeline-emoji">🗼</span>Tokyo</div>
+                        <div class="timeline-dates">March 22-26, 2026</div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item" data-location="minobu">
+                    <div class="timeline-content">
+                        <div class="timeline-location"><span class="timeline-emoji">⛰️</span>Mt. Minobu</div>
+                        <div class="timeline-dates">March 26-28, 2026</div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item" data-location="kyoto">
+                    <div class="timeline-content">
+                        <div class="timeline-location"><span class="timeline-emoji">🏯</span>Kyoto</div>
+                        <div class="timeline-dates">March 28 - April 1, 2026</div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item" data-location="hiroshima">
+                    <div class="timeline-content">
+                        <div class="timeline-location"><span class="timeline-emoji">🕊️</span>Hiroshima</div>
+                        <div class="timeline-dates">April 1-2, 2026</div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item" data-location="miyajima">
+                    <div class="timeline-content">
+                        <div class="timeline-location"><span class="timeline-emoji">⛩️</span>Miyajima</div>
+                        <div class="timeline-dates">April 2-4, 2026</div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item" data-location="tokyo-return">
+                    <div class="timeline-content">
+                        <div class="timeline-location"><span class="timeline-emoji">✈️</span>Tokyo (Return)</div>
+                        <div class="timeline-dates">April 4-5, 2026</div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Counting down to an unforgettable adventure</p>
+        </footer>
+    </div>
+
+    <script>
+        // 51 fun facts and cultural tidbits for each destination (no repeats for 51 days)
+        const destinations = {
+            tokyo: {
+                name: "Tokyo",
+                dates: "March 22-26, 2026",
+                image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80",
+                funFacts: [
+                    "Tokyo's Shibuya Crossing is the busiest pedestrian intersection in the world, with up to 3,000 people crossing at once during peak times.",
+                    "Tokyo has more Michelin-starred restaurants than any other city in the world, with over 200 starred establishments.",
+                    "The Tokyo subway system is so punctual that if a train is more than 5 minutes late, passengers can get a delay certificate to show their employers.",
+                    "Vending machines in Tokyo sell everything from hot ramen to fresh eggs, with over 5 million machines across Japan.",
+                    "Tokyo's Tsukiji Outer Market still thrives with over 400 shops selling fresh seafood, knives, and street food.",
+                    "The Tokyo Skytree is the tallest tower in the world at 634 meters, and its height was chosen to be read as 'Musashi,' an old name for the Tokyo region.",
+                    "Tokyo's train stations are so complex that Shinjuku Station has 200+ exits and serves 3.5 million passengers daily.",
+                    "The Imperial Palace in Tokyo sits on land worth more than all the real estate in California combined.",
+                    "Tokyo has over 160,000 restaurants - more than any other city in the world.",
+                    "The famous Hachiko statue at Shibuya commemorates a loyal dog who waited for his deceased owner at the station for nearly 10 years.",
+                    "Tokyo's Akihabara district uses more electricity than some small countries due to its thousands of electronics stores and arcades.",
+                    "The Tokyo Metropolitan Government Building offers free observation decks with views rivaling paid attractions.",
+                    "Capsule hotels were invented in Osaka but Tokyo has the highest concentration, with pods as small as 2m x 1m x 1.25m.",
+                    "Tokyo's Senso-ji Temple in Asakusa is the oldest temple in the city, founded in 628 AD.",
+                    "The Yamanote Line, Tokyo's main loop line, makes a complete circle in exactly 59 minutes.",
+                    "Tokyo was originally called Edo and was renamed when it became the imperial capital in 1868.",
+                    "Harajuku's Takeshita Street is only 350 meters long but attracts millions of visitors annually for its youth fashion.",
+                    "Tokyo's fish market at Toyosu is built on reclaimed land and features underground viewing galleries.",
+                    "The city has more than 80,000 convenience stores (konbini) that serve as ATMs, bill payment centers, and more.",
+                    "Tokyo Disneyland was the first Disney park built outside the United States, opening in 1983.",
+                    "The Meiji Shrine forest was entirely man-made with 100,000 trees donated from across Japan.",
+                    "Tokyo's oldest surviving wooden structure is the main gate of Senso-ji, rebuilt in 1636.",
+                    "The Robot Restaurant in Shinjuku cost $10 million to build and features giant robot battles.",
+                    "Tokyo Tower is painted orange and white to comply with air safety regulations.",
+                    "The city experiences approximately 1,500 earthquakes per year, most too small to feel.",
+                    "Tokyo's Ginza district has the most expensive real estate per square meter in Japan.",
+                    "The famous Tsukiji tuna auction has seen single fish sell for over $3 million.",
+                    "Ueno Park houses multiple museums, a zoo, and was Japan's first public park, established in 1873.",
+                    "Tokyo's Gotokuji Temple is covered in thousands of lucky cat (maneki-neko) statues.",
+                    "The Sumida River fireworks festival has been held since 1733 and draws over 1 million spectators.",
+                    "Odaiba is a man-made island featuring a replica Statue of Liberty and futuristic architecture.",
+                    "Tokyo's teamLab Borderless was the world's most visited single-artist museum before closing.",
+                    "The city's bicycle parking systems can automatically store thousands of bikes underground in seconds.",
+                    "Roppongi Hills' spider sculpture 'Maman' is 10 meters tall and contains 26 marble eggs.",
+                    "Tokyo Station's Marunouchi building was designed to survive direct artillery fire.",
+                    "The Oedo Line subway runs in a complete loop without a driver, fully automated since 2000.",
+                    "Yoyogi Park was built on the site of the 1964 Olympic Village and remains a popular gathering spot.",
+                    "Tokyo's public baths (sento) peaked at 2,687 in 1968 and now number around 500.",
+                    "The Nakameguro cherry blossom tunnel features 800 trees along the Meguro River.",
+                    "Yanaka is called Tokyo's 'old town' because it survived WWII bombing and retains Edo-era charm.",
+                    "Tokyo's subway pushers (oshiya) help cram passengers into trains during rush hour.",
+                    "The Imperial Hotel's old wing was designed by Frank Lloyd Wright and survived the 1923 earthquake.",
+                    "Koishikawa Korakuen Garden dates to 1629 and features miniature versions of famous Japanese landscapes.",
+                    "Tokyo's Ameyoko market started as a black market after WWII and now sells everything from candy to luxury watches.",
+                    "The National Art Center has no permanent collection - it hosts only temporary exhibitions.",
+                    "Rainbow Bridge connects central Tokyo to Odaiba and features a hidden pedestrian walkway.",
+                    "Tokyo's smallest public park, Shirokane Bunka Village Park, measures just 16 square meters.",
+                    "The city has seven operating monorails, more than any other city in the world.",
+                    "Tokyo's Love Hotels district in Shibuya has themed rooms ranging from Hello Kitty to spacecraft.",
+                    "Palette Town Ferris Wheel was one of the world's largest when built and offers 16-minute rides.",
+                    "The Diet Building (parliament) took 17 years to build and uses no foreign materials."
+                ],
+                culturalTidbits: [
+                    "When riding the train in Tokyo, talking on your phone is considered extremely rude. Set it to 'manner mode' (silent) and text instead.",
+                    "Bowing (ojigi) is essential in Japanese culture. A 15-degree bow is casual, 30 degrees shows respect, and 45 degrees is for deep apology or gratitude.",
+                    "In Tokyo, you'll notice people walking on the left side of sidewalks and standing on the left of escalators (opposite to Osaka!). Always leave the right side free for those in a hurry.",
+                    "It's customary to say 'itadakimasu' (I humbly receive) before eating and 'gochisousama deshita' (thank you for the meal) after finishing.",
+                    "Tipping is not practiced in Japan and can even be considered rude. Excellent service is simply the standard expectation.",
+                    "When paying for items, place money in the small tray provided rather than handing it directly to the cashier.",
+                    "Blowing your nose in public is considered rude in Japan. Instead, sniffling is acceptable until you can find privacy.",
+                    "Business cards (meishi) are exchanged with both hands and should be treated with respect - never write on them or put them in your back pocket.",
+                    "Slurping noodles is not only acceptable but encouraged - it shows appreciation and helps cool the noodles.",
+                    "Never stick chopsticks upright in rice - this resembles funeral incense and is considered very bad luck.",
+                    "When entering someone's home or certain traditional restaurants, remove your shoes and place them facing the door.",
+                    "The phrase 'sumimasen' works as both 'excuse me' and 'thank you' - you'll use it constantly.",
+                    "Gift-giving is important: gifts should be wrapped beautifully and given/received with both hands.",
+                    "Pointing with your finger is considered rude - instead, use an open hand gesture.",
+                    "When drinking alcohol in a group, pour for others first; they will pour for you in return.",
+                    "Personal space is valued on trains - avoid eye contact and keep conversations quiet.",
+                    "Japanese toilets have many buttons - the most important are 'big flush' (大) and 'small flush' (小).",
+                    "Convenience store food is high quality and perfectly acceptable to eat - many locals rely on it daily.",
+                    "When sitting on the floor, men may sit cross-legged while women traditionally kneel (seiza).",
+                    "Train delays of even one minute are cause for public apology announcements.",
+                    "Carrying your trash until you find a bin is normal - public garbage cans are rare.",
+                    "Cash is still king in Japan - many places don't accept credit cards.",
+                    "Wearing a surgical mask when sick is considerate and expected.",
+                    "At shrines, toss a coin, bow twice, clap twice, make a wish, and bow once more.",
+                    "Loud conversations in restaurants are uncommon - match the volume of others around you.",
+                    "The 'OK' hand gesture means money in Japan, not agreement.",
+                    "Japanese addresses work from largest to smallest area - country, city, ward, block, building.",
+                    "Umbrella etiquette: shake off water before entering buildings and use the plastic sleeves provided.",
+                    "When using an escalator in Tokyo, stand on the left. In Osaka, stand on the right.",
+                    "Tattoos may restrict access to public baths, hot springs, and some gyms.",
+                    "Accept offered business cards with both hands and take a moment to read them.",
+                    "Oshibori (wet towels) at restaurants are for hands only, not your face.",
+                    "Train conductors point and call out loud to prevent mistakes - this practice is called 'shisa kanko.'",
+                    "Eating while walking is generally frowned upon - find a bench or standing spot instead.",
+                    "Numbers 4 and 9 are considered unlucky (death and suffering) - buildings often skip these floors.",
+                    "The smallest bill is 1,000 yen - always keep coins handy for vending machines.",
+                    "Japanese people often decline offers three times before accepting - persistence is polite.",
+                    "Showing the soles of your feet is considered rude - be mindful when sitting.",
+                    "When receiving change, it's common for cashiers to count it out loud for accuracy.",
+                    "Expressing strong opinions or boasting is discouraged - modesty is valued.",
+                    "Taxi doors open and close automatically - don't try to do it yourself.",
+                    "Japanese people often say 'yes' to indicate they're listening, not necessarily agreeing.",
+                    "The word 'no' is rarely used directly - listen for softer refusals like 'that's difficult.'",
+                    "Seasonal greetings change throughout the year and are important in communication.",
+                    "White is traditionally associated with death and funerals, not weddings.",
+                    "When exchanging phone numbers, expect to exchange Line IDs instead.",
+                    "Drinking from water bottles directly is normal, but avoid drinking while walking.",
+                    "Japanese bathrooms often separate slippers - use toilet slippers only in toilets.",
+                    "Laughter in uncomfortable situations often indicates embarrassment, not amusement.",
+                    "Taking the last piece of food from a shared dish requires offering it to others first.",
+                    "When apologizing, the depth of your bow indicates the sincerity of your apology."
+                ]
+            },
+            minobu: {
+                name: "Mt. Minobu",
+                dates: "March 26-28, 2026",
+                image: "https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=800&q=80",
+                funFacts: [
+                    "Kuon-ji Temple on Mt. Minobu was founded in 1281 by Nichiren, the founder of Nichiren Buddhism, and remains the head temple of the sect.",
+                    "The ancient cedar trees surrounding Kuon-ji are over 400 years old and create a mystical atmosphere throughout the temple grounds.",
+                    "Mt. Minobu's ropeway takes you 1,153 meters up, offering stunning views of Mt. Fuji on clear days.",
+                    "The area is famous for its yuba (tofu skin) cuisine, a traditional Buddhist vegetarian specialty.",
+                    "Every year, thousands of pilgrims climb the steep 287-step stone staircase to reach Kuon-ji's main hall.",
+                    "Nichiren spent his final nine years on Mt. Minobu writing and teaching before his death in 1282.",
+                    "The main hall of Kuon-ji was rebuilt in 1985 and features the largest wooden structure built in Japan in the 20th century.",
+                    "Mt. Minobu is one of the three sacred mountains in the Koshinetsu region of Japan.",
+                    "The temple town at the base features traditional pilgrim lodgings called shukubo where visitors can stay.",
+                    "Kuon-ji houses Nichiren's ashes, making it the most sacred site for Nichiren Buddhism worldwide.",
+                    "The five-story pagoda at Kuon-ji was reconstructed in 1973 after the original burned down.",
+                    "Mt. Minobu's weeping cherry trees bloom later than lowland areas, extending the sakura season.",
+                    "The temple's morning prayer service (gongyo) begins at 5:30 AM and is open to visitors.",
+                    "Sanmon Gate at Kuon-ji is one of Japan's largest wooden gates at 21 meters tall.",
+                    "The ropeway offers views of the Southern Japanese Alps on clear days.",
+                    "Mt. Minobu is located in Yamanashi Prefecture, famous for its fruit orchards and wine.",
+                    "The temple complex spans the entire mountainside with multiple halls and shrines.",
+                    "Pilgrims traditionally walk the entire mountain path, stopping at 33 different temples.",
+                    "The local sake is blessed at the temple and considered sacred by practitioners.",
+                    "Kuon-ji's treasure house contains important Buddhist artifacts and Nichiren's personal belongings.",
+                    "The mountain experiences heavy snowfall in winter, creating a serene white landscape.",
+                    "Local craftspeople have made Buddhist altar items here for over 400 years.",
+                    "The temple's drum tower announces the time of day using traditional methods.",
+                    "Wild monkeys inhabit the mountain and are sometimes seen near the temple grounds.",
+                    "The autumn leaves at Mt. Minobu attract photographers from across Japan.",
+                    "The temple operates its own university for Buddhist studies nearby.",
+                    "Nichiren carved statues during his time here, some of which are still displayed.",
+                    "The mountain has natural hot springs that were used by pilgrims for ritual cleansing.",
+                    "Mt. Minobu-san station connects to the main JR line for easy access from Tokyo.",
+                    "The temple's vegetarian cuisine (shojin ryori) follows strict Buddhist dietary laws.",
+                    "Annual fire ceremonies are held to burn old prayers and sacred objects respectfully.",
+                    "The hiking trails range from 30 minutes to several hours depending on the route.",
+                    "Local buses connect the train station to the temple for those not hiking.",
+                    "The temple's bell is rung 108 times on New Year's Eve for each human sin.",
+                    "Misty mornings create an ethereal atmosphere unique to mountain temples.",
+                    "The area has maintained its traditional character despite modern tourism.",
+                    "Mountain temple lodgings serve traditional Buddhist breakfast at dawn.",
+                    "The ropeway runs year-round except during extreme weather conditions.",
+                    "Nichiren Buddhism emphasizes the Lotus Sutra, which visitors often hear chanted.",
+                    "The mountain's ecosystem is protected as a quasi-national park.",
+                    "Traditional paper lanterns line the paths during evening festivals.",
+                    "The temple's meditation hall offers instruction in zazen sitting meditation.",
+                    "Local guides offer historical tours explaining the temple's 750-year history.",
+                    "The mountain streams are considered sacred and used in purification rituals.",
+                    "Seasonal festivals celebrate Buddhist holidays throughout the year.",
+                    "The temple maintains detailed records of visitors dating back centuries.",
+                    "Modern pilgrims can receive stamps in a special book at each temple along the route.",
+                    "The surrounding forest contains many medicinal plants used in traditional medicine.",
+                    "The temple's library contains rare Buddhist manuscripts and scrolls.",
+                    "Night stays at temple lodgings include evening prayers and early morning services.",
+                    "The mountain is home to unique alpine plants found only at high elevations."
+                ],
+                culturalTidbits: [
+                    "When visiting temples, purify yourself at the temizuya (water pavilion) by washing your left hand, then right hand, then rinsing your mouth.",
+                    "Remove your shoes when entering temple buildings. You'll often find slippers provided, but bring socks as walking barefoot can be cold.",
+                    "Photography inside temple halls is usually prohibited. Always look for signs or ask permission before taking photos of sacred spaces.",
+                    "When praying at a Buddhist temple, bow twice, place your hands together, bow once more, and make a small monetary offering.",
+                    "Speaking quietly and maintaining a peaceful demeanor is expected in temple grounds to respect those who come for spiritual practice.",
+                    "Buddhist monks take vows of simplicity - don't offer them elaborate gifts or expect casual conversation.",
+                    "Temple gates (torii and sanmon) mark the transition from secular to sacred space - bow slightly when passing through.",
+                    "Incense is lit for prayers and meditation - place it upright in the sand, don't wave the flame out.",
+                    "When receiving blessed items from monks, accept them with both hands and a small bow.",
+                    "Walking meditation (kinhin) is practiced slowly and mindfully - if you see practitioners, don't interrupt.",
+                    "Temple meals are eaten in silence to practice mindfulness - follow this custom if staying overnight.",
+                    "Buddhist funeral rites mean certain actions are taboo - never pass food chopstick to chopstick.",
+                    "Morning prayers often begin before sunrise - temple lodging guests are expected to participate.",
+                    "When touring temple grounds, walk clockwise as this is the traditional direction for circumambulation.",
+                    "Sitting with feet extended toward Buddhist statues is disrespectful - kneel or sit cross-legged.",
+                    "Ringing temple bells has spiritual meaning - ring once or twice only, not repeatedly.",
+                    "Wearing bright or revealing clothing at temples may be seen as disrespectful.",
+                    "If offering prayers, specific sutras may be recommended - ask monks for guidance.",
+                    "Temple donation boxes typically accept any amount - 5 yen coins are considered lucky.",
+                    "Taking home sacred items like temple sand requires permission from monks.",
+                    "Buddhist beads (juzu) should be held respectfully during prayers, not worn as jewelry.",
+                    "When receiving temple stamps, present your book with reverence and appropriate thanks.",
+                    "Vegetarian temple food excludes garlic and onion as they're considered stimulating.",
+                    "Meditation sessions may be silent - follow the lead of monks and regular practitioners.",
+                    "Temple gardens are designed for contemplation - spend time sitting rather than just photographing.",
+                    "Writing wishes on ema (wooden tablets) requires sincerity - frivolous wishes are inappropriate.",
+                    "Seasonal flower offerings change throughout the year and have specific meanings.",
+                    "Night services may include chanting that visitors are welcome to observe silently.",
+                    "Temple architecture has symbolic meaning - ask about significant features.",
+                    "Buddhist holidays are based on the lunar calendar and may differ from expected dates.",
+                    "Leaving coins at statues of deities is a way to show respect and ask for blessings.",
+                    "Temple cats and dogs are often considered protectors and treated with special respect.",
+                    "Walking through certain gates backwards is considered bad luck.",
+                    "Some temple areas may be restricted to practitioners only - respect these boundaries.",
+                    "Traditional temple musicians may perform during special ceremonies - remain seated until finished.",
+                    "Water ladles at purification fountains should not touch your lips directly.",
+                    "Certain hand gestures (mudras) made by Buddhist statues have specific meanings.",
+                    "Asking monks about their practice is welcome, but deeply personal questions are inappropriate.",
+                    "Temple bookshops often sell items blessed by the temple - these make meaningful souvenirs.",
+                    "Lighting candles at temples represents illuminating the path to enlightenment.",
+                    "Some temples offer meditation instruction in English - inquire in advance.",
+                    "The changing of temple decorations marks seasonal transitions and Buddhist holidays.",
+                    "Watching sunset from mountain temples is traditional - plan your visit accordingly.",
+                    "Temple breakfast often includes rice, pickles, miso soup, and sometimes grilled fish.",
+                    "Walking stick rental is available at many mountain temples for hiking assistance.",
+                    "Traditional temple robes may be worn during overnight stays if provided.",
+                    "Taking the time to learn basic Buddhist greetings shows respect.",
+                    "Temple rest areas are for quiet contemplation, not loud conversations.",
+                    "Asking about the specific Buddhist sect helps understand their unique practices.",
+                    "Making donations toward temple preservation is appreciated and can be anonymous.",
+                    "The journey to a temple is considered as important as arriving - take your time."
+                ]
+            },
+            kyoto: {
+                name: "Kyoto",
+                dates: "March 28 - April 1, 2026",
+                image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80",
+                funFacts: [
+                    "Kyoto was Japan's capital for over 1,000 years (794-1868) and was spared from WWII bombing due to its cultural significance.",
+                    "The Fushimi Inari Shrine has over 10,000 torii gates forming tunnels up the mountainside, donated by businesses for good fortune.",
+                    "Kyoto has 17 UNESCO World Heritage Sites, more than any other Japanese city.",
+                    "The Gion district is one of the few places where you might spot a real geiko (Kyoto's term for geisha) or maiko (apprentice).",
+                    "Kyoto's Nishiki Market, called 'Kyoto's Kitchen,' has been a food market for over 400 years with 100+ shops and restaurants.",
+                    "The Philosopher's Path is named after philosopher Nishida Kitaro, who walked it daily for meditation.",
+                    "Kinkaku-ji (Golden Pavilion) is covered in actual gold leaf - the top two floors use over 400kg of gold.",
+                    "Kyoto's traditional wooden townhouses (machiya) are being preserved, with over 40,000 still standing.",
+                    "The city's grid pattern was modeled after Chang'an (Xi'an), the capital of Tang Dynasty China.",
+                    "Arashiyama Bamboo Grove's stalks grow up to 30 meters tall and make distinctive sounds in the wind.",
+                    "Gion Festival, held each July, has been celebrated for over 1,100 years without interruption.",
+                    "Kyoto Station is one of Japan's largest buildings, designed by Hiroshi Hara with a futuristic glass facade.",
+                    "The Pontocho alley is only wide enough for two people to pass and features traditional restaurants.",
+                    "Ryoan-ji Temple's rock garden has exactly 15 stones, but only 14 are visible from any single angle.",
+                    "Kyoto consumes more coffee per capita than any other Japanese city.",
+                    "The city has over 2,000 temples and 400 shrines within its boundaries.",
+                    "Kiyomizu-dera Temple was built without using a single nail in its construction.",
+                    "Traditional Kyoto sweets (wagashi) are designed to match the seasons and are works of art.",
+                    "The Geisha districts of Gion have strict rules about photography and visitor behavior.",
+                    "Kyoto Protocol, the famous climate agreement, was signed here in 1997.",
+                    "Nijo Castle's 'nightingale floors' chirp when walked upon to warn of intruders.",
+                    "The Imperial Palace grounds are free to enter and offer peaceful gardens in the city center.",
+                    "Kyoto's matcha is considered the finest in Japan, grown in nearby Uji for over 800 years.",
+                    "The city's traditional fans (sensu) have been made here for over 1,200 years.",
+                    "Tofuku-ji Temple has one of Japan's oldest Zen gardens and stunning autumn colors.",
+                    "Kyoto Tower is the tallest structure in the city at 131 meters.",
+                    "The Ginkaku-ji (Silver Pavilion) was never actually covered in silver despite its name.",
+                    "Traditional Kyoto cuisine (Kyo-ryori) emphasizes seasonal ingredients and beautiful presentation.",
+                    "The city's textile industry produces most of Japan's traditional kimono fabrics.",
+                    "Heian Shrine's garden recreates the landscapes mentioned in 'The Tale of Genji.'",
+                    "Kyoto maiko traditionally start their training at age 15-16 and train for five years.",
+                    "The Philosopher's Path follows a canal lined with hundreds of cherry trees.",
+                    "Ninna-ji Temple's dwarf cherry trees bloom later than others, extending the season.",
+                    "Kyoto's narrow streets were designed to prevent large armies from advancing quickly.",
+                    "The city has preserved rain drainage systems dating back to the Heian period.",
+                    "Traditional Kyoto pickles (tsukemono) include over 20 local varieties.",
+                    "The Saihoji Temple (Moss Temple) requires advance reservation and a copying of sutras.",
+                    "Kamogawa River's restaurant platforms (kawayuka) have operated for over 100 years.",
+                    "The Kyoto International Manga Museum houses 300,000 manga volumes.",
+                    "Kennin-ji is Kyoto's oldest Zen temple, founded in 1202.",
+                    "Traditional incense-smelling ceremonies (kodo) are still practiced in Kyoto.",
+                    "The city limits building heights to preserve views of surrounding mountains.",
+                    "Kyoto's sake breweries in Fushimi use water from underground springs.",
+                    "The Aoi Matsuri parade dates back 1,400 years and features ox carts and costumes.",
+                    "Yasaka Pagoda is the final standing structure of a 6th-century temple.",
+                    "The Daimonji Gozan Okuribi bonfires spell out characters visible from across the city.",
+                    "Kyoto's traditional candy stores have operated for over 400 years.",
+                    "Sanjo Bridge's bronze ornaments are from the original 16th-century structure.",
+                    "The city's flower arrangement (ikebana) schools have headquarters here.",
+                    "Kyoto crafts include gold leaf, lacquerware, ceramics, and bamboo work.",
+                    "The Toei Kyoto Studio Park is a working film set where you can see samurai movies being made."
+                ],
+                culturalTidbits: [
+                    "In Gion, never touch, stop, or photograph geiko/maiko without permission. They are professionals on their way to appointments, not tourist attractions.",
+                    "Kyoto-ben (Kyoto dialect) is considered more refined and polite than standard Japanese. 'Okini' means thank you instead of 'arigatou.'",
+                    "When visiting the famous Kinkaku-ji (Golden Pavilion), you'll receive a temple charm as your entry ticket - keep it as a blessing!",
+                    "Tea ceremony (sado) originated in Kyoto. If invited, remember to rotate the cup to avoid drinking from its front, showing humility.",
+                    "Many traditional Kyoto restaurants have 'ichigen-san okotowari' policy - refusing first-time customers without an introduction. Stick to tourist-friendly places or book through your hotel.",
+                    "Kyoto's narrow machiya houses are entered by stepping over the threshold, never on it.",
+                    "When visiting zen gardens, sit quietly and contemplate rather than rushing through.",
+                    "Traditional Kyoto ryokan (inns) have specific etiquette for bathing, dining, and sleeping.",
+                    "The Nishiki Market vendors prefer if you sample foods at their stall rather than walking while eating.",
+                    "Temple admission fees often include a small cup of matcha - sit and enjoy it properly.",
+                    "Rickshaw drivers in Arashiyama appreciate basic Japanese greetings.",
+                    "When admiring geiko from a distance, nodding politely is appropriate; staring is not.",
+                    "Kyoto's kimono rental shops can help you dress appropriately for temple visits.",
+                    "The sound of temple bells at dusk signals the end of visiting hours.",
+                    "Traditional Kyoto inns serve kaiseki dinners in your room - wear the provided yukata.",
+                    "Photography at zen gardens often has specific spots marked for visitors.",
+                    "Bamboo groves are sensitive - never carve or touch the bamboo stalks.",
+                    "Pagoda viewing often has best spots where all five levels are visible.",
+                    "Kyoto buses can be confusing - enter from the back and pay when exiting.",
+                    "Temple gardens change with seasons - ask staff what is currently in bloom.",
+                    "Morning visits to popular temples avoid crowds and capture the best light.",
+                    "Traditional Kyoto fans make meaningful gifts, each design having specific meanings.",
+                    "Sake tasting in Fushimi follows etiquette similar to wine tasting.",
+                    "When receiving tea, admire the cup before drinking and return it facing the host.",
+                    "Nijo Castle requires removing shoes - bring socks and be prepared for cold floors.",
+                    "Cycling is common in Kyoto - follow traffic rules and park in designated areas.",
+                    "Traditional sweet shops often have seasonal items available only briefly.",
+                    "Temple fortune papers (omikuji) can be tied at the temple if the fortune is bad.",
+                    "Arashiyama's monkey park requires understanding that monkeys have right of way.",
+                    "Traditional Kyoto meals emphasize quiet appreciation of each dish.",
+                    "When shopping in traditional stores, bargaining is not appropriate.",
+                    "River platforms (kawayuka) have dress codes excluding shorts and sandals.",
+                    "Night illuminations at temples require separate tickets and have limited hours.",
+                    "Kyoto's temples close earlier than typical tourist attractions - plan accordingly.",
+                    "Traditional craft demonstrations often welcome observation but not interruption.",
+                    "Asking about the history of traditional shops shows respect for their heritage.",
+                    "Vegetarian options in Kyoto often feature tofu - learn to appreciate its variety.",
+                    "Temple lodging (shukubo) in Kyoto offers unique experiences but requires following rules.",
+                    "The Philosophy Path is best walked slowly, pausing at temples along the way.",
+                    "Traditional Kyoto architecture uses materials that require gentle treatment.",
+                    "Spring and autumn are peak seasons - expect crowds at famous sites.",
+                    "Local sake breweries offer tastings but expect to purchase if you sample.",
+                    "Kyoto's heat in summer is intense - plan indoor activities for midday.",
+                    "Traditional performances like Noh have specific audience etiquette.",
+                    "When receiving gifts from Kyoto artisans, thank them for their years of training.",
+                    "Kyoto's traditional inns often have curfews - inform them of late returns.",
+                    "The local train (Randen) offers scenic routes through traditional neighborhoods.",
+                    "Kyoto's traditional gardens are designed to be viewed from specific angles.",
+                    "Asking permission before entering unmarked alleys in Gion is polite.",
+                    "Seasonal wagashi are meant to be eaten immediately for full appreciation.",
+                    "Traditional Kyoto dances can be observed at special performances throughout the year."
+                ]
+            },
+            hiroshima: {
+                name: "Hiroshima",
+                dates: "April 1-2, 2026",
+                image: "https://images.unsplash.com/photo-1599922407834-a0aea9c8d877?w=800&q=80",
+                funFacts: [
+                    "The Atomic Bomb Dome (Genbaku Dome) was the only structure left standing near the bomb's hypocenter and is now a UNESCO World Heritage Site.",
+                    "Hiroshima's famous okonomiyaki style layers ingredients rather than mixing them, with noodles added to create 'Hiroshima-yaki.'",
+                    "The Children's Peace Monument was inspired by Sadako Sasaki, who folded 1,000 paper cranes believing it would cure her radiation illness.",
+                    "Hiroshima was rebuilt so successfully that it hosted the Asian Games just 9 years after the bombing in 1954.",
+                    "The city plants over 100,000 peace memorial tulips each year, with bulbs donated from the Netherlands.",
+                    "Hiroshima Peace Memorial Park sits on what was once the city's busiest commercial district.",
+                    "The Atomic Bomb Dome's skeleton structure survived because the blast came from almost directly above.",
+                    "Over 140,000 people visit the Peace Memorial Museum annually on August 6th alone.",
+                    "Hiroshima's streetcar system is the largest in Japan, with some original cars from before WWII.",
+                    "The Peace Flame in the park has burned continuously since 1964 and will remain lit until all nuclear weapons are abolished.",
+                    "Hiroshima Castle was completely destroyed and rebuilt in 1958 as a museum of the city's pre-war history.",
+                    "The cenotaph's arch frames the A-Bomb Dome when viewed from the museum - intentional design.",
+                    "Paper crane chains at the Children's Monument weigh several tons and require regular removal.",
+                    "Hiroshima's recovery is so complete that it's now one of Japan's largest cities with 1.2 million people.",
+                    "The 'shadow' of a vaporized person on bank steps is preserved in the Peace Museum.",
+                    "Hiroshima produces more needles than any other city in Japan - an industry predating WWII.",
+                    "The city's name means 'Wide Island' referring to its delta location on the Ota River.",
+                    "Maple trees throughout the city commemorate the many who died - maple is the city flower.",
+                    "The Peace Bell can be rung by visitors and is designed to represent Earth without borders.",
+                    "Hiroshima's port is one of the largest on the Seto Inland Sea.",
+                    "The city's professional baseball team, Hiroshima Toyo Carp, has a passionate local following.",
+                    "A-Bomb survivor testimonies (hibakusha) are regularly shared at the Peace Memorial.",
+                    "The city sends annual letters to world leaders after any nuclear test.",
+                    "Shukkeien Garden, built in 1620, was restored after the bombing and offers peaceful refuge.",
+                    "The Ota River, which runs through the city, has seven channels crossed by numerous bridges.",
+                    "Hiroshima's mayor chairs the Mayors for Peace organization with over 8,000 member cities.",
+                    "The restored Honkawa Elementary School near the hypocenter serves as a peace education center.",
+                    "Momiji manju (maple leaf cakes) were invented in nearby Miyajima but are popular throughout Hiroshima.",
+                    "The city's tram tickets can be used as admission discount coupons at many attractions.",
+                    "Hiroshima University's medical school specializes in radiation effects research.",
+                    "The Peace Park's design by Kenzo Tange won international architectural acclaim.",
+                    "Street-level radiation returned to normal levels within days of the bombing.",
+                    "The city's recovery included many innovative urban planning solutions still studied today.",
+                    "Hiroshima oysters are considered among Japan's finest and are harvested nearby.",
+                    "The Mazda car company is headquartered in Hiroshima and offers factory tours.",
+                    "Trees that survived the bombing are marked throughout the city as 'A-bombed trees.'",
+                    "The Peace Memorial Museum underwent major renovations, reopening in 2019 with enhanced exhibits.",
+                    "Hiroshima's airport is built on reclaimed land in the Seto Inland Sea.",
+                    "The city hosts the Hiroshima Flower Festival each May, attracting over 1.6 million visitors.",
+                    "Underground shopping areas connect major stations, useful during rainy weather.",
+                    "The evening illumination of the Atomic Bomb Dome creates a haunting memorial atmosphere.",
+                    "Hiroshima's craft beer scene has grown significantly, with several local breweries.",
+                    "The city's peace education programs host students from around the world.",
+                    "Memorial services on August 6th are broadcast nationally and attended by world leaders.",
+                    "The Peace Boulevard running through the city is 100 meters wide - a firebreak for future safety.",
+                    "Hiroshima's paper lantern floating ceremony on August 6th honors the dead.",
+                    "The city's industrial recovery was aided by being a major military production center before the war.",
+                    "Hiroshima-style tsukemen (dipping noodles) is a popular local variation.",
+                    "The Hiroshima Museum of Art houses one of Japan's finest French Impressionist collections.",
+                    "Survivors' accounts are available in multiple languages at the Peace Memorial.",
+                    "The city's recovery is taught worldwide as an example of resilience and reconciliation."
+                ],
+                culturalTidbits: [
+                    "At the Peace Memorial, observe a moment of silence and bow respectfully. Photography is allowed but maintain a solemn demeanor.",
+                    "Origami cranes are powerful symbols of peace in Hiroshima. Consider folding some to leave at Sadako's monument.",
+                    "When eating Hiroshima-style okonomiyaki, use the small spatula (kote) provided rather than chopsticks - it's traditional!",
+                    "The peace message of Hiroshima is 'No more Hiroshimas' (Futatabi Hiroshima o kurikaeshite wa naranai). Visitors often sign the peace pledge book.",
+                    "Local streetcars (Hiroden) include original cars that survived the bombing and are still in operation - a symbol of resilience.",
+                    "August 6th (Peace Memorial Day) is observed with a minute of silence at 8:15 AM - the time of the bombing.",
+                    "Hibakusha (survivors) who share their stories deserve deep respect and attentive listening.",
+                    "When folding paper cranes, fold with intention - each crane represents a wish for peace.",
+                    "The Peace Park is not a place for loud conversations or casual picnicking.",
+                    "Purchasing items from the Peace Memorial shop supports peace education programs.",
+                    "Local guides at the Peace Memorial are often volunteers with personal connections to the history.",
+                    "Learning a few words about peace in Japanese shows respect: heiwa (peace), kioku (memory).",
+                    "The paper crane has become Japan's most recognized symbol of peace because of Sadako's story.",
+                    "Hiroshima natives appreciate visitors who take time to learn rather than rush through.",
+                    "Asking about the city's recovery shows interest in its resilience, not just its tragedy.",
+                    "Local restaurants take pride in Hiroshima-yaki - complimenting the chef is appreciated.",
+                    "The streetcar system is a point of local pride - learn basic tram etiquette.",
+                    "Peace-related souvenirs make meaningful gifts and support local causes.",
+                    "When meeting hibakusha, a simple 'thank you for sharing' is deeply meaningful.",
+                    "The Atomic Bomb Dome should never be approached as just a photo opportunity.",
+                    "Children often leave strings of cranes - never disturb these offerings.",
+                    "Hiroshima's story teaches global lessons - express what you've learned to locals.",
+                    "Evening visits to the Peace Park are quiet and contemplative.",
+                    "Local museums may have English guides available - ask at the entrance.",
+                    "Hiroshima residents don't dwell on the past but honor it while looking forward.",
+                    "The city's baseball team games are a way to experience local modern culture.",
+                    "Acknowledging both the tragedy and the recovery shows nuanced understanding.",
+                    "When discussing the bombing, focus on peace rather than blame.",
+                    "The Peace Memorial's guest book accepts messages in any language.",
+                    "Hiroshima's recovery is a source of pride - asking about modern achievements is welcome.",
+                    "Local peace organizations welcome international visitors and volunteers.",
+                    "The city's relationship with other A-bombed locations (Nagasaki) is fraternal.",
+                    "Asking about an elder's personal connection to the war requires sensitivity.",
+                    "The Peace Park's monuments each have meaning - take time to read explanations.",
+                    "Hiroshima's international community is welcoming due to the city's peace mission.",
+                    "Participating in paper crane folding workshops is a meaningful activity.",
+                    "The city sends delegates to international peace conferences regularly.",
+                    "Learning about the city's modern industries shows interest beyond tourism.",
+                    "Hiroshima sake makes an appropriate gift when visiting other regions of Japan.",
+                    "The city's food culture reflects its recovery - enjoy it as celebration of resilience.",
+                    "Peace education continues to evolve - ask about current programs and initiatives.",
+                    "The paper lantern ceremony on August 6th is open to all who wish to participate.",
+                    "Hiroshima's youth are active in peace movements - engaging with them is welcomed.",
+                    "The city's relationship with sister cities worldwide promotes global peace.",
+                    "When taking photos, ensure they convey respect rather than sensationalism.",
+                    "Learning about non-famous survivors' stories provides deeper understanding.",
+                    "The Peace Memorial's archives are available to researchers and serious students.",
+                    "Hiroshima's story is still being written - the city looks forward, not just back.",
+                    "Supporting local businesses is a way to honor the city's remarkable recovery.",
+                    "The phrase 'No more Hiroshimas, No more Nagasakis' is often seen together.",
+                    "Leaving Hiroshima with a commitment to share what you've learned honors the city's mission."
+                ]
+            },
+            miyajima: {
+                name: "Miyajima",
+                dates: "April 2-4, 2026",
+                image: "https://images.unsplash.com/photo-1505069190533-da1c9af13f68?w=800&q=80",
+                funFacts: [
+                    "The famous floating torii gate of Itsukushima Shrine appears to float during high tide and has stood in various forms since 1168.",
+                    "Miyajima literally means 'Shrine Island' and was considered so sacred that commoners weren't allowed to set foot on it for centuries.",
+                    "The island's friendly deer are considered sacred messengers of the gods, similar to those in Nara.",
+                    "Miyajima is famous for its giant rice scoops (shamoji) - the world's largest wooden rice scoop is displayed here at 7.7 meters long!",
+                    "No deaths or births were traditionally allowed on the island to preserve its purity. Even today, there's no cemetery on Miyajima.",
+                    "The current torii gate is the 8th iteration - the original was built in 593 AD.",
+                    "Momiji manju (maple leaf-shaped cakes) were invented on Miyajima in 1906.",
+                    "The shrine complex extends over the water to keep the sacred island soil from being touched.",
+                    "Itsukushima Shrine is one of only two shrines built over water in Japan.",
+                    "The five-story pagoda on Miyajima blends Japanese and Chinese architectural styles.",
+                    "At low tide, visitors can walk out and touch the base of the torii gate.",
+                    "The island has been one of Japan's three most scenic views since ancient times.",
+                    "Mt. Misen's primeval forest has been untouched for thousands of years.",
+                    "The torii gate stands 16 meters tall and weighs about 60 tons.",
+                    "Traditional wooden boat tours around the torii gate operate at high tide.",
+                    "The island's ropeway offers panoramic views of the Seto Inland Sea.",
+                    "Miyajima oysters are harvested from the surrounding waters and are famous nationwide.",
+                    "The shrine is painted vermillion, believed to ward off evil spirits.",
+                    "Ancient nobles would arrive by boat and pass through the torii to show respect.",
+                    "The island has wild monkeys living on Mt. Misen that visitors occasionally encounter.",
+                    "Daisho-in Temple at the mountain's base is one of Shingon Buddhism's most important temples.",
+                    "The eternal flame at Daisho-in has burned for 1,200 years.",
+                    "Night illumination of the shrine and torii creates magical photographs.",
+                    "The island's aquarium houses local sea life from the Seto Inland Sea.",
+                    "Miyajima's main shopping street dates back hundreds of years.",
+                    "The island has only about 1,800 permanent residents.",
+                    "Traditional maple leaf tempura is a unique Miyajima snack.",
+                    "The shrine stages traditional Noh performances on a special floating stage.",
+                    "High tide times vary daily - check schedules for the best torii photos.",
+                    "The island is car-free, adding to its traditional atmosphere.",
+                    "Ancient ritual dances (bugaku) are performed at the shrine during festivals.",
+                    "The torii gate's roof contains about 7 tons of stones for stability.",
+                    "Ferry rides to the island take only 10 minutes from the mainland.",
+                    "The island's deer population numbers around 500 animals.",
+                    "Mt. Misen's peak at 535 meters offers views to the Shikoku mountains.",
+                    "The shrine's corridors connect multiple buildings over the water.",
+                    "Miyajima's crafts include wooden products, textiles, and traditional art.",
+                    "The original shrine was destroyed and rebuilt after a civil war in 1555.",
+                    "The island appears in countless Japanese artworks over centuries.",
+                    "Night stays on the island offer unique after-hours shrine access.",
+                    "The torii gate is made of camphor wood, naturally resistant to decay.",
+                    "Several hiking trails crisscross Mt. Misen with varying difficulty levels.",
+                    "The island's maple trees create stunning autumn colors in November.",
+                    "Traditional shamoji (rice paddles) are inscribed with wishes and displayed as offerings.",
+                    "The shrine receives over 3 million visitors annually.",
+                    "Meditation caves on Mt. Misen were used by famous Buddhist monk Kobo Daishi.",
+                    "The island has multiple natural hot springs, though most are private.",
+                    "Miyajima's history spans over 1,400 years of continuous worship.",
+                    "The shrine's treasure hall contains over 4,500 artifacts.",
+                    "Cherry blossoms on the island bloom slightly later due to sea breezes.",
+                    "The torii gate recently underwent major restoration, completed in 2022."
+                ],
+                culturalTidbits: [
+                    "The deer on Miyajima will eat paper, maps, and anything they can get! Keep your belongings secure and don't feed them human food.",
+                    "Try momiji manju, maple leaf-shaped cakes filled with sweet red bean paste - they were invented on Miyajima in 1906.",
+                    "Visit at different tides to experience the shrine's magic: at high tide the torii 'floats,' at low tide you can walk out to touch it.",
+                    "The island has a tradition of oyster farming. Grilled oysters (kaki) from Miyajima are considered Japan's finest.",
+                    "When walking through the shrine corridors built over water, speak softly and walk calmly - you're in one of Japan's most sacred spaces.",
+                    "The torii gate marks the boundary between the earthly and spirit worlds - approach with reverence.",
+                    "Touching the torii gate at low tide is permitted but should be done respectfully.",
+                    "Deer bowing their heads is actually a begging gesture, not a greeting.",
+                    "Buying omiyage (souvenirs) from Miyajima is traditional - locals expect visitors to return with gifts.",
+                    "The last ferry departure time is important - missing it means staying overnight.",
+                    "Shrine maidens (miko) may be seen performing duties - do not interrupt their work.",
+                    "Burning incense at the shrine follows specific customs - watch others first.",
+                    "The shrine's paper fortunes can be tied to nearby wires if the fortune is unfavorable.",
+                    "Grilled oysters are eaten immediately - don't try to save them for later.",
+                    "Traditional boat tours require sitting quietly during the torii approach.",
+                    "Mt. Misen hikes can be strenuous - appropriate footwear is essential.",
+                    "Evening stays on the island provide unique quiet time at the shrine.",
+                    "The ropeway may close in high winds - have backup plans for Mt. Misen.",
+                    "Deer antlers are trimmed annually for visitor safety - they can still push.",
+                    "Photography of the torii is best at high tide for the floating effect.",
+                    "Traditional performances at the shrine require silent observation.",
+                    "The island's ryokan (inns) serve local seafood - dinner is often included.",
+                    "Walking the island is easy but can be tiring - pace yourself.",
+                    "Momiji manju shops offer free samples - thanking the shopkeeper is polite.",
+                    "The shrine accepts various forms of worship - observe others for guidance.",
+                    "Sunset views from the island are spectacular and worth planning around.",
+                    "The island's main street can be crowded - early morning visits are peaceful.",
+                    "Traditional crafts make meaningful souvenirs - quality items are marked.",
+                    "Deer have right of way on the island's pathways.",
+                    "The eternal flame at Daisho-in should be observed quietly.",
+                    "Night visits to the shrine (when staying overnight) are special privileges.",
+                    "The island's water is considered sacred - treat fountains with respect.",
+                    "Hot spring facilities may have tattoo restrictions - check in advance.",
+                    "Carrying trash off the island is expected - bins are limited.",
+                    "The ferry ride offers first views of the torii - have your camera ready.",
+                    "Temple bells can be rung by visitors - do so thoughtfully, not repeatedly.",
+                    "Local guides can enhance understanding of the shrine's history.",
+                    "The island's atmosphere changes dramatically between day and night.",
+                    "Respecting photography restrictions in certain shrine areas is important.",
+                    "The island's limited restaurants can fill up - consider timing or reservations.",
+                    "Walking meditation on the island paths is a traditional practice.",
+                    "The vermillion paint of the shrine has deep spiritual meaning in Shinto.",
+                    "Offerings at the shrine typically include coins - 5 yen is considered lucky.",
+                    "The shrine's architecture requires removing shoes in certain areas.",
+                    "Learning basic Shinto terms enhances the shrine experience.",
+                    "The island's weather can differ from the mainland - bring layers.",
+                    "Traditional maple tempura is meant to be eaten as a snack, not a meal.",
+                    "The island's quiet evenings contrast sharply with busy day-trip crowds.",
+                    "Purchasing shrine charms (omamori) supports the shrine's preservation.",
+                    "The journey to Miyajima is considered part of the pilgrimage experience.",
+                    "Leaving the island with a sense of peace honors the shrine's purpose."
+                ]
+            }
+        };
+
+        // Calculate which destination to feature based on the day
+        function getDailyContent() {
+            const today = new Date();
+            const startDate = new Date('2026-01-29'); // ~51 days before March 21
+            const daysSinceStart = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+            const dayIndex = Math.max(0, Math.min(50, daysSinceStart)); // Cap at 0-50
+
+            const destinationKeys = Object.keys(destinations);
+            const destinationIndex = dayIndex % destinationKeys.length;
+            const destination = destinations[destinationKeys[destinationIndex]];
+
+            // Use the day index directly for facts (0-50 maps to 51 unique facts)
+            const factIndex = dayIndex % destination.funFacts.length;
+
+            return {
+                location: destination.name,
+                locationKey: destinationKeys[destinationIndex],
+                dates: destination.dates,
+                image: destination.image,
+                funFact: destination.funFacts[factIndex],
+                culturalTidbit: destination.culturalTidbits[factIndex]
+            };
+        }
+
+        // Update the countdown timer
+        function updateCountdown() {
+            const targetDate = new Date('March 21, 2026 15:00:00').getTime();
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference <= 0) {
+                document.getElementById('days').textContent = '0';
+                document.getElementById('hours').textContent = '0';
+                document.getElementById('minutes').textContent = '0';
+                document.getElementById('seconds').textContent = '0';
+                document.getElementById('departureMessage').style.display = 'block';
+                document.getElementById('mainContent').style.display = 'none';
+                return;
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+        }
+
+        // Update daily content
+        function updateDailyContent() {
+            const content = getDailyContent();
+
+            document.getElementById('dailyImage').src = content.image;
+            document.getElementById('dailyImage').alt = content.location;
+            document.getElementById('locationBadge').textContent = content.location;
+            document.getElementById('funFact').textContent = content.funFact;
+            document.getElementById('culturalTidbit').textContent = content.culturalTidbit;
+
+            // Highlight active destination in timeline
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                const timelineContent = item.querySelector('.timeline-content');
+                const timelineDot = item.querySelector('.timeline-dot');
+                const locationKey = item.dataset.location;
+
+                if (locationKey === content.locationKey) {
+                    timelineContent.classList.add('active');
+                    timelineDot.classList.add('active');
+                } else {
+                    timelineContent.classList.remove('active');
+                    timelineDot.classList.remove('active');
+                }
+            });
+        }
+
+        // Create falling sakura petals animation
+        function createSakura() {
+            const sakura = document.createElement('div');
+            sakura.className = 'sakura';
+            sakura.innerHTML = '🌸';
+            sakura.style.left = Math.random() * 100 + 'vw';
+            sakura.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            sakura.style.animation = `fall ${Math.random() * 5 + 5}s linear forwards`;
+            document.body.appendChild(sakura);
+
+            setTimeout(() => sakura.remove(), 10000);
+        }
+
+        // Initialize
+        updateCountdown();
+        updateDailyContent();
+        setInterval(updateCountdown, 1000);
+        setInterval(createSakura, 2000);
+
+        // Create initial sakura
+        for (let i = 0; i < 5; i++) {
+            setTimeout(createSakura, i * 400);
+        }
+    </script>
+</body>
+</html>

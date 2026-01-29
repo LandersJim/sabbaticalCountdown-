@@ -55,18 +55,20 @@
         .countdown-container {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 10px;
             margin: 15px 0;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
         }
 
         .countdown-item {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 12px;
-            padding: 12px 20px;
+            padding: 10px 12px;
             text-align: center;
-            min-width: 80px;
+            min-width: 60px;
+            flex: 1;
+            max-width: 90px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             transition: transform 0.3s ease;
         }
@@ -76,7 +78,7 @@
         }
 
         .countdown-number {
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: #feca57;
             display: block;
@@ -84,10 +86,26 @@
         }
 
         .countdown-label {
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: #a0a0a0;
+        }
+
+        @media (max-width: 400px) {
+            .countdown-container {
+                gap: 6px;
+            }
+            .countdown-item {
+                padding: 8px 6px;
+                min-width: 50px;
+            }
+            .countdown-number {
+                font-size: 1.5rem;
+            }
+            .countdown-label {
+                font-size: 0.5rem;
+            }
         }
 
         .main-content {
@@ -1005,19 +1023,15 @@
             }
         };
 
-        // Calculate which destination to feature based on the day
-        function getDailyContent() {
-            const today = new Date();
-            const startDate = new Date('2026-01-29'); // ~51 days before March 21
-            const daysSinceStart = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
-            const dayIndex = Math.max(0, Math.min(50, daysSinceStart)); // Cap at 0-50
-
+        // Get random content on each page load
+        function getRandomContent() {
             const destinationKeys = Object.keys(destinations);
-            const destinationIndex = dayIndex % destinationKeys.length;
+            const destinationIndex = Math.floor(Math.random() * destinationKeys.length);
             const destination = destinations[destinationKeys[destinationIndex]];
 
-            // Use the day index directly for facts (0-50 maps to 51 unique facts)
-            const factIndex = dayIndex % destination.funFacts.length;
+            // Random fact and tidbit from this destination
+            const factIndex = Math.floor(Math.random() * destination.funFacts.length);
+            const tidbitIndex = Math.floor(Math.random() * destination.culturalTidbits.length);
 
             return {
                 location: destination.name,
@@ -1025,7 +1039,7 @@
                 dates: destination.dates,
                 image: destination.image,
                 funFact: destination.funFacts[factIndex],
-                culturalTidbit: destination.culturalTidbits[factIndex]
+                culturalTidbit: destination.culturalTidbits[tidbitIndex]
             };
         }
 
@@ -1056,9 +1070,9 @@
             document.getElementById('seconds').textContent = seconds;
         }
 
-        // Update daily content
-        function updateDailyContent() {
-            const content = getDailyContent();
+        // Update content on page load
+        function updateContent() {
+            const content = getRandomContent();
 
             document.getElementById('dailyImage').src = content.image;
             document.getElementById('dailyImage').alt = content.location;
@@ -1097,7 +1111,7 @@
 
         // Initialize
         updateCountdown();
-        updateDailyContent();
+        updateContent();
         setInterval(updateCountdown, 1000);
         setInterval(createSakura, 2000);
 

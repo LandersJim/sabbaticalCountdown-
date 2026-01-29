@@ -469,7 +469,13 @@
             tokyo: {
                 name: "Tokyo",
                 dates: "March 22-26, 2026",
-                image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=800&q=80", // Tokyo Tower at night
+                    "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=800&q=80", // Shibuya crossing
+                    "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80", // Senso-ji Temple
+                    "https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?w=800&q=80", // Tokyo skyline
+                    "https://images.unsplash.com/photo-1570521462033-3015e76e7432?w=800&q=80"  // Shinjuku neon
+                ],
                 funFacts: [
                     "Tokyo's Shibuya Crossing is the busiest pedestrian intersection in the world, with up to 3,000 people crossing at once during peak times.",
                     "Tokyo has more Michelin-starred restaurants than any other city in the world, with over 200 starred establishments.",
@@ -580,7 +586,11 @@
             minobu: {
                 name: "Mt. Minobu",
                 dates: "March 26-28, 2026",
-                image: "https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1601823984263-b87b59798b70?w=800&q=80", // Japanese mountain temple
+                    "https://images.unsplash.com/photo-1610375228550-d5cabc1c9e37?w=800&q=80", // Temple stairs in forest
+                    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800&q=80"  // Traditional temple building
+                ],
                 funFacts: [
                     "Kuon-ji Temple on Mt. Minobu was founded in 1281 by Nichiren, the founder of Nichiren Buddhism, and remains the head temple of the sect.",
                     "The ancient cedar trees surrounding Kuon-ji are over 400 years old and create a mystical atmosphere throughout the temple grounds.",
@@ -691,7 +701,12 @@
             kyoto: {
                 name: "Kyoto",
                 dates: "March 28 - April 1, 2026",
-                image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80", // Fushimi Inari torii gates
+                    "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80", // Kinkaku-ji Golden Pavilion
+                    "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80", // Bamboo grove Arashiyama
+                    "https://images.unsplash.com/photo-1558862107-d49ef2a04d72?w=800&q=80"  // Traditional Kyoto street
+                ],
                 funFacts: [
                     "Kyoto was Japan's capital for over 1,000 years (794-1868) and was spared from WWII bombing due to its cultural significance.",
                     "The Fushimi Inari Shrine has over 10,000 torii gates forming tunnels up the mountainside, donated by businesses for good fortune.",
@@ -802,7 +817,10 @@
             hiroshima: {
                 name: "Hiroshima",
                 dates: "April 1-2, 2026",
-                image: "https://images.unsplash.com/photo-1576675466969-38eeae4b41f6?w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1589452271712-64b8a66c7b71?w=800&q=80", // Atomic Bomb Dome
+                    "https://images.unsplash.com/photo-1581467655410-0c2bf55d9d6c?w=800&q=80"  // Hiroshima Peace Memorial Park
+                ],
                 funFacts: [
                     "The Atomic Bomb Dome (Genbaku Dome) was the only structure left standing near the bomb's hypocenter and is now a UNESCO World Heritage Site.",
                     "Hiroshima's famous okonomiyaki style layers ingredients rather than mixing them, with noodles added to create 'Hiroshima-yaki.'",
@@ -913,7 +931,11 @@
             miyajima: {
                 name: "Miyajima",
                 dates: "April 2-4, 2026",
-                image: "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=800&q=80", // Itsukushima floating torii gate
+                    "https://images.unsplash.com/photo-1601042879364-f3947d3f9c16?w=800&q=80", // Miyajima torii at sunset
+                    "https://images.unsplash.com/photo-1611000694157-d6c2cc0f6a00?w=800&q=80"  // Miyajima deer and shrine
+                ],
                 funFacts: [
                     "The famous floating torii gate of Itsukushima Shrine appears to float during high tide and has stood in various forms since 1168.",
                     "Miyajima literally means 'Shrine Island' and was considered so sacred that commoners weren't allowed to set foot on it for centuries.",
@@ -1029,7 +1051,8 @@
             const destinationIndex = Math.floor(Math.random() * destinationKeys.length);
             const destination = destinations[destinationKeys[destinationIndex]];
 
-            // Random fact and tidbit from this destination
+            // Random image, fact and tidbit from this destination
+            const imageIndex = Math.floor(Math.random() * destination.images.length);
             const factIndex = Math.floor(Math.random() * destination.funFacts.length);
             const tidbitIndex = Math.floor(Math.random() * destination.culturalTidbits.length);
 
@@ -1037,7 +1060,7 @@
                 location: destination.name,
                 locationKey: destinationKeys[destinationIndex],
                 dates: destination.dates,
-                image: destination.image,
+                image: destination.images[imageIndex],
                 funFact: destination.funFacts[factIndex],
                 culturalTidbit: destination.culturalTidbits[tidbitIndex]
             };

@@ -1,1147 +1,2061 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Japan Sabbatical Countdown</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Japan Sabbatical Countdown</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            font-family: 'Noto Sans JP', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            min-height: 100vh;
-            color: #fff;
-            overflow-x: hidden;
-        }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      color: #fff;
+      overflow-x: hidden;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 10px 20px;
-        }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 10px 20px;
+    }
 
-        header {
-            text-align: center;
-            padding: 15px 0 10px 0;
-        }
+    header {
+      text-align: center;
+      padding: 15px 0 10px 0;
+    }
 
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            margin-bottom: 5px;
-            background: linear-gradient(90deg, #e94560, #ff6b6b, #feca57);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      margin-bottom: 5px;
+      background: linear-gradient(90deg, #e94560, #ff6b6b, #feca57);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
-        .japanese-title {
-            font-size: 1rem;
-            color: #e94560;
-            margin-bottom: 5px;
-        }
+    .japanese-title { font-size: 1rem; color: #e94560; margin-bottom: 5px; }
+    header > p { font-size: 0.85rem; color: #a0a0a0; }
 
-        header > p {
-            font-size: 0.85rem;
-            color: #a0a0a0;
-        }
+    /* ── Page Navigation ── */
+    .page-nav {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 12px 0 20px;
+    }
 
-        .countdown-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 15px 0;
-            flex-wrap: nowrap;
-        }
+    .nav-btn {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #a0a0a0;
+      padding: 9px 22px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 0.9rem;
+      transition: all 0.25s;
+    }
 
-        .countdown-item {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 10px 12px;
-            text-align: center;
-            min-width: 60px;
-            flex: 1;
-            max-width: 90px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s ease;
-        }
+    .nav-btn:hover { background: rgba(255,255,255,0.13); color: #fff; }
 
-        .countdown-item:hover {
-            transform: translateY(-3px);
-        }
+    .nav-btn.active {
+      background: rgba(233,69,96,0.25);
+      border-color: #e94560;
+      color: #fff;
+    }
 
-        .countdown-number {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #feca57;
-            display: block;
-            line-height: 1.1;
-        }
+    /* ── Pages ── */
+    .page { display: none; }
+    .page.active { display: block; }
 
-        .countdown-label {
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #a0a0a0;
-        }
+    /* ── Countdown Page ── */
+    .countdown-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 15px 0;
+      flex-wrap: nowrap;
+    }
 
-        @media (max-width: 400px) {
-            .countdown-container {
-                gap: 6px;
-            }
-            .countdown-item {
-                padding: 8px 6px;
-                min-width: 50px;
-            }
-            .countdown-number {
-                font-size: 1.5rem;
-            }
-            .countdown-label {
-                font-size: 0.5rem;
-            }
-        }
+    .countdown-item {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 10px 12px;
+      text-align: center;
+      min-width: 60px;
+      flex: 1;
+      max-width: 90px;
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: transform 0.3s;
+    }
 
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin: 15px 0;
-        }
+    .countdown-item:hover { transform: translateY(-3px); }
+    .countdown-number { font-size: 1.8rem; font-weight: 700; color: #feca57; display: block; line-height: 1.1; }
+    .countdown-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; color: #a0a0a0; }
 
-        @media (max-width: 900px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            h1 {
-                font-size: 1.8rem;
-            }
-        }
+    @media (max-width: 400px) {
+      .countdown-container { gap: 6px; }
+      .countdown-item { padding: 8px 6px; min-width: 50px; }
+      .countdown-number { font-size: 1.5rem; }
+      .countdown-label { font-size: 0.5rem; }
+    }
 
-        .image-container {
-            position: relative;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-        }
+    .departure-message {
+      display: none;
+      text-align: center;
+      padding: 25px 40px;
+      background: linear-gradient(135deg, rgba(233,69,96,0.25), rgba(254,202,87,0.15));
+      border-radius: 20px;
+      margin: 15px 0;
+      border: 1px solid rgba(233,69,96,0.4);
+    }
 
-        .daily-image {
-            width: 100%;
-            height: 340px;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
+    .departure-message .location-eyebrow {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #a0a0a0;
+      margin-bottom: 8px;
+    }
 
-        .image-container:hover .daily-image {
-            transform: scale(1.05);
-        }
+    .departure-message h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: #feca57; margin-bottom: 6px; }
+    .departure-message .location-dates { font-size: 0.95rem; color: #d0d0d0; }
 
-        .location-badge {
-            position: absolute;
-            bottom: 15px;
-            left: 15px;
-            background: rgba(233, 69, 96, 0.9);
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 15px 0;
+    }
 
-        .info-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+    @media (max-width: 900px) {
+      .main-content { grid-template-columns: 1fr; }
+      h1 { font-size: 1.8rem; }
+    }
 
-        .info-card {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 18px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
+    .image-container {
+      position: relative;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    }
 
-        .info-card:hover {
-            background: rgba(255, 255, 255, 0.12);
-            transform: translateX(5px);
-        }
+    .daily-image { width: 100%; height: 340px; object-fit: cover; transition: transform 0.5s; }
+    .image-container:hover .daily-image { transform: scale(1.05); }
 
-        .card-icon {
-            font-size: 1.3rem;
-            margin-bottom: 8px;
-        }
+    .location-badge {
+      position: absolute;
+      bottom: 15px;
+      left: 15px;
+      background: rgba(233,69,96,0.9);
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
 
-        .card-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1rem;
-            color: #feca57;
-            margin-bottom: 8px;
-        }
+    .info-cards { display: flex; flex-direction: column; gap: 12px; }
 
-        .card-content {
-            line-height: 1.6;
-            color: #d0d0d0;
-            font-size: 0.9rem;
-        }
+    .info-card {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.3s;
+    }
 
-        /* Timeline Styles */
-        .journey-section {
-            margin-top: 60px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 40px;
-        }
+    .info-card:hover { background: rgba(255,255,255,0.12); transform: translateX(5px); }
+    .card-icon { font-size: 1.3rem; margin-bottom: 8px; }
+    .card-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #feca57; margin-bottom: 8px; }
+    .card-content { line-height: 1.6; color: #d0d0d0; font-size: 0.9rem; }
 
-        .journey-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            margin-bottom: 40px;
-            color: #feca57;
-            text-align: center;
-        }
+    /* ── Sakura ── */
+    .sakura { position: fixed; pointer-events: none; z-index: 1000; }
 
-        .timeline {
-            position: relative;
-            max-width: 900px;
-            margin: 0 auto;
-        }
+    @keyframes fall {
+      0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
 
-        .timeline::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(to bottom, #e94560, #feca57);
-            border-radius: 2px;
-        }
+    /* ── Itinerary Page ── */
+    .itinerary-intro {
+      text-align: center;
+      margin-bottom: 24px;
+    }
 
-        @media (max-width: 768px) {
-            .timeline::before {
-                left: 20px;
-            }
-        }
+    .itinerary-intro h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: #feca57;
+      margin-bottom: 6px;
+    }
 
-        .timeline-item {
-            position: relative;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-        }
+    .itinerary-intro p { color: #a0a0a0; font-size: 0.9rem; }
 
-        .timeline-item:nth-child(odd) {
-            flex-direction: row-reverse;
-        }
+    /* Location accordion item */
+    .loc-item {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
 
-        @media (max-width: 768px) {
-            .timeline-item,
-            .timeline-item:nth-child(odd) {
-                flex-direction: row;
-                padding-left: 50px;
-            }
-        }
+    .loc-item.current-stop {
+      border-color: #e94560;
+      box-shadow: 0 0 24px rgba(233,69,96,0.25);
+    }
 
-        .timeline-content {
-            width: 45%;
-            padding: 20px 25px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
+    .loc-header {
+      padding: 18px 22px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      transition: background 0.2s;
+    }
 
-        .timeline-content:hover {
-            background: rgba(255, 255, 255, 0.12);
-        }
+    .loc-header:hover { background: rgba(255,255,255,0.05); }
 
-        .timeline-content.active {
-            background: rgba(233, 69, 96, 0.2);
-            border-color: #e94560;
-            box-shadow: 0 0 30px rgba(233, 69, 96, 0.3);
-        }
+    .loc-header-left { display: flex; align-items: center; gap: 14px; }
+    .loc-emoji { font-size: 1.6rem; }
 
-        @media (max-width: 768px) {
-            .timeline-content {
-                width: 100%;
-            }
-        }
+    .loc-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
 
-        .timeline-dot {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 20px;
-            background: #1a1a2e;
-            border: 4px solid #e94560;
-            border-radius: 50%;
-            z-index: 1;
-        }
+    .loc-dates { font-size: 0.85rem; color: #feca57; margin-top: 2px; }
 
-        .timeline-dot.active {
-            background: #e94560;
-            box-shadow: 0 0 20px rgba(233, 69, 96, 0.8);
-        }
+    .loc-header-right { display: flex; align-items: center; gap: 12px; }
 
-        @media (max-width: 768px) {
-            .timeline-dot {
-                left: 20px;
-            }
-        }
+    .current-badge {
+      background: #e94560;
+      color: #fff;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 3px 8px;
+      border-radius: 20px;
+    }
 
-        .timeline-location {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 5px;
-        }
+    .loc-arrow {
+      color: #feca57;
+      font-size: 0.75rem;
+      transition: transform 0.3s;
+      flex-shrink: 0;
+    }
 
-        .timeline-dates {
-            font-size: 0.9rem;
-            color: #feca57;
-        }
+    .loc-item.open .loc-arrow { transform: rotate(90deg); }
 
-        .timeline-emoji {
-            font-size: 1.5rem;
-            margin-right: 10px;
-        }
+    .loc-body {
+      display: none;
+      padding: 0 22px 22px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
 
-        footer {
-            text-align: center;
-            padding: 40px 0;
-            color: #666;
-            font-size: 0.9rem;
-        }
+    /* Global detail filter (top of itinerary page) */
+    .global-filter {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
 
-        .sakura {
-            position: fixed;
-            pointer-events: none;
-            z-index: 1000;
-        }
+    .filter-btn {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #a0a0a0;
+      padding: 8px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
 
-        @keyframes fall {
-            0% {
-                transform: translateY(-10vh) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(110vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
+    .filter-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
 
-        .departure-message {
-            display: none;
-            text-align: center;
-            padding: 60px;
-            background: linear-gradient(135deg, #e94560, #ff6b6b);
-            border-radius: 20px;
-            margin: 40px 0;
-        }
+    .filter-btn.active {
+      background: rgba(233,69,96,0.25);
+      border-color: #e94560;
+      color: #fff;
+    }
 
-        .departure-message h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
+    /* Detail sections within each location */
+    .detail-section {
+      margin-bottom: 22px;
+    }
 
-        .departure-message p {
-            font-size: 1.5rem;
-        }
-    </style>
+    .detail-section:last-child { margin-bottom: 0; }
+
+    .section-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #feca57;
+      padding: 14px 0 10px;
+      border-bottom: 1px solid rgba(254,202,87,0.2);
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    /* Day collapsibles */
+    .day-item {
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+
+    .day-header {
+      background: rgba(255,255,255,0.05);
+      padding: 11px 16px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #e0e0e0;
+      transition: background 0.2s;
+    }
+
+    .day-header:hover { background: rgba(255,255,255,0.09); }
+
+    .day-arrow {
+      color: #feca57;
+      font-size: 0.65rem;
+      transition: transform 0.25s;
+      flex-shrink: 0;
+    }
+
+    .day-item.open .day-arrow { transform: rotate(90deg); }
+
+    .day-body {
+      display: none;
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      color: #d0d0d0;
+      line-height: 1.75;
+      background: rgba(0,0,0,0.15);
+    }
+
+    .day-body ul { padding-left: 18px; }
+    .day-body li { margin-bottom: 7px; }
+    .day-body li:last-child { margin-bottom: 0; }
+    .day-body strong { color: #fff; }
+    .day-body .note { color: #a0a0a0; font-style: italic; font-size: 0.82rem; }
+    .day-body .alert { color: #feca57; font-weight: 700; }
+    .day-body .ticket { color: #e94560; font-weight: 700; }
+
+    /* Transit items */
+    .transit-item {
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+
+    .transit-header {
+      background: rgba(15,52,96,0.4);
+      padding: 11px 16px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #e0e0e0;
+      transition: background 0.2s;
+    }
+
+    .transit-header:hover { background: rgba(15,52,96,0.6); }
+
+    .transit-arrow {
+      color: #feca57;
+      font-size: 0.65rem;
+      transition: transform 0.25s;
+      flex-shrink: 0;
+    }
+
+    .transit-item.open .transit-arrow { transform: rotate(90deg); }
+
+    .transit-body {
+      display: none;
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      color: #d0d0d0;
+      line-height: 1.75;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .transit-body ul { padding-left: 18px; }
+    .transit-body li { margin-bottom: 7px; }
+    .transit-body strong { color: #fff; }
+    .transit-body .booked { color: #4ecdc4; font-weight: 700; }
+    .transit-body .unbooked { color: #feca57; font-weight: 700; }
+    .transit-body .seat { font-family: monospace; background: rgba(255,255,255,0.08); padding: 1px 6px; border-radius: 4px; font-size: 0.85rem; }
+    .transit-body .note { color: #a0a0a0; font-style: italic; font-size: 0.82rem; }
+    .train-route {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin: 8px 0;
+      font-size: 0.9rem;
+    }
+    .train-time { color: #feca57; font-weight: 700; font-size: 1rem; }
+    .train-sep { color: #666; }
+    .train-name { color: #a0d4f5; font-size: 0.82rem; }
+
+    /* Hotel card */
+    .hotel-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 18px 20px;
+    }
+
+    .hotel-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: #feca57;
+      margin-bottom: 12px;
+    }
+
+    .hotel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 600px) { .hotel-grid { grid-template-columns: 1fr; } }
+
+    .hotel-detail { font-size: 0.85rem; color: #d0d0d0; line-height: 1.5; }
+    .hotel-label { color: #a0a0a0; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+    .hotel-amenities { font-size: 0.82rem; color: #a0a0a0; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 10px; }
+    .included { color: #4ecdc4; font-weight: 700; }
+    .not-included { color: #ff6b6b; }
+    .warning { color: #feca57; }
+
+    a { color: #e94560; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Food Page ── */
+    .food-intro {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .food-intro h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: #feca57;
+      margin-bottom: 8px;
+    }
+
+    .food-intro p { color: #a0a0a0; font-size: 0.9rem; }
+
+    .food-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 700px) { .food-grid { grid-template-columns: 1fr; } }
+
+    .food-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 20px;
+      transition: all 0.25s;
+    }
+
+    .food-card:hover { background: rgba(255,255,255,0.09); transform: translateY(-2px); }
+
+    .food-card-icon { font-size: 1.8rem; margin-bottom: 10px; }
+
+    .food-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: #feca57;
+      margin-bottom: 10px;
+    }
+
+    .food-card-body { font-size: 0.85rem; color: #d0d0d0; line-height: 1.7; }
+    .food-card-body ul { padding-left: 16px; }
+    .food-card-body li { margin-bottom: 5px; }
+    .food-card-body strong { color: #fff; }
+
+    .food-section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: #feca57;
+      margin: 24px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(254,202,87,0.2);
+    }
+
+    .spot-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+
+    .spot-item {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      color: #d0d0d0;
+      line-height: 1.6;
+    }
+
+    .spot-item strong { color: #fff; font-size: 0.95rem; }
+    .spot-meta { color: #a0a0a0; font-size: 0.8rem; margin-top: 4px; }
+
+    footer {
+      text-align: center;
+      padding: 40px 0 20px;
+      color: #666;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Japan Sabbatical Countdown</h1>
-            <div class="japanese-title">日本への旅</div>
-            <p>March 21, 2026 at 3:00 PM</p>
-        </header>
+  <div class="container">
+    <header>
+      <h1>Japan Sabbatical</h1>
+      <div class="japanese-title">日本への旅</div>
+      <p>Departure: March 21, 2026 at 3:00 PM</p>
+    </header>
 
-        <div class="countdown-container">
-            <div class="countdown-item">
-                <span class="countdown-number" id="days">--</span>
-                <span class="countdown-label">Days</span>
-            </div>
-            <div class="countdown-item">
-                <span class="countdown-number" id="hours">--</span>
-                <span class="countdown-label">Hours</span>
-            </div>
-            <div class="countdown-item">
-                <span class="countdown-number" id="minutes">--</span>
-                <span class="countdown-label">Minutes</span>
-            </div>
-            <div class="countdown-item">
-                <span class="countdown-number" id="seconds">--</span>
-                <span class="countdown-label">Seconds</span>
-            </div>
+    <nav class="page-nav">
+      <button class="nav-btn active" onclick="showPage('countdown')">⏱️ Countdown</button>
+      <button class="nav-btn" onclick="showPage('itinerary')">🗓️ Itinerary</button>
+      <button class="nav-btn" onclick="showPage('food')">🍜 Food</button>
+    </nav>
+
+    <!-- ════════════════════════════════ COUNTDOWN PAGE ════════════════════════════════ -->
+    <div id="page-countdown" class="page active">
+
+      <div class="countdown-container">
+        <div class="countdown-item">
+          <span class="countdown-number" id="days">--</span>
+          <span class="countdown-label">Days</span>
         </div>
-
-        <div class="departure-message" id="departureMessage">
-            <h2>🎌 Your Adventure Begins! 🎌</h2>
-            <p>Safe travels to Japan!</p>
+        <div class="countdown-item">
+          <span class="countdown-number" id="hours">--</span>
+          <span class="countdown-label">Hours</span>
         </div>
-
-        <div class="main-content" id="mainContent">
-            <div class="image-container">
-                <img id="dailyImage" class="daily-image" src="" alt="Daily destination">
-                <div class="location-badge" id="locationBadge">Loading...</div>
-            </div>
-            <div class="info-cards">
-                <div class="info-card">
-                    <div class="card-icon">🎋</div>
-                    <div class="card-title">Fun Fact</div>
-                    <div class="card-content" id="funFact">Loading...</div>
-                </div>
-                <div class="info-card">
-                    <div class="card-icon">🏯</div>
-                    <div class="card-title">Cultural Learning</div>
-                    <div class="card-content" id="culturalTidbit">Loading...</div>
-                </div>
-            </div>
+        <div class="countdown-item">
+          <span class="countdown-number" id="minutes">--</span>
+          <span class="countdown-label">Minutes</span>
         </div>
-
-        <div class="journey-section">
-            <h2 class="journey-title">Your Journey</h2>
-            <div class="timeline">
-                <div class="timeline-item" data-location="tokyo">
-                    <div class="timeline-content">
-                        <div class="timeline-location"><span class="timeline-emoji">🗼</span>Tokyo</div>
-                        <div class="timeline-dates">March 22-26, 2026</div>
-                    </div>
-                    <div class="timeline-dot"></div>
-                </div>
-                <div class="timeline-item" data-location="minobu">
-                    <div class="timeline-content">
-                        <div class="timeline-location"><span class="timeline-emoji">⛰️</span>Mt. Minobu</div>
-                        <div class="timeline-dates">March 26-28, 2026</div>
-                    </div>
-                    <div class="timeline-dot"></div>
-                </div>
-                <div class="timeline-item" data-location="kyoto">
-                    <div class="timeline-content">
-                        <div class="timeline-location"><span class="timeline-emoji">🏯</span>Kyoto</div>
-                        <div class="timeline-dates">March 28 - April 1, 2026</div>
-                    </div>
-                    <div class="timeline-dot"></div>
-                </div>
-                <div class="timeline-item" data-location="hiroshima">
-                    <div class="timeline-content">
-                        <div class="timeline-location"><span class="timeline-emoji">🕊️</span>Hiroshima</div>
-                        <div class="timeline-dates">April 1-2, 2026</div>
-                    </div>
-                    <div class="timeline-dot"></div>
-                </div>
-                <div class="timeline-item" data-location="miyajima">
-                    <div class="timeline-content">
-                        <div class="timeline-location"><span class="timeline-emoji">⛩️</span>Miyajima</div>
-                        <div class="timeline-dates">April 2-4, 2026</div>
-                    </div>
-                    <div class="timeline-dot"></div>
-                </div>
-                <div class="timeline-item" data-location="tokyo-return">
-                    <div class="timeline-content">
-                        <div class="timeline-location"><span class="timeline-emoji">✈️</span>Tokyo (Return)</div>
-                        <div class="timeline-dates">April 4-5, 2026</div>
-                    </div>
-                    <div class="timeline-dot"></div>
-                </div>
-            </div>
+        <div class="countdown-item">
+          <span class="countdown-number" id="seconds">--</span>
+          <span class="countdown-label">Seconds</span>
         </div>
+      </div>
 
-        <footer>
-            <p>Counting down to an unforgettable adventure</p>
-        </footer>
-    </div>
+      <div class="departure-message" id="departureMessage">
+        <div class="location-eyebrow" id="locationEyebrow">Currently Exploring</div>
+        <h2 id="currentLocationName">🎌 Japan 🎌</h2>
+        <p class="location-dates" id="currentLocationDates"></p>
+      </div>
 
-    <script>
-        // 51 fun facts and cultural tidbits for each destination (no repeats for 51 days)
-        const destinations = {
-            tokyo: {
-                name: "Tokyo",
-                dates: "March 22-26, 2026",
-                images: [
-                    "https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=800&q=80", // Tokyo Tower at night
-                    "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=800&q=80", // Shibuya crossing
-                    "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80", // Senso-ji Temple
-                    "https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?w=800&q=80", // Tokyo skyline
-                    "https://images.unsplash.com/photo-1570521462033-3015e76e7432?w=800&q=80"  // Shinjuku neon
-                ],
-                funFacts: [
-                    "Tokyo's Shibuya Crossing is the busiest pedestrian intersection in the world, with up to 3,000 people crossing at once during peak times.",
-                    "Tokyo has more Michelin-starred restaurants than any other city in the world, with over 200 starred establishments.",
-                    "The Tokyo subway system is so punctual that if a train is more than 5 minutes late, passengers can get a delay certificate to show their employers.",
-                    "Vending machines in Tokyo sell everything from hot ramen to fresh eggs, with over 5 million machines across Japan.",
-                    "Tokyo's Tsukiji Outer Market still thrives with over 400 shops selling fresh seafood, knives, and street food.",
-                    "The Tokyo Skytree is the tallest tower in the world at 634 meters, and its height was chosen to be read as 'Musashi,' an old name for the Tokyo region.",
-                    "Tokyo's train stations are so complex that Shinjuku Station has 200+ exits and serves 3.5 million passengers daily.",
-                    "The Imperial Palace in Tokyo sits on land worth more than all the real estate in California combined.",
-                    "Tokyo has over 160,000 restaurants - more than any other city in the world.",
-                    "The famous Hachiko statue at Shibuya commemorates a loyal dog who waited for his deceased owner at the station for nearly 10 years.",
-                    "Tokyo's Akihabara district uses more electricity than some small countries due to its thousands of electronics stores and arcades.",
-                    "The Tokyo Metropolitan Government Building offers free observation decks with views rivaling paid attractions.",
-                    "Capsule hotels were invented in Osaka but Tokyo has the highest concentration, with pods as small as 2m x 1m x 1.25m.",
-                    "Tokyo's Senso-ji Temple in Asakusa is the oldest temple in the city, founded in 628 AD.",
-                    "The Yamanote Line, Tokyo's main loop line, makes a complete circle in exactly 59 minutes.",
-                    "Tokyo was originally called Edo and was renamed when it became the imperial capital in 1868.",
-                    "Harajuku's Takeshita Street is only 350 meters long but attracts millions of visitors annually for its youth fashion.",
-                    "Tokyo's fish market at Toyosu is built on reclaimed land and features underground viewing galleries.",
-                    "The city has more than 80,000 convenience stores (konbini) that serve as ATMs, bill payment centers, and more.",
-                    "Tokyo Disneyland was the first Disney park built outside the United States, opening in 1983.",
-                    "The Meiji Shrine forest was entirely man-made with 100,000 trees donated from across Japan.",
-                    "Tokyo's oldest surviving wooden structure is the main gate of Senso-ji, rebuilt in 1636.",
-                    "The Robot Restaurant in Shinjuku cost $10 million to build and features giant robot battles.",
-                    "Tokyo Tower is painted orange and white to comply with air safety regulations.",
-                    "The city experiences approximately 1,500 earthquakes per year, most too small to feel.",
-                    "Tokyo's Ginza district has the most expensive real estate per square meter in Japan.",
-                    "The famous Tsukiji tuna auction has seen single fish sell for over $3 million.",
-                    "Ueno Park houses multiple museums, a zoo, and was Japan's first public park, established in 1873.",
-                    "Tokyo's Gotokuji Temple is covered in thousands of lucky cat (maneki-neko) statues.",
-                    "The Sumida River fireworks festival has been held since 1733 and draws over 1 million spectators.",
-                    "Odaiba is a man-made island featuring a replica Statue of Liberty and futuristic architecture.",
-                    "Tokyo's teamLab Borderless was the world's most visited single-artist museum before closing.",
-                    "The city's bicycle parking systems can automatically store thousands of bikes underground in seconds.",
-                    "Roppongi Hills' spider sculpture 'Maman' is 10 meters tall and contains 26 marble eggs.",
-                    "Tokyo Station's Marunouchi building was designed to survive direct artillery fire.",
-                    "The Oedo Line subway runs in a complete loop without a driver, fully automated since 2000.",
-                    "Yoyogi Park was built on the site of the 1964 Olympic Village and remains a popular gathering spot.",
-                    "Tokyo's public baths (sento) peaked at 2,687 in 1968 and now number around 500.",
-                    "The Nakameguro cherry blossom tunnel features 800 trees along the Meguro River.",
-                    "Yanaka is called Tokyo's 'old town' because it survived WWII bombing and retains Edo-era charm.",
-                    "Tokyo's subway pushers (oshiya) help cram passengers into trains during rush hour.",
-                    "The Imperial Hotel's old wing was designed by Frank Lloyd Wright and survived the 1923 earthquake.",
-                    "Koishikawa Korakuen Garden dates to 1629 and features miniature versions of famous Japanese landscapes.",
-                    "Tokyo's Ameyoko market started as a black market after WWII and now sells everything from candy to luxury watches.",
-                    "The National Art Center has no permanent collection - it hosts only temporary exhibitions.",
-                    "Rainbow Bridge connects central Tokyo to Odaiba and features a hidden pedestrian walkway.",
-                    "Tokyo's smallest public park, Shirokane Bunka Village Park, measures just 16 square meters.",
-                    "The city has seven operating monorails, more than any other city in the world.",
-                    "Tokyo's Love Hotels district in Shibuya has themed rooms ranging from Hello Kitty to spacecraft.",
-                    "Palette Town Ferris Wheel was one of the world's largest when built and offers 16-minute rides.",
-                    "The Diet Building (parliament) took 17 years to build and uses no foreign materials."
-                ],
-                culturalTidbits: [
-                    "When riding the train in Tokyo, talking on your phone is considered extremely rude. Set it to 'manner mode' (silent) and text instead.",
-                    "Bowing (ojigi) is essential in Japanese culture. A 15-degree bow is casual, 30 degrees shows respect, and 45 degrees is for deep apology or gratitude.",
-                    "In Tokyo, you'll notice people walking on the left side of sidewalks and standing on the left of escalators (opposite to Osaka!). Always leave the right side free for those in a hurry.",
-                    "It's customary to say 'itadakimasu' (I humbly receive) before eating and 'gochisousama deshita' (thank you for the meal) after finishing.",
-                    "Tipping is not practiced in Japan and can even be considered rude. Excellent service is simply the standard expectation.",
-                    "When paying for items, place money in the small tray provided rather than handing it directly to the cashier.",
-                    "Blowing your nose in public is considered rude in Japan. Instead, sniffling is acceptable until you can find privacy.",
-                    "Business cards (meishi) are exchanged with both hands and should be treated with respect - never write on them or put them in your back pocket.",
-                    "Slurping noodles is not only acceptable but encouraged - it shows appreciation and helps cool the noodles.",
-                    "Never stick chopsticks upright in rice - this resembles funeral incense and is considered very bad luck.",
-                    "When entering someone's home or certain traditional restaurants, remove your shoes and place them facing the door.",
-                    "The phrase 'sumimasen' works as both 'excuse me' and 'thank you' - you'll use it constantly.",
-                    "Gift-giving is important: gifts should be wrapped beautifully and given/received with both hands.",
-                    "Pointing with your finger is considered rude - instead, use an open hand gesture.",
-                    "When drinking alcohol in a group, pour for others first; they will pour for you in return.",
-                    "Personal space is valued on trains - avoid eye contact and keep conversations quiet.",
-                    "Japanese toilets have many buttons - the most important are 'big flush' (大) and 'small flush' (小).",
-                    "Convenience store food is high quality and perfectly acceptable to eat - many locals rely on it daily.",
-                    "When sitting on the floor, men may sit cross-legged while women traditionally kneel (seiza).",
-                    "Train delays of even one minute are cause for public apology announcements.",
-                    "Carrying your trash until you find a bin is normal - public garbage cans are rare.",
-                    "Cash is still king in Japan - many places don't accept credit cards.",
-                    "Wearing a surgical mask when sick is considerate and expected.",
-                    "At shrines, toss a coin, bow twice, clap twice, make a wish, and bow once more.",
-                    "Loud conversations in restaurants are uncommon - match the volume of others around you.",
-                    "The 'OK' hand gesture means money in Japan, not agreement.",
-                    "Japanese addresses work from largest to smallest area - country, city, ward, block, building.",
-                    "Umbrella etiquette: shake off water before entering buildings and use the plastic sleeves provided.",
-                    "When using an escalator in Tokyo, stand on the left. In Osaka, stand on the right.",
-                    "Tattoos may restrict access to public baths, hot springs, and some gyms.",
-                    "Accept offered business cards with both hands and take a moment to read them.",
-                    "Oshibori (wet towels) at restaurants are for hands only, not your face.",
-                    "Train conductors point and call out loud to prevent mistakes - this practice is called 'shisa kanko.'",
-                    "Eating while walking is generally frowned upon - find a bench or standing spot instead.",
-                    "Numbers 4 and 9 are considered unlucky (death and suffering) - buildings often skip these floors.",
-                    "The smallest bill is 1,000 yen - always keep coins handy for vending machines.",
-                    "Japanese people often decline offers three times before accepting - persistence is polite.",
-                    "Showing the soles of your feet is considered rude - be mindful when sitting.",
-                    "When receiving change, it's common for cashiers to count it out loud for accuracy.",
-                    "Expressing strong opinions or boasting is discouraged - modesty is valued.",
-                    "Taxi doors open and close automatically - don't try to do it yourself.",
-                    "Japanese people often say 'yes' to indicate they're listening, not necessarily agreeing.",
-                    "The word 'no' is rarely used directly - listen for softer refusals like 'that's difficult.'",
-                    "Seasonal greetings change throughout the year and are important in communication.",
-                    "White is traditionally associated with death and funerals, not weddings.",
-                    "When exchanging phone numbers, expect to exchange Line IDs instead.",
-                    "Drinking from water bottles directly is normal, but avoid drinking while walking.",
-                    "Japanese bathrooms often separate slippers - use toilet slippers only in toilets.",
-                    "Laughter in uncomfortable situations often indicates embarrassment, not amusement.",
-                    "Taking the last piece of food from a shared dish requires offering it to others first.",
-                    "When apologizing, the depth of your bow indicates the sincerity of your apology."
-                ]
-            },
-            minobu: {
-                name: "Mt. Minobu",
-                dates: "March 26-28, 2026",
-                images: [
-                    "https://images.unsplash.com/photo-1601823984263-b87b59798b70?w=800&q=80", // Japanese mountain temple
-                    "https://images.unsplash.com/photo-1610375228550-d5cabc1c9e37?w=800&q=80", // Temple stairs in forest
-                    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800&q=80"  // Traditional temple building
-                ],
-                funFacts: [
-                    "Kuon-ji Temple on Mt. Minobu was founded in 1281 by Nichiren, the founder of Nichiren Buddhism, and remains the head temple of the sect.",
-                    "The ancient cedar trees surrounding Kuon-ji are over 400 years old and create a mystical atmosphere throughout the temple grounds.",
-                    "Mt. Minobu's ropeway takes you 1,153 meters up, offering stunning views of Mt. Fuji on clear days.",
-                    "The area is famous for its yuba (tofu skin) cuisine, a traditional Buddhist vegetarian specialty.",
-                    "Every year, thousands of pilgrims climb the steep 287-step stone staircase to reach Kuon-ji's main hall.",
-                    "Nichiren spent his final nine years on Mt. Minobu writing and teaching before his death in 1282.",
-                    "The main hall of Kuon-ji was rebuilt in 1985 and features the largest wooden structure built in Japan in the 20th century.",
-                    "Mt. Minobu is one of the three sacred mountains in the Koshinetsu region of Japan.",
-                    "The temple town at the base features traditional pilgrim lodgings called shukubo where visitors can stay.",
-                    "Kuon-ji houses Nichiren's ashes, making it the most sacred site for Nichiren Buddhism worldwide.",
-                    "The five-story pagoda at Kuon-ji was reconstructed in 1973 after the original burned down.",
-                    "Mt. Minobu's weeping cherry trees bloom later than lowland areas, extending the sakura season.",
-                    "The temple's morning prayer service (gongyo) begins at 5:30 AM and is open to visitors.",
-                    "Sanmon Gate at Kuon-ji is one of Japan's largest wooden gates at 21 meters tall.",
-                    "The ropeway offers views of the Southern Japanese Alps on clear days.",
-                    "Mt. Minobu is located in Yamanashi Prefecture, famous for its fruit orchards and wine.",
-                    "The temple complex spans the entire mountainside with multiple halls and shrines.",
-                    "Pilgrims traditionally walk the entire mountain path, stopping at 33 different temples.",
-                    "The local sake is blessed at the temple and considered sacred by practitioners.",
-                    "Kuon-ji's treasure house contains important Buddhist artifacts and Nichiren's personal belongings.",
-                    "The mountain experiences heavy snowfall in winter, creating a serene white landscape.",
-                    "Local craftspeople have made Buddhist altar items here for over 400 years.",
-                    "The temple's drum tower announces the time of day using traditional methods.",
-                    "Wild monkeys inhabit the mountain and are sometimes seen near the temple grounds.",
-                    "The autumn leaves at Mt. Minobu attract photographers from across Japan.",
-                    "The temple operates its own university for Buddhist studies nearby.",
-                    "Nichiren carved statues during his time here, some of which are still displayed.",
-                    "The mountain has natural hot springs that were used by pilgrims for ritual cleansing.",
-                    "Mt. Minobu-san station connects to the main JR line for easy access from Tokyo.",
-                    "The temple's vegetarian cuisine (shojin ryori) follows strict Buddhist dietary laws.",
-                    "Annual fire ceremonies are held to burn old prayers and sacred objects respectfully.",
-                    "The hiking trails range from 30 minutes to several hours depending on the route.",
-                    "Local buses connect the train station to the temple for those not hiking.",
-                    "The temple's bell is rung 108 times on New Year's Eve for each human sin.",
-                    "Misty mornings create an ethereal atmosphere unique to mountain temples.",
-                    "The area has maintained its traditional character despite modern tourism.",
-                    "Mountain temple lodgings serve traditional Buddhist breakfast at dawn.",
-                    "The ropeway runs year-round except during extreme weather conditions.",
-                    "Nichiren Buddhism emphasizes the Lotus Sutra, which visitors often hear chanted.",
-                    "The mountain's ecosystem is protected as a quasi-national park.",
-                    "Traditional paper lanterns line the paths during evening festivals.",
-                    "The temple's meditation hall offers instruction in zazen sitting meditation.",
-                    "Local guides offer historical tours explaining the temple's 750-year history.",
-                    "The mountain streams are considered sacred and used in purification rituals.",
-                    "Seasonal festivals celebrate Buddhist holidays throughout the year.",
-                    "The temple maintains detailed records of visitors dating back centuries.",
-                    "Modern pilgrims can receive stamps in a special book at each temple along the route.",
-                    "The surrounding forest contains many medicinal plants used in traditional medicine.",
-                    "The temple's library contains rare Buddhist manuscripts and scrolls.",
-                    "Night stays at temple lodgings include evening prayers and early morning services.",
-                    "The mountain is home to unique alpine plants found only at high elevations."
-                ],
-                culturalTidbits: [
-                    "When visiting temples, purify yourself at the temizuya (water pavilion) by washing your left hand, then right hand, then rinsing your mouth.",
-                    "Remove your shoes when entering temple buildings. You'll often find slippers provided, but bring socks as walking barefoot can be cold.",
-                    "Photography inside temple halls is usually prohibited. Always look for signs or ask permission before taking photos of sacred spaces.",
-                    "When praying at a Buddhist temple, bow twice, place your hands together, bow once more, and make a small monetary offering.",
-                    "Speaking quietly and maintaining a peaceful demeanor is expected in temple grounds to respect those who come for spiritual practice.",
-                    "Buddhist monks take vows of simplicity - don't offer them elaborate gifts or expect casual conversation.",
-                    "Temple gates (torii and sanmon) mark the transition from secular to sacred space - bow slightly when passing through.",
-                    "Incense is lit for prayers and meditation - place it upright in the sand, don't wave the flame out.",
-                    "When receiving blessed items from monks, accept them with both hands and a small bow.",
-                    "Walking meditation (kinhin) is practiced slowly and mindfully - if you see practitioners, don't interrupt.",
-                    "Temple meals are eaten in silence to practice mindfulness - follow this custom if staying overnight.",
-                    "Buddhist funeral rites mean certain actions are taboo - never pass food chopstick to chopstick.",
-                    "Morning prayers often begin before sunrise - temple lodging guests are expected to participate.",
-                    "When touring temple grounds, walk clockwise as this is the traditional direction for circumambulation.",
-                    "Sitting with feet extended toward Buddhist statues is disrespectful - kneel or sit cross-legged.",
-                    "Ringing temple bells has spiritual meaning - ring once or twice only, not repeatedly.",
-                    "Wearing bright or revealing clothing at temples may be seen as disrespectful.",
-                    "If offering prayers, specific sutras may be recommended - ask monks for guidance.",
-                    "Temple donation boxes typically accept any amount - 5 yen coins are considered lucky.",
-                    "Taking home sacred items like temple sand requires permission from monks.",
-                    "Buddhist beads (juzu) should be held respectfully during prayers, not worn as jewelry.",
-                    "When receiving temple stamps, present your book with reverence and appropriate thanks.",
-                    "Vegetarian temple food excludes garlic and onion as they're considered stimulating.",
-                    "Meditation sessions may be silent - follow the lead of monks and regular practitioners.",
-                    "Temple gardens are designed for contemplation - spend time sitting rather than just photographing.",
-                    "Writing wishes on ema (wooden tablets) requires sincerity - frivolous wishes are inappropriate.",
-                    "Seasonal flower offerings change throughout the year and have specific meanings.",
-                    "Night services may include chanting that visitors are welcome to observe silently.",
-                    "Temple architecture has symbolic meaning - ask about significant features.",
-                    "Buddhist holidays are based on the lunar calendar and may differ from expected dates.",
-                    "Leaving coins at statues of deities is a way to show respect and ask for blessings.",
-                    "Temple cats and dogs are often considered protectors and treated with special respect.",
-                    "Walking through certain gates backwards is considered bad luck.",
-                    "Some temple areas may be restricted to practitioners only - respect these boundaries.",
-                    "Traditional temple musicians may perform during special ceremonies - remain seated until finished.",
-                    "Water ladles at purification fountains should not touch your lips directly.",
-                    "Certain hand gestures (mudras) made by Buddhist statues have specific meanings.",
-                    "Asking monks about their practice is welcome, but deeply personal questions are inappropriate.",
-                    "Temple bookshops often sell items blessed by the temple - these make meaningful souvenirs.",
-                    "Lighting candles at temples represents illuminating the path to enlightenment.",
-                    "Some temples offer meditation instruction in English - inquire in advance.",
-                    "The changing of temple decorations marks seasonal transitions and Buddhist holidays.",
-                    "Watching sunset from mountain temples is traditional - plan your visit accordingly.",
-                    "Temple breakfast often includes rice, pickles, miso soup, and sometimes grilled fish.",
-                    "Walking stick rental is available at many mountain temples for hiking assistance.",
-                    "Traditional temple robes may be worn during overnight stays if provided.",
-                    "Taking the time to learn basic Buddhist greetings shows respect.",
-                    "Temple rest areas are for quiet contemplation, not loud conversations.",
-                    "Asking about the specific Buddhist sect helps understand their unique practices.",
-                    "Making donations toward temple preservation is appreciated and can be anonymous.",
-                    "The journey to a temple is considered as important as arriving - take your time."
-                ]
-            },
-            kyoto: {
-                name: "Kyoto",
-                dates: "March 28 - April 1, 2026",
-                images: [
-                    "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80", // Fushimi Inari torii gates
-                    "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80", // Kinkaku-ji Golden Pavilion
-                    "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80", // Bamboo grove Arashiyama
-                    "https://images.unsplash.com/photo-1558862107-d49ef2a04d72?w=800&q=80"  // Traditional Kyoto street
-                ],
-                funFacts: [
-                    "Kyoto was Japan's capital for over 1,000 years (794-1868) and was spared from WWII bombing due to its cultural significance.",
-                    "The Fushimi Inari Shrine has over 10,000 torii gates forming tunnels up the mountainside, donated by businesses for good fortune.",
-                    "Kyoto has 17 UNESCO World Heritage Sites, more than any other Japanese city.",
-                    "The Gion district is one of the few places where you might spot a real geiko (Kyoto's term for geisha) or maiko (apprentice).",
-                    "Kyoto's Nishiki Market, called 'Kyoto's Kitchen,' has been a food market for over 400 years with 100+ shops and restaurants.",
-                    "The Philosopher's Path is named after philosopher Nishida Kitaro, who walked it daily for meditation.",
-                    "Kinkaku-ji (Golden Pavilion) is covered in actual gold leaf - the top two floors use over 400kg of gold.",
-                    "Kyoto's traditional wooden townhouses (machiya) are being preserved, with over 40,000 still standing.",
-                    "The city's grid pattern was modeled after Chang'an (Xi'an), the capital of Tang Dynasty China.",
-                    "Arashiyama Bamboo Grove's stalks grow up to 30 meters tall and make distinctive sounds in the wind.",
-                    "Gion Festival, held each July, has been celebrated for over 1,100 years without interruption.",
-                    "Kyoto Station is one of Japan's largest buildings, designed by Hiroshi Hara with a futuristic glass facade.",
-                    "The Pontocho alley is only wide enough for two people to pass and features traditional restaurants.",
-                    "Ryoan-ji Temple's rock garden has exactly 15 stones, but only 14 are visible from any single angle.",
-                    "Kyoto consumes more coffee per capita than any other Japanese city.",
-                    "The city has over 2,000 temples and 400 shrines within its boundaries.",
-                    "Kiyomizu-dera Temple was built without using a single nail in its construction.",
-                    "Traditional Kyoto sweets (wagashi) are designed to match the seasons and are works of art.",
-                    "The Geisha districts of Gion have strict rules about photography and visitor behavior.",
-                    "Kyoto Protocol, the famous climate agreement, was signed here in 1997.",
-                    "Nijo Castle's 'nightingale floors' chirp when walked upon to warn of intruders.",
-                    "The Imperial Palace grounds are free to enter and offer peaceful gardens in the city center.",
-                    "Kyoto's matcha is considered the finest in Japan, grown in nearby Uji for over 800 years.",
-                    "The city's traditional fans (sensu) have been made here for over 1,200 years.",
-                    "Tofuku-ji Temple has one of Japan's oldest Zen gardens and stunning autumn colors.",
-                    "Kyoto Tower is the tallest structure in the city at 131 meters.",
-                    "The Ginkaku-ji (Silver Pavilion) was never actually covered in silver despite its name.",
-                    "Traditional Kyoto cuisine (Kyo-ryori) emphasizes seasonal ingredients and beautiful presentation.",
-                    "The city's textile industry produces most of Japan's traditional kimono fabrics.",
-                    "Heian Shrine's garden recreates the landscapes mentioned in 'The Tale of Genji.'",
-                    "Kyoto maiko traditionally start their training at age 15-16 and train for five years.",
-                    "The Philosopher's Path follows a canal lined with hundreds of cherry trees.",
-                    "Ninna-ji Temple's dwarf cherry trees bloom later than others, extending the season.",
-                    "Kyoto's narrow streets were designed to prevent large armies from advancing quickly.",
-                    "The city has preserved rain drainage systems dating back to the Heian period.",
-                    "Traditional Kyoto pickles (tsukemono) include over 20 local varieties.",
-                    "The Saihoji Temple (Moss Temple) requires advance reservation and a copying of sutras.",
-                    "Kamogawa River's restaurant platforms (kawayuka) have operated for over 100 years.",
-                    "The Kyoto International Manga Museum houses 300,000 manga volumes.",
-                    "Kennin-ji is Kyoto's oldest Zen temple, founded in 1202.",
-                    "Traditional incense-smelling ceremonies (kodo) are still practiced in Kyoto.",
-                    "The city limits building heights to preserve views of surrounding mountains.",
-                    "Kyoto's sake breweries in Fushimi use water from underground springs.",
-                    "The Aoi Matsuri parade dates back 1,400 years and features ox carts and costumes.",
-                    "Yasaka Pagoda is the final standing structure of a 6th-century temple.",
-                    "The Daimonji Gozan Okuribi bonfires spell out characters visible from across the city.",
-                    "Kyoto's traditional candy stores have operated for over 400 years.",
-                    "Sanjo Bridge's bronze ornaments are from the original 16th-century structure.",
-                    "The city's flower arrangement (ikebana) schools have headquarters here.",
-                    "Kyoto crafts include gold leaf, lacquerware, ceramics, and bamboo work.",
-                    "The Toei Kyoto Studio Park is a working film set where you can see samurai movies being made."
-                ],
-                culturalTidbits: [
-                    "In Gion, never touch, stop, or photograph geiko/maiko without permission. They are professionals on their way to appointments, not tourist attractions.",
-                    "Kyoto-ben (Kyoto dialect) is considered more refined and polite than standard Japanese. 'Okini' means thank you instead of 'arigatou.'",
-                    "When visiting the famous Kinkaku-ji (Golden Pavilion), you'll receive a temple charm as your entry ticket - keep it as a blessing!",
-                    "Tea ceremony (sado) originated in Kyoto. If invited, remember to rotate the cup to avoid drinking from its front, showing humility.",
-                    "Many traditional Kyoto restaurants have 'ichigen-san okotowari' policy - refusing first-time customers without an introduction. Stick to tourist-friendly places or book through your hotel.",
-                    "Kyoto's narrow machiya houses are entered by stepping over the threshold, never on it.",
-                    "When visiting zen gardens, sit quietly and contemplate rather than rushing through.",
-                    "Traditional Kyoto ryokan (inns) have specific etiquette for bathing, dining, and sleeping.",
-                    "The Nishiki Market vendors prefer if you sample foods at their stall rather than walking while eating.",
-                    "Temple admission fees often include a small cup of matcha - sit and enjoy it properly.",
-                    "Rickshaw drivers in Arashiyama appreciate basic Japanese greetings.",
-                    "When admiring geiko from a distance, nodding politely is appropriate; staring is not.",
-                    "Kyoto's kimono rental shops can help you dress appropriately for temple visits.",
-                    "The sound of temple bells at dusk signals the end of visiting hours.",
-                    "Traditional Kyoto inns serve kaiseki dinners in your room - wear the provided yukata.",
-                    "Photography at zen gardens often has specific spots marked for visitors.",
-                    "Bamboo groves are sensitive - never carve or touch the bamboo stalks.",
-                    "Pagoda viewing often has best spots where all five levels are visible.",
-                    "Kyoto buses can be confusing - enter from the back and pay when exiting.",
-                    "Temple gardens change with seasons - ask staff what is currently in bloom.",
-                    "Morning visits to popular temples avoid crowds and capture the best light.",
-                    "Traditional Kyoto fans make meaningful gifts, each design having specific meanings.",
-                    "Sake tasting in Fushimi follows etiquette similar to wine tasting.",
-                    "When receiving tea, admire the cup before drinking and return it facing the host.",
-                    "Nijo Castle requires removing shoes - bring socks and be prepared for cold floors.",
-                    "Cycling is common in Kyoto - follow traffic rules and park in designated areas.",
-                    "Traditional sweet shops often have seasonal items available only briefly.",
-                    "Temple fortune papers (omikuji) can be tied at the temple if the fortune is bad.",
-                    "Arashiyama's monkey park requires understanding that monkeys have right of way.",
-                    "Traditional Kyoto meals emphasize quiet appreciation of each dish.",
-                    "When shopping in traditional stores, bargaining is not appropriate.",
-                    "River platforms (kawayuka) have dress codes excluding shorts and sandals.",
-                    "Night illuminations at temples require separate tickets and have limited hours.",
-                    "Kyoto's temples close earlier than typical tourist attractions - plan accordingly.",
-                    "Traditional craft demonstrations often welcome observation but not interruption.",
-                    "Asking about the history of traditional shops shows respect for their heritage.",
-                    "Vegetarian options in Kyoto often feature tofu - learn to appreciate its variety.",
-                    "Temple lodging (shukubo) in Kyoto offers unique experiences but requires following rules.",
-                    "The Philosophy Path is best walked slowly, pausing at temples along the way.",
-                    "Traditional Kyoto architecture uses materials that require gentle treatment.",
-                    "Spring and autumn are peak seasons - expect crowds at famous sites.",
-                    "Local sake breweries offer tastings but expect to purchase if you sample.",
-                    "Kyoto's heat in summer is intense - plan indoor activities for midday.",
-                    "Traditional performances like Noh have specific audience etiquette.",
-                    "When receiving gifts from Kyoto artisans, thank them for their years of training.",
-                    "Kyoto's traditional inns often have curfews - inform them of late returns.",
-                    "The local train (Randen) offers scenic routes through traditional neighborhoods.",
-                    "Kyoto's traditional gardens are designed to be viewed from specific angles.",
-                    "Asking permission before entering unmarked alleys in Gion is polite.",
-                    "Seasonal wagashi are meant to be eaten immediately for full appreciation.",
-                    "Traditional Kyoto dances can be observed at special performances throughout the year."
-                ]
-            },
-            hiroshima: {
-                name: "Hiroshima",
-                dates: "April 1-2, 2026",
-                images: [
-                    "https://images.unsplash.com/photo-1589452271712-64b8a66c7b71?w=800&q=80", // Atomic Bomb Dome
-                    "https://images.unsplash.com/photo-1581467655410-0c2bf55d9d6c?w=800&q=80"  // Hiroshima Peace Memorial Park
-                ],
-                funFacts: [
-                    "The Atomic Bomb Dome (Genbaku Dome) was the only structure left standing near the bomb's hypocenter and is now a UNESCO World Heritage Site.",
-                    "Hiroshima's famous okonomiyaki style layers ingredients rather than mixing them, with noodles added to create 'Hiroshima-yaki.'",
-                    "The Children's Peace Monument was inspired by Sadako Sasaki, who folded 1,000 paper cranes believing it would cure her radiation illness.",
-                    "Hiroshima was rebuilt so successfully that it hosted the Asian Games just 9 years after the bombing in 1954.",
-                    "The city plants over 100,000 peace memorial tulips each year, with bulbs donated from the Netherlands.",
-                    "Hiroshima Peace Memorial Park sits on what was once the city's busiest commercial district.",
-                    "The Atomic Bomb Dome's skeleton structure survived because the blast came from almost directly above.",
-                    "Over 140,000 people visit the Peace Memorial Museum annually on August 6th alone.",
-                    "Hiroshima's streetcar system is the largest in Japan, with some original cars from before WWII.",
-                    "The Peace Flame in the park has burned continuously since 1964 and will remain lit until all nuclear weapons are abolished.",
-                    "Hiroshima Castle was completely destroyed and rebuilt in 1958 as a museum of the city's pre-war history.",
-                    "The cenotaph's arch frames the A-Bomb Dome when viewed from the museum - intentional design.",
-                    "Paper crane chains at the Children's Monument weigh several tons and require regular removal.",
-                    "Hiroshima's recovery is so complete that it's now one of Japan's largest cities with 1.2 million people.",
-                    "The 'shadow' of a vaporized person on bank steps is preserved in the Peace Museum.",
-                    "Hiroshima produces more needles than any other city in Japan - an industry predating WWII.",
-                    "The city's name means 'Wide Island' referring to its delta location on the Ota River.",
-                    "Maple trees throughout the city commemorate the many who died - maple is the city flower.",
-                    "The Peace Bell can be rung by visitors and is designed to represent Earth without borders.",
-                    "Hiroshima's port is one of the largest on the Seto Inland Sea.",
-                    "The city's professional baseball team, Hiroshima Toyo Carp, has a passionate local following.",
-                    "A-Bomb survivor testimonies (hibakusha) are regularly shared at the Peace Memorial.",
-                    "The city sends annual letters to world leaders after any nuclear test.",
-                    "Shukkeien Garden, built in 1620, was restored after the bombing and offers peaceful refuge.",
-                    "The Ota River, which runs through the city, has seven channels crossed by numerous bridges.",
-                    "Hiroshima's mayor chairs the Mayors for Peace organization with over 8,000 member cities.",
-                    "The restored Honkawa Elementary School near the hypocenter serves as a peace education center.",
-                    "Momiji manju (maple leaf cakes) were invented in nearby Miyajima but are popular throughout Hiroshima.",
-                    "The city's tram tickets can be used as admission discount coupons at many attractions.",
-                    "Hiroshima University's medical school specializes in radiation effects research.",
-                    "The Peace Park's design by Kenzo Tange won international architectural acclaim.",
-                    "Street-level radiation returned to normal levels within days of the bombing.",
-                    "The city's recovery included many innovative urban planning solutions still studied today.",
-                    "Hiroshima oysters are considered among Japan's finest and are harvested nearby.",
-                    "The Mazda car company is headquartered in Hiroshima and offers factory tours.",
-                    "Trees that survived the bombing are marked throughout the city as 'A-bombed trees.'",
-                    "The Peace Memorial Museum underwent major renovations, reopening in 2019 with enhanced exhibits.",
-                    "Hiroshima's airport is built on reclaimed land in the Seto Inland Sea.",
-                    "The city hosts the Hiroshima Flower Festival each May, attracting over 1.6 million visitors.",
-                    "Underground shopping areas connect major stations, useful during rainy weather.",
-                    "The evening illumination of the Atomic Bomb Dome creates a haunting memorial atmosphere.",
-                    "Hiroshima's craft beer scene has grown significantly, with several local breweries.",
-                    "The city's peace education programs host students from around the world.",
-                    "Memorial services on August 6th are broadcast nationally and attended by world leaders.",
-                    "The Peace Boulevard running through the city is 100 meters wide - a firebreak for future safety.",
-                    "Hiroshima's paper lantern floating ceremony on August 6th honors the dead.",
-                    "The city's industrial recovery was aided by being a major military production center before the war.",
-                    "Hiroshima-style tsukemen (dipping noodles) is a popular local variation.",
-                    "The Hiroshima Museum of Art houses one of Japan's finest French Impressionist collections.",
-                    "Survivors' accounts are available in multiple languages at the Peace Memorial.",
-                    "The city's recovery is taught worldwide as an example of resilience and reconciliation."
-                ],
-                culturalTidbits: [
-                    "At the Peace Memorial, observe a moment of silence and bow respectfully. Photography is allowed but maintain a solemn demeanor.",
-                    "Origami cranes are powerful symbols of peace in Hiroshima. Consider folding some to leave at Sadako's monument.",
-                    "When eating Hiroshima-style okonomiyaki, use the small spatula (kote) provided rather than chopsticks - it's traditional!",
-                    "The peace message of Hiroshima is 'No more Hiroshimas' (Futatabi Hiroshima o kurikaeshite wa naranai). Visitors often sign the peace pledge book.",
-                    "Local streetcars (Hiroden) include original cars that survived the bombing and are still in operation - a symbol of resilience.",
-                    "August 6th (Peace Memorial Day) is observed with a minute of silence at 8:15 AM - the time of the bombing.",
-                    "Hibakusha (survivors) who share their stories deserve deep respect and attentive listening.",
-                    "When folding paper cranes, fold with intention - each crane represents a wish for peace.",
-                    "The Peace Park is not a place for loud conversations or casual picnicking.",
-                    "Purchasing items from the Peace Memorial shop supports peace education programs.",
-                    "Local guides at the Peace Memorial are often volunteers with personal connections to the history.",
-                    "Learning a few words about peace in Japanese shows respect: heiwa (peace), kioku (memory).",
-                    "The paper crane has become Japan's most recognized symbol of peace because of Sadako's story.",
-                    "Hiroshima natives appreciate visitors who take time to learn rather than rush through.",
-                    "Asking about the city's recovery shows interest in its resilience, not just its tragedy.",
-                    "Local restaurants take pride in Hiroshima-yaki - complimenting the chef is appreciated.",
-                    "The streetcar system is a point of local pride - learn basic tram etiquette.",
-                    "Peace-related souvenirs make meaningful gifts and support local causes.",
-                    "When meeting hibakusha, a simple 'thank you for sharing' is deeply meaningful.",
-                    "The Atomic Bomb Dome should never be approached as just a photo opportunity.",
-                    "Children often leave strings of cranes - never disturb these offerings.",
-                    "Hiroshima's story teaches global lessons - express what you've learned to locals.",
-                    "Evening visits to the Peace Park are quiet and contemplative.",
-                    "Local museums may have English guides available - ask at the entrance.",
-                    "Hiroshima residents don't dwell on the past but honor it while looking forward.",
-                    "The city's baseball team games are a way to experience local modern culture.",
-                    "Acknowledging both the tragedy and the recovery shows nuanced understanding.",
-                    "When discussing the bombing, focus on peace rather than blame.",
-                    "The Peace Memorial's guest book accepts messages in any language.",
-                    "Hiroshima's recovery is a source of pride - asking about modern achievements is welcome.",
-                    "Local peace organizations welcome international visitors and volunteers.",
-                    "The city's relationship with other A-bombed locations (Nagasaki) is fraternal.",
-                    "Asking about an elder's personal connection to the war requires sensitivity.",
-                    "The Peace Park's monuments each have meaning - take time to read explanations.",
-                    "Hiroshima's international community is welcoming due to the city's peace mission.",
-                    "Participating in paper crane folding workshops is a meaningful activity.",
-                    "The city sends delegates to international peace conferences regularly.",
-                    "Learning about the city's modern industries shows interest beyond tourism.",
-                    "Hiroshima sake makes an appropriate gift when visiting other regions of Japan.",
-                    "The city's food culture reflects its recovery - enjoy it as celebration of resilience.",
-                    "Peace education continues to evolve - ask about current programs and initiatives.",
-                    "The paper lantern ceremony on August 6th is open to all who wish to participate.",
-                    "Hiroshima's youth are active in peace movements - engaging with them is welcomed.",
-                    "The city's relationship with sister cities worldwide promotes global peace.",
-                    "When taking photos, ensure they convey respect rather than sensationalism.",
-                    "Learning about non-famous survivors' stories provides deeper understanding.",
-                    "The Peace Memorial's archives are available to researchers and serious students.",
-                    "Hiroshima's story is still being written - the city looks forward, not just back.",
-                    "Supporting local businesses is a way to honor the city's remarkable recovery.",
-                    "The phrase 'No more Hiroshimas, No more Nagasakis' is often seen together.",
-                    "Leaving Hiroshima with a commitment to share what you've learned honors the city's mission."
-                ]
-            },
-            miyajima: {
-                name: "Miyajima",
-                dates: "April 2-4, 2026",
-                images: [
-                    "https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=800&q=80", // Itsukushima floating torii gate
-                    "https://images.unsplash.com/photo-1601042879364-f3947d3f9c16?w=800&q=80", // Miyajima torii at sunset
-                    "https://images.unsplash.com/photo-1611000694157-d6c2cc0f6a00?w=800&q=80"  // Miyajima deer and shrine
-                ],
-                funFacts: [
-                    "The famous floating torii gate of Itsukushima Shrine appears to float during high tide and has stood in various forms since 1168.",
-                    "Miyajima literally means 'Shrine Island' and was considered so sacred that commoners weren't allowed to set foot on it for centuries.",
-                    "The island's friendly deer are considered sacred messengers of the gods, similar to those in Nara.",
-                    "Miyajima is famous for its giant rice scoops (shamoji) - the world's largest wooden rice scoop is displayed here at 7.7 meters long!",
-                    "No deaths or births were traditionally allowed on the island to preserve its purity. Even today, there's no cemetery on Miyajima.",
-                    "The current torii gate is the 8th iteration - the original was built in 593 AD.",
-                    "Momiji manju (maple leaf-shaped cakes) were invented on Miyajima in 1906.",
-                    "The shrine complex extends over the water to keep the sacred island soil from being touched.",
-                    "Itsukushima Shrine is one of only two shrines built over water in Japan.",
-                    "The five-story pagoda on Miyajima blends Japanese and Chinese architectural styles.",
-                    "At low tide, visitors can walk out and touch the base of the torii gate.",
-                    "The island has been one of Japan's three most scenic views since ancient times.",
-                    "Mt. Misen's primeval forest has been untouched for thousands of years.",
-                    "The torii gate stands 16 meters tall and weighs about 60 tons.",
-                    "Traditional wooden boat tours around the torii gate operate at high tide.",
-                    "The island's ropeway offers panoramic views of the Seto Inland Sea.",
-                    "Miyajima oysters are harvested from the surrounding waters and are famous nationwide.",
-                    "The shrine is painted vermillion, believed to ward off evil spirits.",
-                    "Ancient nobles would arrive by boat and pass through the torii to show respect.",
-                    "The island has wild monkeys living on Mt. Misen that visitors occasionally encounter.",
-                    "Daisho-in Temple at the mountain's base is one of Shingon Buddhism's most important temples.",
-                    "The eternal flame at Daisho-in has burned for 1,200 years.",
-                    "Night illumination of the shrine and torii creates magical photographs.",
-                    "The island's aquarium houses local sea life from the Seto Inland Sea.",
-                    "Miyajima's main shopping street dates back hundreds of years.",
-                    "The island has only about 1,800 permanent residents.",
-                    "Traditional maple leaf tempura is a unique Miyajima snack.",
-                    "The shrine stages traditional Noh performances on a special floating stage.",
-                    "High tide times vary daily - check schedules for the best torii photos.",
-                    "The island is car-free, adding to its traditional atmosphere.",
-                    "Ancient ritual dances (bugaku) are performed at the shrine during festivals.",
-                    "The torii gate's roof contains about 7 tons of stones for stability.",
-                    "Ferry rides to the island take only 10 minutes from the mainland.",
-                    "The island's deer population numbers around 500 animals.",
-                    "Mt. Misen's peak at 535 meters offers views to the Shikoku mountains.",
-                    "The shrine's corridors connect multiple buildings over the water.",
-                    "Miyajima's crafts include wooden products, textiles, and traditional art.",
-                    "The original shrine was destroyed and rebuilt after a civil war in 1555.",
-                    "The island appears in countless Japanese artworks over centuries.",
-                    "Night stays on the island offer unique after-hours shrine access.",
-                    "The torii gate is made of camphor wood, naturally resistant to decay.",
-                    "Several hiking trails crisscross Mt. Misen with varying difficulty levels.",
-                    "The island's maple trees create stunning autumn colors in November.",
-                    "Traditional shamoji (rice paddles) are inscribed with wishes and displayed as offerings.",
-                    "The shrine receives over 3 million visitors annually.",
-                    "Meditation caves on Mt. Misen were used by famous Buddhist monk Kobo Daishi.",
-                    "The island has multiple natural hot springs, though most are private.",
-                    "Miyajima's history spans over 1,400 years of continuous worship.",
-                    "The shrine's treasure hall contains over 4,500 artifacts.",
-                    "Cherry blossoms on the island bloom slightly later due to sea breezes.",
-                    "The torii gate recently underwent major restoration, completed in 2022."
-                ],
-                culturalTidbits: [
-                    "The deer on Miyajima will eat paper, maps, and anything they can get! Keep your belongings secure and don't feed them human food.",
-                    "Try momiji manju, maple leaf-shaped cakes filled with sweet red bean paste - they were invented on Miyajima in 1906.",
-                    "Visit at different tides to experience the shrine's magic: at high tide the torii 'floats,' at low tide you can walk out to touch it.",
-                    "The island has a tradition of oyster farming. Grilled oysters (kaki) from Miyajima are considered Japan's finest.",
-                    "When walking through the shrine corridors built over water, speak softly and walk calmly - you're in one of Japan's most sacred spaces.",
-                    "The torii gate marks the boundary between the earthly and spirit worlds - approach with reverence.",
-                    "Touching the torii gate at low tide is permitted but should be done respectfully.",
-                    "Deer bowing their heads is actually a begging gesture, not a greeting.",
-                    "Buying omiyage (souvenirs) from Miyajima is traditional - locals expect visitors to return with gifts.",
-                    "The last ferry departure time is important - missing it means staying overnight.",
-                    "Shrine maidens (miko) may be seen performing duties - do not interrupt their work.",
-                    "Burning incense at the shrine follows specific customs - watch others first.",
-                    "The shrine's paper fortunes can be tied to nearby wires if the fortune is unfavorable.",
-                    "Grilled oysters are eaten immediately - don't try to save them for later.",
-                    "Traditional boat tours require sitting quietly during the torii approach.",
-                    "Mt. Misen hikes can be strenuous - appropriate footwear is essential.",
-                    "Evening stays on the island provide unique quiet time at the shrine.",
-                    "The ropeway may close in high winds - have backup plans for Mt. Misen.",
-                    "Deer antlers are trimmed annually for visitor safety - they can still push.",
-                    "Photography of the torii is best at high tide for the floating effect.",
-                    "Traditional performances at the shrine require silent observation.",
-                    "The island's ryokan (inns) serve local seafood - dinner is often included.",
-                    "Walking the island is easy but can be tiring - pace yourself.",
-                    "Momiji manju shops offer free samples - thanking the shopkeeper is polite.",
-                    "The shrine accepts various forms of worship - observe others for guidance.",
-                    "Sunset views from the island are spectacular and worth planning around.",
-                    "The island's main street can be crowded - early morning visits are peaceful.",
-                    "Traditional crafts make meaningful souvenirs - quality items are marked.",
-                    "Deer have right of way on the island's pathways.",
-                    "The eternal flame at Daisho-in should be observed quietly.",
-                    "Night visits to the shrine (when staying overnight) are special privileges.",
-                    "The island's water is considered sacred - treat fountains with respect.",
-                    "Hot spring facilities may have tattoo restrictions - check in advance.",
-                    "Carrying trash off the island is expected - bins are limited.",
-                    "The ferry ride offers first views of the torii - have your camera ready.",
-                    "Temple bells can be rung by visitors - do so thoughtfully, not repeatedly.",
-                    "Local guides can enhance understanding of the shrine's history.",
-                    "The island's atmosphere changes dramatically between day and night.",
-                    "Respecting photography restrictions in certain shrine areas is important.",
-                    "The island's limited restaurants can fill up - consider timing or reservations.",
-                    "Walking meditation on the island paths is a traditional practice.",
-                    "The vermillion paint of the shrine has deep spiritual meaning in Shinto.",
-                    "Offerings at the shrine typically include coins - 5 yen is considered lucky.",
-                    "The shrine's architecture requires removing shoes in certain areas.",
-                    "Learning basic Shinto terms enhances the shrine experience.",
-                    "The island's weather can differ from the mainland - bring layers.",
-                    "Traditional maple tempura is meant to be eaten as a snack, not a meal.",
-                    "The island's quiet evenings contrast sharply with busy day-trip crowds.",
-                    "Purchasing shrine charms (omamori) supports the shrine's preservation.",
-                    "The journey to Miyajima is considered part of the pilgrimage experience.",
-                    "Leaving the island with a sense of peace honors the shrine's purpose."
-                ]
-            }
-        };
+      <div class="main-content" id="mainContent">
+        <div class="image-container">
+          <img id="dailyImage" class="daily-image" src="" alt="Daily destination">
+          <div class="location-badge" id="locationBadge">Loading...</div>
+        </div>
+        <div class="info-cards">
+          <div class="info-card">
+            <div class="card-icon">🎋</div>
+            <div class="card-title">Fun Fact</div>
+            <div class="card-content" id="funFact">Loading...</div>
+          </div>
+          <div class="info-card">
+            <div class="card-icon">🏯</div>
+            <div class="card-title">Cultural Learning</div>
+            <div class="card-content" id="culturalTidbit">Loading...</div>
+          </div>
+        </div>
+      </div>
 
-        // Get random content on each page load
-        function getRandomContent() {
-            const destinationKeys = Object.keys(destinations);
-            const destinationIndex = Math.floor(Math.random() * destinationKeys.length);
-            const destination = destinations[destinationKeys[destinationIndex]];
+    </div><!-- end countdown page -->
 
-            // Random image, fact and tidbit from this destination
-            const imageIndex = Math.floor(Math.random() * destination.images.length);
-            const factIndex = Math.floor(Math.random() * destination.funFacts.length);
-            const tidbitIndex = Math.floor(Math.random() * destination.culturalTidbits.length);
+    <!-- ════════════════════════════════ ITINERARY PAGE ════════════════════════════════ -->
+    <div id="page-itinerary" class="page">
 
-            return {
-                location: destination.name,
-                locationKey: destinationKeys[destinationIndex],
-                dates: destination.dates,
-                image: destination.images[imageIndex],
-                funFact: destination.funFacts[factIndex],
-                culturalTidbit: destination.culturalTidbits[tidbitIndex]
-            };
-        }
+      <div class="itinerary-intro">
+        <h2>Your Journey</h2>
+        <p>Click any destination to expand.</p>
+      </div>
 
-        // Update the countdown timer
-        function updateCountdown() {
-            const targetDate = new Date('March 21, 2026 15:00:00').getTime();
-            const now = new Date().getTime();
-            const difference = targetDate - now;
+      <div class="global-filter">
+        <button class="filter-btn active" onclick="setFilter('all')">📋 All Details</button>
+        <button class="filter-btn" onclick="setFilter('sight')">🏯 Sightseeing</button>
+        <button class="filter-btn" onclick="setFilter('transit')">🚂 Transit</button>
+        <button class="filter-btn" onclick="setFilter('hotel')">🏨 Hotel</button>
+      </div>
 
-            if (difference <= 0) {
-                document.getElementById('days').textContent = '0';
-                document.getElementById('hours').textContent = '0';
-                document.getElementById('minutes').textContent = '0';
-                document.getElementById('seconds').textContent = '0';
-                document.getElementById('departureMessage').style.display = 'block';
-                document.getElementById('mainContent').style.display = 'none';
-                return;
-            }
+      <!-- ── TOKYO ── -->
+      <div class="loc-item" id="loc-tokyo">
+        <div class="loc-header" onclick="toggleLoc('tokyo')">
+          <div class="loc-header-left">
+            <span class="loc-emoji">🗼</span>
+            <div>
+              <div class="loc-name">Tokyo</div>
+              <div class="loc-dates">March 22–26, 2026</div>
+            </div>
+          </div>
+          <div class="loc-header-right">
+            <span class="current-badge" id="badge-tokyo" style="display:none">Here Now</span>
+            <span class="loc-arrow">▶</span>
+          </div>
+        </div>
+        <div class="loc-body" id="body-tokyo">
+          <div class="loc-tabs">
+            <button class="tab-btn active" onclick="showTab('tokyo','sight')">🏯 Sightseeing</button>
+            <button class="tab-btn" onclick="showTab('tokyo','transit')">🚂 Transit</button>
+            <button class="tab-btn" onclick="showTab('tokyo','hotel')">🏨 Hotel</button>
+          </div>
 
-            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+          <!-- SIGHTSEEING -->
+          <div class="tab-panel active" id="tab-tokyo-sight">
 
-            document.getElementById('days').textContent = days;
-            document.getElementById('hours').textContent = hours;
-            document.getElementById('minutes').textContent = minutes;
-            document.getElementById('seconds').textContent = seconds;
-        }
+            <div class="day-item" id="day-tokyo-sun">
+              <div class="day-header" onclick="toggleDay('day-tokyo-sun')">
+                <span>☀️ Sunday, March 22 — Arrival Day</span>
+                <span class="day-arrow">▶</span>
+              </div>
+              <div class="day-body">
+                <ul>
+                  <li>Arrive Haneda Terminal 3 ~10pm. Pick up Suica cards &amp; SIM, take Limousine Bus to Shinjuku West Exit.</li>
+                  <li>Check in to hotel. Rest up!</li>
+                </ul>
+              </div>
+            </div>
 
-        // Update content on page load
-        function updateContent() {
-            const content = getRandomContent();
+            <div class="day-item" id="day-tokyo-mon">
+              <div class="day-header" onclick="toggleDay('day-tokyo-mon')">
+                <span>📅 Monday, March 23 — Shinjuku &amp; Harajuku</span>
+                <span class="day-arrow">▶</span>
+              </div>
+              <div class="day-body">
+                <ul>
+                  <li><strong>Yoyogi Park</strong> — Great people-watching, especially Jingu Bridge. A welcome green respite from concrete and crowds. <a href="https://toddwassel.com/people-watching-in-tokyo-japan-yoyogi-park/" target="_blank">Guide article ↗</a></li>
+                  <li><strong><a href="https://www.japan-guide.com/e/e3002.html" target="_blank">Meiji Jingu Shrine ↗</a></strong> (<a href="https://maps.app.goo.gl/N3A7ZHKH7xDqvyfP8" target="_blank">map ↗</a>) — Free, sunrise to sunset. Built 1920. Bow at the large torii gate; stay on either side of the gravel path — the middle is reserved for gods.</li>
+                  <li>Coffee at <strong><a href="https://www.meijikinenkan.gr.jp/forestterrace-en/facility/moricafe.html" target="_blank">Harajuku Forest Terrace ↗</a></strong> (opens 9am)</li>
+                  <li><strong><a href="https://tokyocheapo.com/entertainment/harajuku-takeshita-street-guide/" target="_blank">Takeshita-dori, Harajuku ↗</a></strong> — Quirky youth fashion street. A spectacle for about 15 minutes!</li>
+                  <li><strong>Daiso</strong> (100 yen shop) — Great for souvenirs &amp; gifts.</li>
+                  <li><strong>Shibuya Crossing</strong></li>
+                  <li><strong><a href="https://maps.app.goo.gl/NrUT67TajfoohiFa8" target="_blank">Shibuya Tokyo Foodshow ↗</a></strong> (10am–9pm) — Upscale grocery and food vendors. Stop BEFORE you're hungry — it can be overwhelming. Front area is touristy; venture to the traditional Japanese counters in the back. Bottom floor mostly savoury, upstairs mostly desserts.</li>
+                  <li><strong>Tokyo Government Building</strong> — Free observation deck, 9:30am–9:30pm. South tower is less crowded (north 9:30–5pm). Visit at dusk for city lights.</li>
+                </ul>
+                <p class="note">💡 Yoyogi + Meiji Jingu + Takeshita-dori covers the full spectrum of green / traditional / modern Tokyo in 2–3 hours.</p>
+              </div>
+            </div>
 
-            document.getElementById('dailyImage').src = content.image;
-            document.getElementById('dailyImage').alt = content.location;
-            document.getElementById('locationBadge').textContent = content.location;
-            document.getElementById('funFact').textContent = content.funFact;
-            document.getElementById('culturalTidbit').textContent = content.culturalTidbit;
+            <div class="day-item" id="day-tokyo-tue">
+              <div class="day-header" onclick="toggleDay('day-tokyo-tue')">
+                <span>📅 Tuesday, March 24 — Akihabara &amp; Ueno</span>
+                <span class="day-arrow">▶</span>
+              </div>
+              <div class="day-body">
+                <ul>
+                  <li><strong><a href="https://maps.app.goo.gl/PBy1L4ecafnDZtby6" target="_blank">Tokyo National Museum ↗</a></strong> (Tue–Sun 9:30am–5pm) — Most extensive Japanese art collection on the planet. Buddhist sculptures, swords, kimonos, sacred scrolls. Excellent English signage.</li>
+                  <li><strong>Ueno Park</strong> — Cherry blossoms.</li>
+                  <li><strong><a href="https://www.suijobus.co.jp/en/" target="_blank">Tokyo Cruise Water Bus ↗</a></strong> — Hamarikyu Gardens → Asakusa (~1 hr scenic ride). Leaving Asakusa at 11:40am or 2:20pm if doing in reverse.</li>
+                  <li><strong><a href="https://maps.app.goo.gl/NrUT67TajfoohiFa8" target="_blank">Senso-ji Temple ↗</a></strong> — Tokyo's oldest temple, 645 AD. Main hall 6:30am–5pm, free.</li>
+                  <li><strong>Asakusa</strong>: Start at <a href="https://maps.app.goo.gl/NrUT67TajfoohiFa8" target="_blank">Asakusa Culture Center</a> (8F observation deck, opens 9am). Walk <a href="https://www.google.com/maps/place/Nakamise,+Asakusa,+Taito+City,+Tokyo+111-0032,+Japan/@35.7124241,139.7958579,19z/" target="_blank">Nakamise ↗</a> tourist street (look; don't eat while walking). Try food vendors but throw away trash where you bought it.</li>
+                  <li><strong>Don Quixote</strong> — Sensory-overload shopping experience.</li>
+                  <li><strong>Tanuki Street</strong> — Each lamp has a different tanuki (magical raccoon dog). Rub the belly of the one that brings the luck you want.</li>
+                  <li class="alert">🍣 Dinner: <strong><a href="https://kurasushi.j-server.com/LUCKURACO/ns/tl.cgi/https:/www.kurasushi.co.jp/reservation/?SLANG=ja&TLANG=en&XMODE=0&XJSID=0" target="_blank">Kura Sushi ↗</a></strong> (conveyor belt) — Make a reservation!</li>
+                </ul>
+                <p class="note">📌 Reminder from Sunday: Make the Kura Sushi reservation before you arrive in Japan.</p>
+              </div>
+            </div>
 
-            // Highlight active destination in timeline
-            document.querySelectorAll('.timeline-item').forEach(item => {
-                const timelineContent = item.querySelector('.timeline-content');
-                const timelineDot = item.querySelector('.timeline-dot');
-                const locationKey = item.dataset.location;
+            <div class="day-item" id="day-tokyo-wed">
+              <div class="day-header" onclick="toggleDay('day-tokyo-wed')">
+                <span>📅 Wednesday, March 25</span>
+                <span class="day-arrow">▶</span>
+              </div>
+              <div class="day-body">
+                <ul>
+                  <li><strong>Morning (choose one):</strong>
+                    <ul>
+                      <li><strong>Shinjuku Gyoen National Garden</strong> (<a href="https://maps.app.goo.gl/EQ4m3NUbfjfSSaR67" target="_blank">map ↗</a>) — Calm oasis, ~¥300 entry.</li>
+                      <li><strong><a href="https://goo.gl/maps/oAZaPVXQV2Tp2KcD6" target="_blank">Tokyo Tower ↗</a></strong> (<a href="https://www.japan-guide.com/e/e3009.html" target="_blank">info ↗</a>) — Walk up to the middle deck (open 9am–11pm, ~$10/person). Right next to <a href="https://maps.app.goo.gl/CaBgz86oe8MKmi1i9" target="_blank">Zojoji Temple ↗</a> (9am–5pm), worth exploring.</li>
+                    </ul>
+                  </li>
+                  <li>Lunch/dinner near hotel: <strong>Ise Metropolitan Government Office</strong> (11am–3pm, 5–9pm) — Tonkatsu. Avoid 12–12:30pm (government worker lunch rush).</li>
+                  <li class="ticket">🎟️ <strong>TeamLab Planets TOKYO — 2:30–3:00 PM (TIMED TICKET)</strong><br>
+                    <a href="https://teamlabplanets.dmm.com/en/mytickets/5496369b210f9c4393" target="_blank">View tickets ↗</a><br>
+                    6-chome-1-16 Toyosu, Koto City, Tokyo</li>
+                </ul>
+              </div>
+            </div>
 
-                if (locationKey === content.locationKey) {
-                    timelineContent.classList.add('active');
-                    timelineDot.classList.add('active');
-                } else {
-                    timelineContent.classList.remove('active');
-                    timelineDot.classList.remove('active');
-                }
-            });
-        }
+            <div class="day-item" id="day-tokyo-thu">
+              <div class="day-header" onclick="toggleDay('day-tokyo-thu')">
+                <span>📅 Thursday, March 26 — Travel to Mt. Minobu</span>
+                <span class="day-arrow">▶</span>
+              </div>
+              <div class="day-body">
+                <ul>
+                  <li>Check out by 11am. Head to Shinjuku Station.</li>
+                  <li>11:00 — Azusa 17 Limited Express: Shinjuku → Kofu (see Transit tab)</li>
+                </ul>
+              </div>
+            </div>
 
-        // Create falling sakura petals animation
-        function createSakura() {
-            const sakura = document.createElement('div');
-            sakura.className = 'sakura';
-            sakura.innerHTML = '🌸';
-            sakura.style.left = Math.random() * 100 + 'vw';
-            sakura.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            sakura.style.animation = `fall ${Math.random() * 5 + 5}s linear forwards`;
-            document.body.appendChild(sakura);
+            <div class="day-item" id="day-tokyo-other">
+              <div class="day-header" onclick="toggleDay('day-tokyo-other')">
+                <span>🌟 Other Options / Extras</span>
+                <span class="day-arrow">▶</span>
+              </div>
+              <div class="day-body">
+                <ul>
+                  <li><strong><a href="https://sankan.kunaicho.go.jp/index.html" target="_blank">Imperial Palace ↗</a></strong></li>
+                  <li><strong><a href="https://maps.app.goo.gl/hPoN5zhzbwrMwozq7" target="_blank">Harry Harajuku Hedgehog Café ↗</a></strong> — 1–6pm</li>
+                  <li>Izakaya evening — see Food page for recommendations.</li>
+                </ul>
+              </div>
+            </div>
 
-            setTimeout(() => sakura.remove(), 10000);
-        }
+          </div><!-- end sight tab -->
 
-        // Initialize
-        updateCountdown();
-        updateContent();
-        setInterval(updateCountdown, 1000);
-        setInterval(createSakura, 2000);
+          <!-- TRANSIT -->
+          <div class="tab-panel" id="tab-tokyo-transit">
 
-        // Create initial sakura
-        for (let i = 0; i < 5; i++) {
-            setTimeout(createSakura, i * 400);
-        }
-    </script>
+            <div class="transit-item" id="tr-flights-out">
+              <div class="transit-header" onclick="toggleTransit('tr-flights-out')">
+                <span>✈️ Outbound Flights — Saturday, March 21</span>
+                <span class="transit-arrow">▶</span>
+              </div>
+              <div class="transit-body">
+                <div class="train-route">
+                  <span class="train-time">3:03 PM</span><span class="train-sep">→</span>
+                  <span class="train-time">4:10 PM</span>
+                  <span class="train-name">AA 3794 &nbsp;|&nbsp; MSN → ORD</span>
+                </div>
+                <div class="train-route">
+                  <span class="train-time">6:40 PM</span><span class="train-sep">→</span>
+                  <span class="train-time">10:00 PM+1</span>
+                  <span class="train-name">AA 8404 &nbsp;|&nbsp; ORD → HND (arrives Sun March 22)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="transit-item" id="tr-arrival">
+              <div class="transit-header" onclick="toggleTransit('tr-arrival')">
+                <span>🛬 Airport Arrival &amp; Hotel Transfer</span>
+                <span class="transit-arrow">▶</span>
+              </div>
+              <div class="transit-body">
+                <ul>
+                  <li>Arrive <strong>Haneda Terminal 3</strong> (~10pm Sunday)</li>
+                  <li>Buy <strong>4 <a href="https://www.japan-guide.com/ad/welcome-suica-mobile/" target="_blank">Welcome Suica cards ↗</a></strong> — load ¥5,000/person to start, top up as needed. Or use the Welcome Suica Mobile app.</li>
+                  <li>Buy a <strong>SIM card for Jim</strong> at JAL ABC (Terminal 3, Floor 2F)</li>
+                  <li><strong>Haneda Airport Limousine Bus</strong> — ¥1,400/person. Recommended over monorail+train. Exit at <strong>Shinjuku Station West Exit</strong> (in front of Keio Department Store).</li>
+                  <li class="note">Or just take a taxi.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="transit-item" id="tr-jr-counter">
+              <div class="transit-header" onclick="toggleTransit('tr-jr-counter')">
+                <span>📋 JR Counter — Book These in Tokyo</span>
+                <span class="transit-arrow">▶</span>
+              </div>
+              <div class="transit-body">
+                <p style="margin-bottom:10px; color:#feca57;">Visit any JR ticket office (<em>Midori-no-madoguchi</em>) and say: <strong>"I need to reserve tickets for these trains"</strong> — then show them:</p>
+                <ul>
+                  <li>March 26: Kofu → Minobu, <strong>Fujikawa 8, 12:37 PM</strong></li>
+                  <li>March 28: Minobu → Shizuoka, <strong>Fujikawa 6, 11:38 AM</strong></li>
+                  <li>April 1: Kyoto → Shin-Osaka (Shinkansen, any Nozomi/Hikari/Kodama)</li>
+                </ul>
+                <p class="note">Note: Fujikawa is a limited express — you need base fare ticket + limited express supplement. You can tap Suica for the base fare but must buy the limited express ticket separately.</p>
+              </div>
+            </div>
+
+            <div class="transit-item" id="tr-to-minobu">
+              <div class="transit-header" onclick="toggleTransit('tr-to-minobu')">
+                <span>🚂 Train to Mt. Minobu — Thursday, March 26</span>
+                <span class="transit-arrow">▶</span>
+              </div>
+              <div class="transit-body">
+                <p class="booked" style="margin-bottom:10px;">✅ LEG 1 — BOOKED via <a href="https://www.eki-net.com/en/jreast-train-reservation/Top/Index" target="_blank">JR-EAST ↗</a></p>
+                <div class="train-route">
+                  <span class="train-time">11:00</span><span class="train-sep">→</span>
+                  <span class="train-time">12:25</span>
+                  <span class="train-name">Azusa 17 Limited Express &nbsp;|&nbsp; Shinjuku → Kofu (3 stops, 1h 25m)</span>
+                </div>
+                <ul style="margin: 8px 0 12px;">
+                  <li>Reservation: <strong>E46036</strong> &nbsp;|&nbsp; Member #411306749</li>
+                  <li>Seats: <span class="seat">Car 10 · 12-A  12-B  12-C  12-D</span></li>
+                  <li>Platform 9 · Stop ID: JC05</li>
+                  <li class="alert">⚠️ Collect tickets before boarding using QR code or pickup code: <span class="seat">24482342579521278</span></li>
+                  <li class="note">Cancel fee-free before 21:00 Japan time the day before. Changes require cancellation + repurchase.</li>
+                </ul>
+                <p class="unbooked" style="margin-bottom:10px;">📌 LEG 2 — Book at JR counter in Japan</p>
+                <div class="train-route">
+                  <span class="train-time">12:37</span><span class="train-sep">→</span>
+                  <span class="train-time">1:30</span>
+                  <span class="train-name">Fujikawa 8 Limited Express &nbsp;|&nbsp; Kofu → Minobu (53 min, 7 stops)</span>
+                </div>
+                <ul style="margin: 8px 0 12px;">
+                  <li>Stops: Minami-Kofu (12:42) · Higashi-Hanawa (12:52) · Ichikawadaimon (12:59) · Kajikazawaguchi (1:03) · Kai-Iwama (1:11) · Shimobe-Onsen (1:21) · <strong>Minobu (1:30)</strong></li>
+                </ul>
+                <p style="margin-bottom:6px; font-weight:700; color:#e0e0e0;">🚌 Minobu Station → Kakurinbo</p>
+                <ul>
+                  <li>Bus (¥350, ~12 min, 16 stops) → arrive Minobusan 1:47 + walk ~15 min</li>
+                  <li>Taxi (~¥2,000, ~15 min) — easier with luggage</li>
+                </ul>
+              </div>
+            </div>
+
+          </div><!-- end transit tab -->
+
+          <!-- HOTEL -->
+          <div class="tab-panel" id="tab-tokyo-hotel">
+            <div class="hotel-card">
+              <div class="hotel-name">🏨 MIMARU Tokyo Shinjuku West</div>
+              <div class="hotel-grid">
+                <div>
+                  <div class="hotel-label">Dates</div>
+                  <div class="hotel-detail">March 22–26, 2026 (4 nights)</div>
+                </div>
+                <div>
+                  <div class="hotel-label">Room Type</div>
+                  <div class="hotel-detail">Family Apartment — 2 single beds + bunk bed</div>
+                </div>
+                <div>
+                  <div class="hotel-label">Check-In</div>
+                  <div class="hotel-detail">Until 10:00 PM <span class="warning">(notify hotel if arriving after 10pm)</span></div>
+                </div>
+                <div>
+                  <div class="hotel-label">Check-Out</div>
+                  <div class="hotel-detail">By 11:00 AM</div>
+                </div>
+              </div>
+              <div class="hotel-amenities">
+                ✅ Coin-operated laundry &nbsp;·&nbsp; ✅ Drying rack &nbsp;·&nbsp; ✅ Hairdryer &nbsp;·&nbsp; <span class="not-included">❌ No toiletries</span>
+                &nbsp;·&nbsp; <span class="warning">Cancellable prior to 3/14</span>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- end body-tokyo -->
+      </div><!-- end loc-tokyo -->
+
+      <!-- ── MT. MINOBU ── -->
+      <div class="loc-item" id="loc-minobu">
+        <div class="loc-header" onclick="toggleLoc('minobu')">
+          <div class="loc-header-left">
+            <span class="loc-emoji">⛰️</span>
+            <div>
+              <div class="loc-name">Mt. Minobu</div>
+              <div class="loc-dates">March 26–28, 2026</div>
+            </div>
+          </div>
+          <div class="loc-header-right">
+            <span class="current-badge" id="badge-minobu" style="display:none">Here Now</span>
+            <span class="loc-arrow">▶</span>
+          </div>
+        </div>
+        <div class="loc-body" id="body-minobu">
+          <div class="loc-tabs">
+            <button class="tab-btn active" onclick="showTab('minobu','sight')">🏯 Sightseeing</button>
+            <button class="tab-btn" onclick="showTab('minobu','transit')">🚂 Transit</button>
+            <button class="tab-btn" onclick="showTab('minobu','hotel')">🏨 Hotel</button>
+          </div>
+
+          <div class="tab-panel active" id="tab-minobu-sight">
+            <div class="day-item" id="day-minobu-thu">
+              <div class="day-header" onclick="toggleDay('day-minobu-thu')">
+                <span>📅 Thursday, March 26 — Arrival</span>
+                <span class="day-arrow">▶</span>
+              </div>
+              <div class="day-body">
+                <ul>
+                  <li>Arrive ~1:47pm at Minobusan. Walk ~15 min to Kakurinbo.</li>
+                  <li>Check-in 3:00–5:00 PM. Settle in, explore temple grounds.</li>
+                  <li class="included">🍽️ Dinner included at the temple lodging.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="day-item" id="day-minobu-fri">
+              <div class="day-header" onclick="toggleDay('day-minobu-fri')">
+                <span>📅 Friday, March 27 — Temple Day</span>
+                <span class="day-arrow">▶</span>
+              </div>
+              <div class="day-body">
+                <ul>
+                  <li>Early morning prayers at Kuon-ji (optional, ~5:30am — visitors welcome).</li>
+                  <li>Explore the Kuon-ji Temple complex — 287-step stone staircase, 400-year-old cedar trees, 5-story pagoda.</li>
+                  <li>Ropeway to summit (1,153m) — views of Mt. Fuji on clear days.</li>
+                  <li>Wander the mountain paths and nearby pilgrim shops.</li>
+                  <li class="included">🍽️ Breakfast &amp; dinner included.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="day-item" id="day-minobu-sat">
+              <div class="day-header" onclick="toggleDay('day-minobu-sat')">
+                <span>📅 Saturday, March 28 — Travel to Kyoto</span>
+                <span class="day-arrow">▶</span>
+              </div>
+              <div class="day-body">
+                <ul>
+                  <li>Check out by 10:00 AM. Head to Minobu Station.</li>
+                  <li>11:38 — Fujikawa 6 Limited Express to Shizuoka (see Transit tab).</li>
+                  <li class="included">🍽️ Breakfast included.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="tab-minobu-transit">
+            <div class="transit-item" id="tr-minobu-arrive">
+              <div class="transit-header" onclick="toggleTransit('tr-minobu-arrive')">
+                <span>🚂 Arriving from Tokyo (March 26)</span>
+                <span class="transit-arrow">▶</span>
+              </div>
+              <div class="transit-body">
+                <p>See Tokyo Transit tab — "Train to Mt. Minobu"</p>
+              </div>
+            </div>
+            <div class="transit-item" id="tr-minobu-kyoto">
+              <div class="transit-header" onclick="toggleTransit('tr-minobu-kyoto')">
+                <span>🚂 Minobu → Kyoto — Saturday, March 28</span>
+                <span class="transit-arrow">▶</span>
+              </div>
+              <div class="transit-body">
+                <p class="unbooked" style="margin-bottom:10px;">📌 LEG 1 — Book at JR counter in Japan</p>
+                <div class="train-route">
+                  <span class="train-time">11:38</span><span class="train-sep">→</span>
+                  <span class="train-time">13:02</span>
+                  <span class="train-name">Fujikawa 6 Ltd Express &nbsp;|&nbsp; Minobu → Shizuoka (via Fuji)</span>
+                </div>
+                <ul style="margin: 8px 0 12px;">
+                  <li>Buy base fare + limited express ticket at JR office. Suica covers base fare only.</li>
+                  <li class="note">💡 Exit station, find a green tea café (2–3 min away), grab matcha + sweets. Pick up an ekiben from the station for the Shinkansen. Be on your platform 20+ min early.</li>
+                </ul>
+                <p class="booked" style="margin-bottom:10px;">✅ LEG 2 — BOOKED via smart EX</p>
+                <div class="train-route">
+                  <span class="train-time">14:07</span><span class="train-sep">→</span>
+                  <span class="train-time">15:37</span>
+                  <span class="train-name">HIKARI 713 &nbsp;|&nbsp; Shizuoka → Kyoto</span>
+                </div>
+                <ul>
+                  <li>Seats: <span class="seat">Car 16 · 4-D  4-E  3-D  3-E</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="tab-minobu-hotel">
+            <div class="hotel-card">
+              <div class="hotel-name">🏯 Temple Lodging Shukubo Kakurinbo</div>
+              <div class="hotel-grid">
+                <div>
+                  <div class="hotel-label">Dates</div>
+                  <div class="hotel-detail">March 26–28, 2026 (2 nights)</div>
+                </div>
+                <div>
+                  <div class="hotel-label">Room Type</div>
+                  <div class="hotel-detail">Japanese-Style Family Room with Garden View — Shared Bathroom</div>
+                </div>
+                <div>
+                  <div class="hotel-label">Check-In</div>
+                  <div class="hotel-detail">3:00–5:00 PM</div>
+                </div>
+                <div>
+                  <div class="hotel-label">Check-Out</div>
+                  <div class="hotel-detail">By 10:00 AM</div>
+                </div>
+              </div>
+              <div class="hotel-amenities">
+                <span class="included">✅ Breakfast &amp; Dinner included</span> &nbsp;·&nbsp; <span class="not-included">❌ No toiletries</span>
+                <br><br>
+                <a href="https://www.kanpai-japan.com/accommodation-japan/kakurinbo-shukubo-minobu" target="_blank">Read review ↗</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- end loc-minobu -->
+
+      <!-- ── KYOTO ── -->
+      <div class="loc-item" id="loc-kyoto">
+        <div class="loc-header" onclick="toggleLoc('kyoto')">
+          <div class="loc-header-left">
+            <span class="loc-emoji">🏯</span>
+            <div>
+              <div class="loc-name">Kyoto</div>
+              <div class="loc-dates">March 28 – April 1, 2026</div>
+            </div>
+          </div>
+          <div class="loc-header-right">
+            <span class="current-badge" id="badge-kyoto" style="display:none">Here Now</span>
+            <span class="loc-arrow">▶</span>
+          </div>
+        </div>
+        <div class="loc-body" id="body-kyoto">
+          <div class="loc-tabs">
+            <button class="tab-btn active" onclick="showTab('kyoto','sight')">🏯 Sightseeing</button>
+            <button class="tab-btn" onclick="showTab('kyoto','transit')">🚂 Transit</button>
+            <button class="tab-btn" onclick="showTab('kyoto','hotel')">🏨 Hotel</button>
+          </div>
+
+          <div class="tab-panel active" id="tab-kyoto-sight">
+            <div class="day-item" id="day-kyoto-sat">
+              <div class="day-header" onclick="toggleDay('day-kyoto-sat')">
+                <span>📅 Saturday, March 28 — Arrival &amp; Eastern Temples Walk</span>
+                <span class="day-arrow">▶</span>
+              </div>
+              <div class="day-body">
+                <ul>
+                  <li>Arrive Kyoto ~3:37pm. Bus to Airbnb (see Transit tab). Check in after 4pm.</li>
+                  <li>If energy allows, start the walking tour from nearby:</li>
+                  <li><strong>Chion-in complex</strong> — "The Vatican of Pure Land Buddhism"</li>
+                  <li>Wander leafy <strong>Maruyama-koen</strong> park → <strong>Yasaka-jinja</strong> overlooking Gion district</li>
+                  <li>8-min walk SE to <strong>Kodaiji</strong> — less crowded historic temple with flashy interior, gardens, and bamboo thicket</li>
+                  <li>Walk uphill along <strong>Sannen-zaka</strong> (iconic, touristy street) to <strong>Kiyomizu-dera</strong> — great views</li>
+                  <li>Walk downhill via Chawan-zaka → west toward Kamu River → Kiyomizu-Gojo Station</li>
+                  <li>Take Keihan Line to Tofuku Station — lunch/dinner at <strong>Dragon Burger</strong></li>
+                </ul>
+              </div>
+            </div>
+            <div class="day-item" id="day-kyoto-sun">
+              <div class="day-header" onclick="toggleDay('day-kyoto-sun')">
+                <span>📅 Sunday, March 29 — Philosopher's Path</span>
+                <span class="day-arrow">▶</span>
+              </div>
+              <div class="day-body">
+                <ul>
+                  <li><strong>Philosopher's Path (Tetsugaku no Michi)</strong> — Walk south from <strong>Ginkaku-ji</strong> (Silver Pavilion) to <strong>Kiyomizu-dera</strong> along a canal lined with cherry trees. <a href="https://www.google.com/maps/dir/Higashiyama+Jisho-ji,+Ginkakujicho,+Sakyo+Ward,+Kyoto,+Japan/Kiyomizu-dera,+1+Chome-294+Kiyomizu,+Higashiyama+Ward,+Kyoto,+605-0862,+Japan" target="_blank">Google Map Route ↗</a></li>
+                  <li>Notable stops along the way: <strong>Honen-in</strong> and <strong>Nanzen-ji</strong></li>
+                </ul>
+              </div>
+            </div>
+            <div class="day-item" id="day-kyoto-mon">
+              <div class="day-header" onclick="toggleDay('day-kyoto-mon')">
+                <span>📅 Monday, March 30</span>
+                <span class="day-arrow">▶</span>
+              </div>
+              <div class="day-body"><p class="note">Details coming soon…</p></div>
+            </div>
+            <div class="day-item" id="day-kyoto-tue">
+              <div class="day-header" onclick="toggleDay('day-kyoto-tue')">
+                <span>📅 Tuesday, March 31</span>
+                <span class="day-arrow">▶</span>
+              </div>
+              <div class="day-body"><p class="note">Details coming soon…</p></div>
+            </div>
+            <div class="day-item" id="day-kyoto-wed">
+              <div class="day-header" onclick="toggleDay('day-kyoto-wed')">
+                <span>📅 Wednesday, April 1 — Travel to Hiroshima</span>
+                <span class="day-arrow">▶</span>
+              </div>
+              <div class="day-body">
+                <ul>
+                  <li>Check out by 10am. Head to Kyoto Station.</li>
+                  <li>Nozomi 63 to Hiroshima via Shin-Osaka (see Transit tab). Arrives 12:42pm.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="tab-kyoto-transit">
+            <div class="transit-item" id="tr-kyoto-arrive">
+              <div class="transit-header" onclick="toggleTransit('tr-kyoto-arrive')">
+                <span>🚂 Arriving from Minobu (March 28)</span>
+                <span class="transit-arrow">▶</span>
+              </div>
+              <div class="transit-body">
+                <p>See Mt. Minobu Transit tab — "Minobu → Kyoto"</p>
+              </div>
+            </div>
+            <div class="transit-item" id="tr-kyoto-bus">
+              <div class="transit-header" onclick="toggleTransit('tr-kyoto-bus')">
+                <span>🚌 Kyoto Station → Airbnb</span>
+                <span class="transit-arrow">▶</span>
+              </div>
+              <div class="transit-body">
+                <ul>
+                  <li>Exit Kyoto Station from the <strong>Central Exit</strong> → head to bus stop</li>
+                  <li>Board <strong>#58 or #86 bus</strong></li>
+                  <li>Get off at <strong>"Kiyomizu-michi (清水道)"</strong> stop → walk a few minutes to destination</li>
+                  <li class="note">Use a map app to help navigate the final walk.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="transit-item" id="tr-kyoto-hiroshima">
+              <div class="transit-header" onclick="toggleTransit('tr-kyoto-hiroshima')">
+                <span>🚂 Kyoto → Hiroshima — Wednesday, April 1</span>
+                <span class="transit-arrow">▶</span>
+              </div>
+              <div class="transit-body">
+                <p class="unbooked" style="margin-bottom:8px;">📌 Kyoto → Shin-Osaka — Buy separately at JR counter</p>
+                <p class="booked" style="margin-bottom:10px;">✅ Shin-Osaka → Hiroshima — BOOKED</p>
+                <div class="train-route">
+                  <span class="train-time">11:17</span><span class="train-sep">→</span>
+                  <span class="train-time">12:42</span>
+                  <span class="train-name">Nozomi 63 &nbsp;|&nbsp; Shin-Osaka → Hiroshima</span>
+                </div>
+                <ul style="margin-top:8px;">
+                  <li>Seats: <span class="seat">Car 14 · 4-D  4-E  5-D  5-E</span></li>
+                  <li><a href="https://www.westjr.co.jp/travel-information/en/tickets-passes/jrwest-rail-pass/kansai_hiroshima/" target="_blank">Kansai-Hiroshima Area Pass ↗</a> — Valid March 31–April 4</li>
+                  <li><span class="alert">⚠️ Pick up tickets in Kyoto before the start date.</span> <a href="https://www.westjr.co.jp/travel-information/en/tickets-passes/receive/" target="_blank">Ticket pickup locations ↗</a></li>
+                  <li class="note">Credit card used for processing + ID number (4 digits: 1478) required to collect.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="tab-kyoto-hotel">
+            <div class="hotel-card">
+              <div class="hotel-name">🏠 Airbnb — Kyoto</div>
+              <div class="hotel-grid">
+                <div>
+                  <div class="hotel-label">Dates</div>
+                  <div class="hotel-detail">March 28 – April 1 (4 nights)</div>
+                </div>
+                <div>
+                  <div class="hotel-label">Booking</div>
+                  <div class="hotel-detail"><a href="https://www.airbnb.com/trips/v1?confirmationCode=HMMXE3F8J9&reservationType=STAY" target="_blank">Your trips — Airbnb ↗</a></div>
+                </div>
+                <div>
+                  <div class="hotel-label">Check-In</div>
+                  <div class="hotel-detail">After 4:00 PM</div>
+                </div>
+                <div>
+                  <div class="hotel-label">Check-Out</div>
+                  <div class="hotel-detail">Before 10:00 AM</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- end loc-kyoto -->
+
+      <!-- ── HIROSHIMA ── -->
+      <div class="loc-item" id="loc-hiroshima">
+        <div class="loc-header" onclick="toggleLoc('hiroshima')">
+          <div class="loc-header-left">
+            <span class="loc-emoji">🕊️</span>
+            <div>
+              <div class="loc-name">Hiroshima</div>
+              <div class="loc-dates">April 1–2, 2026</div>
+            </div>
+          </div>
+          <div class="loc-header-right">
+            <span class="current-badge" id="badge-hiroshima" style="display:none">Here Now</span>
+            <span class="loc-arrow">▶</span>
+          </div>
+        </div>
+        <div class="loc-body" id="body-hiroshima">
+          <div class="loc-tabs">
+            <button class="tab-btn active" onclick="showTab('hiroshima','sight')">🏯 Sightseeing</button>
+            <button class="tab-btn" onclick="showTab('hiroshima','transit')">🚂 Transit</button>
+            <button class="tab-btn" onclick="showTab('hiroshima','hotel')">🏨 Hotel</button>
+          </div>
+
+          <div class="tab-panel active" id="tab-hiroshima-sight">
+            <div class="day-item" id="day-hiroshima-wed">
+              <div class="day-header" onclick="toggleDay('day-hiroshima-wed')">
+                <span>📅 Wednesday, April 1 — Arrival &amp; Peace Park</span>
+                <span class="day-arrow">▶</span>
+              </div>
+              <div class="day-body">
+                <ul>
+                  <li>Train arrives <strong>12:02pm</strong>. Check in at hotel (15:00).</li>
+                  <li class="ticket">🎟️ <strong><a href="https://drive.google.com/file/d/1ZEfVQv6lDIqoqafPRp6xTOfC7YByU_c4/view?usp=drive_link" target="_blank">Peace Memorial Museum — 4:30pm tickets ↗</a></strong><br>
+                    Confirmation #5422775923 (PDF tickets in Drive &amp; schmit.lau@gmail.com)<br>
+                    Open 7:30am–7:00pm</li>
+                  <li><strong>Atomic Bomb Dome</strong> (Genbaku Dome) — across the river from the rest of the park. UNESCO World Heritage Site.</li>
+                  <li><strong>Children's Peace Monument</strong></li>
+                  <li>Stroll around the park — it's not large, but deeply moving.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="day-item" id="day-hiroshima-thu">
+              <div class="day-header" onclick="toggleDay('day-hiroshima-thu')">
+                <span>📅 Thursday, April 2 — Castle &amp; Garden, then Miyajima</span>
+                <span class="day-arrow">▶</span>
+              </div>
+              <div class="day-body">
+                <ul>
+                  <li><strong>Hiroshima Castle grounds</strong> — Interior closes after March 22; exterior/grounds still worth visiting. ¥200/person.</li>
+                  <li><strong>Shukkeien Garden</strong> (opens 9am, ¥350/person, ~$2) — Beautiful traditional Japanese garden, 10-min walk from castle.</li>
+                  <li>Head to Miyajima ferry terminal for afternoon ferry.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="tab-hiroshima-transit">
+            <div class="transit-item" id="tr-hiroshima-arrive">
+              <div class="transit-header" onclick="toggleTransit('tr-hiroshima-arrive')">
+                <span>🚂 Arriving from Kyoto (April 1)</span>
+                <span class="transit-arrow">▶</span>
+              </div>
+              <div class="transit-body"><p>See Kyoto Transit tab — "Kyoto → Hiroshima"</p></div>
+            </div>
+            <div class="transit-item" id="tr-hiroshima-miyajima">
+              <div class="transit-header" onclick="toggleTransit('tr-hiroshima-miyajima')">
+                <span>⛴️ Ferry to Miyajima (April 2)</span>
+                <span class="transit-arrow">▶</span>
+              </div>
+              <div class="transit-body">
+                <ul>
+                  <li>Take <strong>JR West Ferry</strong> — covered by your pass. <span class="alert">Do NOT take the Matsudai Ferry</span> (not covered). Ferries alternate; just wait for the JR one.</li>
+                  <li class="warning">⚠️ Visitation tax: ¥100/person paid when boarding (separate from fare). Have a ¥100 coin ready.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="tab-hiroshima-hotel">
+            <div class="hotel-card">
+              <div class="hotel-name">🏨 Rihga Royal Hotel Hiroshima</div>
+              <div class="hotel-grid">
+                <div>
+                  <div class="hotel-label">Dates</div>
+                  <div class="hotel-detail">April 1–2, 2026 (1 night)</div>
+                </div>
+                <div>
+                  <div class="hotel-label">Room</div>
+                  <div class="hotel-detail">Standard Twin + 2 Extra Beds, Non-Smoking</div>
+                </div>
+                <div>
+                  <div class="hotel-label">Check-In</div>
+                  <div class="hotel-detail">3:00 PM – midnight</div>
+                </div>
+                <div>
+                  <div class="hotel-label">Check-Out</div>
+                  <div class="hotel-detail">By 11:00 AM</div>
+                </div>
+              </div>
+              <div class="hotel-amenities">
+                <span class="included">✅ Breakfast included</span> &nbsp;·&nbsp; ✅ Toiletries &amp; hairdryer &nbsp;·&nbsp; Lap pool (opens 11am, $25)
+                <br><span class="warning">⚠️ Full refund if cancelled before 11:59pm March 30. No refund after March 31.</span>
+                <br><a href="http://booking.com" target="_blank">booking.com ↗</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- end loc-hiroshima -->
+
+      <!-- ── MIYAJIMA ── -->
+      <div class="loc-item" id="loc-miyajima">
+        <div class="loc-header" onclick="toggleLoc('miyajima')">
+          <div class="loc-header-left">
+            <span class="loc-emoji">⛩️</span>
+            <div>
+              <div class="loc-name">Miyajima</div>
+              <div class="loc-dates">April 2–4, 2026</div>
+            </div>
+          </div>
+          <div class="loc-header-right">
+            <span class="current-badge" id="badge-miyajima" style="display:none">Here Now</span>
+            <span class="loc-arrow">▶</span>
+          </div>
+        </div>
+        <div class="loc-body" id="body-miyajima">
+          <div class="loc-tabs">
+            <button class="tab-btn active" onclick="showTab('miyajima','sight')">🏯 Sightseeing</button>
+            <button class="tab-btn" onclick="showTab('miyajima','transit')">🚂 Transit</button>
+            <button class="tab-btn" onclick="showTab('miyajima','hotel')">🏨 Hotel</button>
+          </div>
+
+          <div class="tab-panel active" id="tab-miyajima-sight">
+            <div class="day-item" id="day-miyajima-1">
+              <div class="day-header" onclick="toggleDay('day-miyajima-1')">
+                <span>📅 Day 1 — Thursday, April 2</span>
+                <span class="day-arrow">▶</span>
+              </div>
+              <div class="day-body">
+                <ul>
+                  <li>Take ferry from Hiroshima. 15-min walk to <strong>Miyajima History &amp; Folklore Museum</strong> (9:00–5:00, English signage, $7.52 total).</li>
+                  <li>5-min walk to <strong>Itsukushima Shrine</strong> with the famous o-torii gate — arrive for sunset at 5:41pm.</li>
+                  <li>Wander around the shrine after dark — a relaxing and magical experience.</li>
+                  <li>6-min walk to hotel.</li>
+                  <li class="included">🍽️ Dinner included at hotel (starts latest 7:00pm — check in before then).</li>
+                </ul>
+              </div>
+            </div>
+            <div class="day-item" id="day-miyajima-2">
+              <div class="day-header" onclick="toggleDay('day-miyajima-2')">
+                <span>📅 Day 2 — Friday, April 3 — Hike Day</span>
+                <span class="day-arrow">▶</span>
+              </div>
+              <div class="day-body">
+                <ul>
+                  <li>9-min walk to <strong>Daisho-in Temple</strong> (8:00–5:00, free) with Shirato Falls.</li>
+                  <li>Hike <strong>Daisho-in trail</strong> to the summit and <strong>Kuguri Rock</strong>.</li>
+                  <li>Hike down the <strong>Momijidani trail</strong>. ~3–4 hours round trip total.</li>
+                  <li>Afternoon: chill or wander <strong>Omotesando Street</strong> — eat oysters, eel, and other local treats.</li>
+                  <li class="included">🍽️ Breakfast &amp; dinner included.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="day-item" id="day-miyajima-3">
+              <div class="day-header" onclick="toggleDay('day-miyajima-3')">
+                <span>📅 Day 3 — Saturday, April 4 — Departure Morning</span>
+                <span class="day-arrow">▶</span>
+              </div>
+              <div class="day-body">
+                <ul>
+                  <li>First thing: <strong>Momijidani Park</strong> (free, all hours, 4-min walk from hotel) — misty, beautiful morning stroll.</li>
+                  <li><strong>Miyajima Aquarium</strong> before leaving (9:00–5:00, $31 total, 10-min walk).</li>
+                  <li>Take 11:05 ferry to mainland (see Transit tab).</li>
+                  <li class="included">🍽️ Breakfast included (7:30–9:00am).</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="tab-miyajima-transit">
+            <div class="transit-item" id="tr-miyajima-arrive">
+              <div class="transit-header" onclick="toggleTransit('tr-miyajima-arrive')">
+                <span>⛴️ Arriving from Hiroshima (April 2)</span>
+                <span class="transit-arrow">▶</span>
+              </div>
+              <div class="transit-body">
+                <ul>
+                  <li>See Hiroshima Transit — "Ferry to Miyajima"</li>
+                  <li><strong>Hotel Shuttle:</strong> Free shuttle after 3:00 PM — call <strong>0829-40-2400</strong> from the ferry terminal. (Before 3pm: luggage storage only, no pickup.)</li>
+                  <li class="note">Staff at Ferry Terminal Information Center can help call before 7pm. Email may be slow — call!</li>
+                </ul>
+              </div>
+            </div>
+            <div class="transit-item" id="tr-miyajima-tokyo">
+              <div class="transit-header" onclick="toggleTransit('tr-miyajima-tokyo')">
+                <span>🚂 Miyajima → Tokyo — Saturday, April 4</span>
+                <span class="transit-arrow">▶</span>
+              </div>
+              <div class="transit-body">
+                <div class="train-route">
+                  <span class="train-time">11:05</span>
+                  <span class="train-name">Ferry (runs every 15 min, 5–10 min ride)</span>
+                </div>
+                <div class="train-route">
+                  <span class="train-time">11:19</span><span class="train-sep">→</span>
+                  <span class="train-time">11:48</span>
+                  <span class="train-name">San-yo Line Local &nbsp;|&nbsp; Miyajimaguchi → Hiroshima (29 min, 9 stops)</span>
+                </div>
+                <p class="booked" style="margin: 10px 0 6px;">✅ BOOKED via <a href="https://www.westjr.co.jp/travel-information/en/tickets-passes/" target="_blank">JR West pass ↗</a></p>
+                <div class="train-route">
+                  <span class="train-time">12:18</span><span class="train-sep">→</span>
+                  <span class="train-time">13:43</span>
+                  <span class="train-name">Nozomi 24 &nbsp;|&nbsp; Hiroshima → Shin-Osaka</span>
+                </div>
+                <ul style="margin: 6px 0 10px;">
+                  <li>Seats: <span class="seat">Car 3 · 10-D  10-E  11-D  11-E</span></li>
+                  <li><strong>Stay on same train at Shin-Osaka</strong></li>
+                </ul>
+                <p class="booked" style="margin-bottom:6px;">✅ BOOKED via smart EX</p>
+                <div class="train-route">
+                  <span class="train-time">13:45</span><span class="train-sep">→</span>
+                  <span class="train-time">16:15</span>
+                  <span class="train-name">Shin-Osaka → Tokyo</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="tab-miyajima-hotel">
+            <div class="hotel-card">
+              <div class="hotel-name">🏨 Kikunoya</div>
+              <div class="hotel-grid">
+                <div>
+                  <div class="hotel-label">Dates</div>
+                  <div class="hotel-detail">April 2–4, 2026 (2 nights)</div>
+                </div>
+                <div>
+                  <div class="hotel-label">Room</div>
+                  <div class="hotel-detail">Junior Suite with Sea View</div>
+                </div>
+                <div>
+                  <div class="hotel-label">Check-In</div>
+                  <div class="hotel-detail">3:00 PM – 11:00 PM <span class="warning">(must arrive by 7pm for dinner)</span></div>
+                </div>
+                <div>
+                  <div class="hotel-label">Check-Out</div>
+                  <div class="hotel-detail">5:00 AM – 11:00 AM</div>
+                </div>
+              </div>
+              <div class="hotel-amenities">
+                <span class="included">✅ Breakfast (7:30–9:00am) &amp; Dinner included</span> (dinner starts latest 7:00pm, restaurant closes 9pm)<br>
+                ✅ Toiletries &amp; hairdryer<br>
+                Confirmation: <strong>6146084627</strong> &nbsp;·&nbsp; PIN: <strong>0389</strong> &nbsp;·&nbsp; <a href="http://booking.com" target="_blank">booking.com ↗</a><br>
+                <span class="warning">⚠️ Full refund if cancelled before 11:59pm March 29. No refund after March 30.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- end loc-miyajima -->
+
+      <!-- ── TOKYO RETURN ── -->
+      <div class="loc-item" id="loc-tokyo-return">
+        <div class="loc-header" onclick="toggleLoc('tokyo-return')">
+          <div class="loc-header-left">
+            <span class="loc-emoji">✈️</span>
+            <div>
+              <div class="loc-name">Tokyo (Return)</div>
+              <div class="loc-dates">April 4–5, 2026</div>
+            </div>
+          </div>
+          <div class="loc-header-right">
+            <span class="current-badge" id="badge-tokyo-return" style="display:none">Here Now</span>
+            <span class="loc-arrow">▶</span>
+          </div>
+        </div>
+        <div class="loc-body" id="body-tokyo-return">
+          <div class="loc-tabs">
+            <button class="tab-btn active" onclick="showTab('tokyo-return','sight')">🗼 Activities</button>
+            <button class="tab-btn" onclick="showTab('tokyo-return','transit')">✈️ Return Flights</button>
+            <button class="tab-btn" onclick="showTab('tokyo-return','hotel')">🏨 Hotel</button>
+          </div>
+
+          <div class="tab-panel active" id="tab-tokyo-return-sight">
+            <p style="color:#d0d0d0; font-size:0.88rem; padding: 8px 0;">One final night in Tokyo — rest, last-minute shopping, or revisit a favorite spot.</p>
+          </div>
+
+          <div class="tab-panel" id="tab-tokyo-return-transit">
+            <div class="transit-item" id="tr-return-arrive">
+              <div class="transit-header" onclick="toggleTransit('tr-return-arrive')">
+                <span>🚂 Arriving from Miyajima (April 4)</span>
+                <span class="transit-arrow">▶</span>
+              </div>
+              <div class="transit-body"><p>See Miyajima Transit tab — "Miyajima → Tokyo". Arrives Tokyo ~4:15pm.</p></div>
+            </div>
+            <div class="transit-item" id="tr-return-flights">
+              <div class="transit-header" onclick="toggleTransit('tr-return-flights')">
+                <span>✈️ Return Flights — Sunday, April 5</span>
+                <span class="transit-arrow">▶</span>
+              </div>
+              <div class="transit-body">
+                <div class="train-route">
+                  <span class="train-time">1:00 PM</span><span class="train-sep">→</span>
+                  <span class="train-time">10:45 AM</span>
+                  <span class="train-name">AA 8405 &nbsp;|&nbsp; HND → ORD (arrives same day)</span>
+                </div>
+                <div class="train-route">
+                  <span class="train-time">1:32 PM</span><span class="train-sep">→</span>
+                  <span class="train-time">2:32 PM</span>
+                  <span class="train-name">AA 3794 &nbsp;|&nbsp; ORD → MSN</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="tab-tokyo-return-hotel">
+            <div class="hotel-card">
+              <div class="hotel-name">🏨 Karaksa Hotel Colors Tokyo Yaesu</div>
+              <div class="hotel-grid">
+                <div>
+                  <div class="hotel-label">Dates</div>
+                  <div class="hotel-detail">April 4–5, 2026 (1 night)</div>
+                </div>
+                <div>
+                  <div class="hotel-label">Room</div>
+                  <div class="hotel-detail">Comfort Wide Twin, Non-Smoking (sleeps 4)</div>
+                </div>
+                <div>
+                  <div class="hotel-label">Check-In</div>
+                  <div class="hotel-detail">After 3:00 PM</div>
+                </div>
+                <div>
+                  <div class="hotel-label">Booking</div>
+                  <div class="hotel-detail"><a href="http://hotels.com" target="_blank">Hotels.com ↗</a></div>
+                </div>
+              </div>
+              <div class="hotel-amenities">
+                <span class="included">✅ Breakfast included</span> — Western-style buffet, 7:00–9:30am
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- end loc-tokyo-return -->
+
+    </div><!-- end itinerary page -->
+
+    <!-- ════════════════════════════════ FOOD PAGE ════════════════════════════════ -->
+    <div id="page-food" class="page">
+
+      <div class="food-intro">
+        <h2>🍜 Food Guide</h2>
+        <p>A full guide: <a href="https://www.japan-guide.com/e/e2036.html" target="_blank">japan-guide.com Japanese Restaurants ↗</a></p>
+      </div>
+
+      <div class="food-grid">
+        <div class="food-card">
+          <div class="food-card-icon">🍣</div>
+          <div class="food-card-title">Sushi</div>
+          <div class="food-card-body">
+            <ul>
+              <li><strong>Kaiten (conveyor-belt):</strong> Easy and fun — take plates from the belt or order via touchscreen, pay by plate color.</li>
+              <li><strong>Classic sushi bars:</strong> Sit at the counter, order <em>omakase</em> (chef's choice) for higher quality. Expect higher prices but exceptional fish.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="food-card">
+          <div class="food-card-icon">🍱</div>
+          <div class="food-card-title">Classic Set Meals</div>
+          <div class="food-card-body">
+            <ul>
+              <li><strong>Tonkatsu</strong> — Deep-fried breaded pork cutlet; a Tokyo classic. Great for lunch or dinner.</li>
+              <li><strong>Teishoku</strong> — Set meal tray with grilled fish, fried items, miso soup, rice, and pickles. Try <strong>Ootoya</strong> (family favorite).</li>
+            </ul>
+          </div>
+        </div>
+        <div class="food-card">
+          <div class="food-card-icon">🍢</div>
+          <div class="food-card-title">Skewers &amp; Grilled</div>
+          <div class="food-card-body">
+            <ul>
+              <li><strong>Yakitori</strong> — Grilled chicken skewers, ideal for an evening with drinks.</li>
+              <li><strong>Izakaya</strong> — Great for sharing many small dishes with drinks.</li>
+              <li><strong>Yakiniku</strong> — Grill bite-sized beef, pork, and vegetables at the table.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="food-card">
+          <div class="food-card-icon">🥢</div>
+          <div class="food-card-title">Tofu &amp; Temple Cuisine</div>
+          <div class="food-card-body">
+            <ul>
+              <li><strong>Shojin Ryori at Daitoku-ji (Kyoto)</strong> — Buddhist vegetarian temple cuisine; slow, contemplative meal.</li>
+              <li><strong>Tofuya Ukai</strong> (foot of Tokyo Tower) — Tofu-based kaiseki in a stunning garden setting. Lunch is more reasonable than dinner.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="food-card">
+          <div class="food-card-icon">🫕</div>
+          <div class="food-card-title">Hotpot &amp; Communal</div>
+          <div class="food-card-body">
+            <ul>
+              <li><strong>Shabu-shabu / Sukiyaki</strong> — Thinly sliced beef or pork cooked at the table.</li>
+              <li><strong>Nabe</strong> — One-pot meals with broth, vegetables, meat/fish. Especially nice in cool weather.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="food-card">
+          <div class="food-card-icon">🍜</div>
+          <div class="food-card-title">Casual &amp; Budget</div>
+          <div class="food-card-body">
+            <ul>
+              <li><strong>Ramen/Udon/Soba</strong> — Stand-only station shops are a highlight. Even the cheapest bowl is excellent.</li>
+              <li><strong>Hanamaru Udon</strong> — Inexpensive cafeteria-style chain near many JR stations.</li>
+              <li><strong>Konbini</strong> (Lawson, 7-Eleven, FamilyMart) — Oden, karaage, onigiri, sandwiches, desserts, coffee. Genuinely good.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="food-card">
+          <div class="food-card-icon">🥞</div>
+          <div class="food-card-title">Street-Style &amp; Teppanyaki</div>
+          <div class="food-card-body">
+            <ul>
+              <li><strong>Okonomiyaki</strong> — Japanese savory pancake; an absolute must-try.</li>
+              <li><strong>Yakisoba</strong> — Stir-fried noodles, often found alongside okonomiyaki.</li>
+              <li><strong>Hiroshima-yaki</strong> — Hiroshima's layered style with noodles added inside. Eat with the small spatula (<em>kote</em>).</li>
+            </ul>
+          </div>
+        </div>
+        <div class="food-card">
+          <div class="food-card-icon">🦪</div>
+          <div class="food-card-title">Miyajima Specialties</div>
+          <div class="food-card-body">
+            <ul>
+              <li><strong>Grilled oysters</strong> — Miyajima oysters are among Japan's finest. Eat immediately on Omotesando Street.</li>
+              <li><strong>Eel dishes</strong> — Also widely available on the island.</li>
+              <li><strong>Momiji manju</strong> — Maple leaf-shaped cakes filled with sweet red bean paste; invented here in 1906.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="food-section-title">📍 Tokyo Spots</div>
+      <div class="spot-list">
+        <div class="spot-item">
+          <strong><a href="https://kurasushi.j-server.com/LUCKURACO/ns/tl.cgi/https:/www.kurasushi.co.jp/reservation/?SLANG=ja&TLANG=en&XMODE=0&XJSID=0" target="_blank">Kura Sushi ↗</a></strong> — Conveyor-belt sushi. Can make a reservation.
+          <div class="spot-meta">🍣 Sushi &nbsp;·&nbsp; Make reservation before arriving!</div>
+        </div>
+        <div class="spot-item">
+          <strong><a href="https://maps.app.goo.gl/AHr9DTtBkSoXT8yW7" target="_blank">Izakaya Sanzoku ↗</a></strong> — Open 4pm–12am
+          <div class="spot-meta">🍶 Izakaya</div>
+        </div>
+        <div class="spot-item">
+          <strong><a href="https://maps.app.goo.gl/EQ4m3NUbfjfSSaR67" target="_blank">Izakaya Tokyo Ginza ↗</a></strong> — Open 6pm–3am. Make a reservation.
+          <div class="spot-meta">🍶 Izakaya</div>
+        </div>
+        <div class="spot-item">
+          <strong>Ootoya</strong> — Teishoku (set meal) chain. Kerry &amp; Yoshio family favorite.
+          <div class="spot-meta">🍱 Teishoku / Set meals</div>
+        </div>
+        <div class="spot-item">
+          <strong>Ise Metropolitan Government Office</strong> — Near hotel. Open 11am–3pm &amp; 5–9pm. Avoid 12–12:30pm (government worker rush).
+          <div class="spot-meta">🥩 Tonkatsu</div>
+        </div>
+        <div class="spot-item">
+          <strong><a href="https://maps.app.goo.gl/NrUT67TajfoohiFa8" target="_blank">Shibuya Tokyo Foodshow ↗</a></strong> — Upscale grocery and food vendors at Shibuya Station. Go before you're hungry! Back area has more traditional Japanese counters. Bottom floor: savoury. Upstairs: desserts.
+          <div class="spot-meta">🛒 Food hall &nbsp;·&nbsp; 10am–9pm</div>
+        </div>
+        <div class="spot-item">
+          <strong><a href="https://maps.app.goo.gl/hPoN5zhzbwrMwozq7" target="_blank">Harry Harajuku Hedgehog Café ↗</a></strong>
+          <div class="spot-meta">☕ Café &amp; animals &nbsp;·&nbsp; 1–6pm</div>
+        </div>
+      </div>
+
+    </div><!-- end food page -->
+
+    <footer>
+      <p>Counting down to an unforgettable adventure &nbsp;🌸</p>
+    </footer>
+
+  </div><!-- end container -->
+
+  <script>
+    // ══════════════════════════════════════════════
+    // DESTINATIONS DATA (fun facts, images, cultural tidbits)
+    // ══════════════════════════════════════════════
+    const destinations = {
+      tokyo: {
+        name: "Tokyo", dates: "March 22-26, 2026",
+        images: [
+          "https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=800&q=80",
+          "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=800&q=80",
+          "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80",
+          "https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?w=800&q=80",
+          "https://images.unsplash.com/photo-1570521462033-3015e76e7432?w=800&q=80"
+        ],
+        funFacts: [
+          "Tokyo's Shibuya Crossing is the busiest pedestrian intersection in the world, with up to 3,000 people crossing at once during peak times.",
+          "Tokyo has more Michelin-starred restaurants than any other city in the world, with over 200 starred establishments.",
+          "The Tokyo subway system is so punctual that if a train is more than 5 minutes late, passengers can get a delay certificate for their employer.",
+          "Vending machines in Tokyo sell everything from hot ramen to fresh eggs — over 5 million machines across Japan.",
+          "The Tokyo Skytree is the tallest tower in the world at 634 meters — its height spells 'Musashi,' an old name for Tokyo.",
+          "Shinjuku Station has 200+ exits and serves 3.5 million passengers daily.",
+          "Tokyo has over 160,000 restaurants — more than any other city in the world.",
+          "Hachiko waited for his deceased owner at Shibuya Station for nearly 10 years.",
+          "The Meiji Shrine forest was entirely man-made with 100,000 donated trees.",
+          "Tokyo Tower is painted orange and white to comply with air safety regulations.",
+          "The city experiences approximately 1,500 earthquakes per year, most unfelt.",
+          "Nakameguro's cherry blossom tunnel features 800 trees along the Meguro River.",
+          "Tokyo's teamLab Borderless was the world's most visited single-artist museum.",
+          "Yoyogi Park was built on the site of the 1964 Olympic Village.",
+          "The Yamanote Line makes a complete loop in exactly 59 minutes."
+        ],
+        culturalTidbits: [
+          "Talking on your phone on the train is considered very rude. Set it to silent and text instead.",
+          "Tipping is not practiced in Japan and can even be considered rude — excellent service is simply the standard.",
+          "When paying, place money in the small tray provided rather than handing it directly to the cashier.",
+          "Slurping noodles is not only acceptable but encouraged — it shows appreciation.",
+          "Never stick chopsticks upright in rice — this resembles funeral incense.",
+          "Taxi doors open and close automatically — don't try to do it yourself.",
+          "Convenience store food is high quality — many locals rely on konbini daily.",
+          "Carrying your trash until you find a bin is normal — public garbage cans are rare.",
+          "At shrines: toss a coin, bow twice, clap twice, make a wish, bow once more.",
+          "The 'OK' hand gesture means money in Japan, not agreement.",
+          "Umbrella etiquette: shake off water before entering buildings, use the plastic sleeves provided.",
+          "When using an escalator in Tokyo, stand on the left (opposite to Osaka!).",
+          "Tattoos may restrict access to public baths, hot springs, and some gyms.",
+          "Accept offered business cards with both hands and take a moment to read them.",
+          "Eating while walking is generally frowned upon — find a bench or standing spot."
+        ]
+      },
+      minobu: {
+        name: "Mt. Minobu", dates: "March 26-28, 2026",
+        images: [
+          "https://images.unsplash.com/photo-1601823984263-b87b59798b70?w=800&q=80",
+          "https://images.unsplash.com/photo-1610375228550-d5cabc1c9e37?w=800&q=80",
+          "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800&q=80"
+        ],
+        funFacts: [
+          "Kuon-ji Temple on Mt. Minobu was founded in 1281 by Nichiren and remains the head temple of Nichiren Buddhism.",
+          "The ancient cedar trees surrounding Kuon-ji are over 400 years old.",
+          "Mt. Minobu's ropeway reaches 1,153 meters — with views of Mt. Fuji on clear days.",
+          "Every year, thousands of pilgrims climb the steep 287-step stone staircase to Kuon-ji's main hall.",
+          "The main hall of Kuon-ji is the largest wooden structure built in Japan in the 20th century.",
+          "Kuon-ji houses Nichiren's ashes, making it the most sacred site for Nichiren Buddhism worldwide.",
+          "The temple bell is rung 108 times on New Year's Eve, once for each human sin.",
+          "Mt. Minobu's weeping cherry trees bloom later than lowland areas, extending sakura season.",
+          "Morning prayer service (gongyo) begins at 5:30 AM and is open to visitors.",
+          "Sanmon Gate at Kuon-ji is one of Japan's largest wooden gates at 21 meters tall."
+        ],
+        culturalTidbits: [
+          "When visiting temples, purify yourself at the temizuya (water pavilion) — left hand, right hand, then rinse your mouth.",
+          "Remove your shoes when entering temple buildings. Bring socks.",
+          "Photography inside temple halls is usually prohibited — always ask before shooting sacred spaces.",
+          "Temple meals are eaten in silence to practice mindfulness.",
+          "When touring temple grounds, walk clockwise — the traditional direction for circumambulation.",
+          "5 yen coins are considered lucky — use them for temple offerings.",
+          "Incense is lit for prayers — place it upright in the sand, don't wave the flame out.",
+          "The journey to a temple is considered as important as arriving — take your time.",
+          "Temple breakfast often includes rice, pickles, miso soup, and grilled fish.",
+          "Vegetarian temple food excludes garlic and onion as they're considered stimulating."
+        ]
+      },
+      kyoto: {
+        name: "Kyoto", dates: "March 28 - April 1, 2026",
+        images: [
+          "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80",
+          "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80",
+          "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80",
+          "https://images.unsplash.com/photo-1558862107-d49ef2a04d72?w=800&q=80"
+        ],
+        funFacts: [
+          "Kyoto was Japan's capital for over 1,000 years (794–1868) and was spared from WWII bombing.",
+          "Fushimi Inari Shrine has over 10,000 torii gates forming tunnels up the mountainside.",
+          "Kyoto has 17 UNESCO World Heritage Sites — more than any other Japanese city.",
+          "Kinkaku-ji (Golden Pavilion) is covered in actual gold leaf — the top two floors use over 400kg of gold.",
+          "Nijo Castle's 'nightingale floors' chirp when walked on to warn of intruders.",
+          "Arashiyama Bamboo Grove stalks grow up to 30 meters tall and make distinctive sounds in the wind.",
+          "The city limits building heights to preserve views of surrounding mountains.",
+          "Kyoto's traditional wooden townhouses (machiya) — over 40,000 still standing.",
+          "Gion Festival has been celebrated for over 1,100 years without interruption.",
+          "Ryoan-ji Temple's rock garden has exactly 15 stones, but only 14 visible from any single angle."
+        ],
+        culturalTidbits: [
+          "In Gion, never touch, stop, or photograph geiko/maiko without permission — they are professionals, not tourist attractions.",
+          "'Okini' means thank you in Kyoto dialect (Kyoto-ben), considered more refined than standard Japanese.",
+          "Tea ceremony originated in Kyoto — rotate the cup before drinking to show humility.",
+          "When visiting zen gardens, sit quietly and contemplate rather than rushing through.",
+          "Many traditional Kyoto restaurants have 'ichigen-san okotowari' policy — no first-time customers without introduction.",
+          "Kyoto buses: enter from the back, pay when exiting. Bus #58 and #86 are key routes.",
+          "Temple fortune papers (omikuji) can be tied at the temple if the fortune is unfavorable.",
+          "Bamboo groves are sensitive — never carve or touch the bamboo stalks.",
+          "Morning visits to popular temples avoid crowds and offer the best light.",
+          "Seasonal wagashi sweets are meant to be eaten immediately for full appreciation."
+        ]
+      },
+      hiroshima: {
+        name: "Hiroshima", dates: "April 1-2, 2026",
+        images: [
+          "https://images.unsplash.com/photo-1589452271712-64b8a66c7b71?w=800&q=80",
+          "https://images.unsplash.com/photo-1581467655410-0c2bf55d9d6c?w=800&q=80"
+        ],
+        funFacts: [
+          "The Atomic Bomb Dome survived because the blast came from almost directly above.",
+          "Hiroshima was rebuilt so successfully it hosted the Asian Games just 9 years after the 1945 bombing.",
+          "The Children's Peace Monument was inspired by Sadako Sasaki, who folded 1,000 paper cranes.",
+          "The Peace Flame has burned continuously since 1964 and will remain lit until all nuclear weapons are abolished.",
+          "Hiroshima's streetcar system is the largest in Japan — some original cars predate WWII.",
+          "The city's name means 'Wide Island' — a reference to its delta location on the Ota River.",
+          "Hiroshima's mayor chairs the Mayors for Peace organization with over 8,000 member cities.",
+          "Hiroshima oysters are harvested from the surrounding Seto Inland Sea and are considered among Japan's finest.",
+          "The Peace Boulevard running through the city is 100 meters wide — designed as a firebreak.",
+          "Paper crane chains at the Children's Monument weigh several tons and require regular removal."
+        ],
+        culturalTidbits: [
+          "At the Peace Memorial, observe a moment of silence and bow respectfully. Maintain a solemn demeanor.",
+          "Origami cranes are powerful symbols of peace — consider folding some to leave at Sadako's monument.",
+          "When eating Hiroshima-style okonomiyaki, use the small spatula (kote) — it's traditional!",
+          "Local streetcars (Hiroden) include original cars that survived the bombing — a symbol of resilience.",
+          "Hibakusha (survivors) who share their stories deserve deep respect and attentive listening.",
+          "The Peace Park is not a place for loud conversations or casual picnicking.",
+          "When discussing the bombing, focus on peace rather than blame.",
+          "The paper crane has become Japan's most recognized symbol of peace because of Sadako's story.",
+          "Hiroshima residents don't dwell on the past but honor it while looking forward.",
+          "Leaving Hiroshima with a commitment to share what you've learned honors the city's mission."
+        ]
+      },
+      miyajima: {
+        name: "Miyajima", dates: "April 2-4, 2026",
+        images: [
+          "https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=800&q=80",
+          "https://images.unsplash.com/photo-1601042879364-f3947d3f9c16?w=800&q=80",
+          "https://images.unsplash.com/photo-1611000694157-d6c2cc0f6a00?w=800&q=80"
+        ],
+        funFacts: [
+          "The famous floating torii gate appears to float during high tide and has stood since 1168.",
+          "Miyajima literally means 'Shrine Island' — commoners weren't allowed on it for centuries.",
+          "No deaths or births were traditionally allowed on the island. There is still no cemetery on Miyajima.",
+          "The current torii gate is the 8th iteration — the original was built in 593 AD.",
+          "Momiji manju (maple leaf-shaped cakes) were invented on Miyajima in 1906.",
+          "The torii gate stands 16 meters tall and weighs about 60 tons.",
+          "At low tide, visitors can walk out and touch the base of the torii gate.",
+          "The eternal flame at Daisho-in Temple has burned for 1,200 years.",
+          "The island's deer are considered sacred messengers of the gods.",
+          "The torii gate was recently restored, with work completed in 2022."
+        ],
+        culturalTidbits: [
+          "The deer on Miyajima will eat paper and maps! Keep belongings secure and don't feed them human food.",
+          "Try momiji manju — maple leaf cakes filled with sweet red bean paste, invented here in 1906.",
+          "Visit at different tides: high tide, the torii 'floats'; low tide, you can walk out and touch it.",
+          "The torii gate marks the boundary between the earthly and spirit worlds — approach with reverence.",
+          "Deer bowing their heads is actually a begging gesture, not a greeting.",
+          "Grilled oysters are eaten immediately — don't save them for later.",
+          "The last ferry departure time is important — missing it means staying overnight.",
+          "The island is car-free, adding to its traditional atmosphere.",
+          "Sunset views from the island are spectacular and worth planning around.",
+          "The journey to Miyajima is considered part of the pilgrimage experience — take your time."
+        ]
+      }
+    };
+
+    // ══════════════════════════════════════════════
+    // TRIP SCHEDULE
+    // ══════════════════════════════════════════════
+    const tripSchedule = [
+      { key: 'tokyo',        name: 'Tokyo',          emoji: '🗼', dateRange: 'March 22–26, 2026',        start: new Date('2026-03-22T00:00:00'), end: new Date('2026-03-26T00:00:00') },
+      { key: 'minobu',       name: 'Mt. Minobu',     emoji: '⛰️', dateRange: 'March 26–28, 2026',        start: new Date('2026-03-26T00:00:00'), end: new Date('2026-03-28T00:00:00') },
+      { key: 'kyoto',        name: 'Kyoto',          emoji: '🏯', dateRange: 'March 28 – April 1, 2026', start: new Date('2026-03-28T00:00:00'), end: new Date('2026-04-01T00:00:00') },
+      { key: 'hiroshima',    name: 'Hiroshima',      emoji: '🕊️', dateRange: 'April 1–2, 2026',          start: new Date('2026-04-01T00:00:00'), end: new Date('2026-04-02T00:00:00') },
+      { key: 'miyajima',     name: 'Miyajima',       emoji: '⛩️', dateRange: 'April 2–4, 2026',          start: new Date('2026-04-02T00:00:00'), end: new Date('2026-04-04T00:00:00') },
+      { key: 'tokyo-return', name: 'Tokyo (Return)', emoji: '✈️', dateRange: 'April 4–5, 2026',          start: new Date('2026-04-04T00:00:00'), end: new Date('2026-04-06T00:00:00') },
+    ];
+
+    function getCurrentStop() {
+      const now = new Date();
+      for (const s of tripSchedule) {
+        if (now >= s.start && now < s.end) return s;
+      }
+      if (now >= new Date('2026-03-21T15:00:00') && now < new Date('2026-03-22T00:00:00'))
+        return { key: 'en-route', name: 'En Route to Japan', emoji: '✈️', dateRange: '' };
+      if (now >= new Date('2026-04-06T00:00:00'))
+        return { key: 'home', name: 'Back Home', emoji: '🏠', dateRange: '' };
+      return null;
+    }
+
+    // ══════════════════════════════════════════════
+    // PAGE NAVIGATION
+    // ══════════════════════════════════════════════
+    function showPage(name) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('page-' + name).classList.add('active');
+      document.querySelector('[onclick="showPage(\'' + name + '\')"]').classList.add('active');
+    }
+
+    // ══════════════════════════════════════════════
+    // ITINERARY ACCORDION
+    // ══════════════════════════════════════════════
+    function toggleLoc(key) {
+      const item = document.getElementById('loc-' + key);
+      const body = document.getElementById('body-' + key);
+      if (!item || !body) return;
+      const isOpen = item.classList.contains('open');
+      item.classList.toggle('open', !isOpen);
+      body.style.display = isOpen ? 'none' : 'block';
+    }
+
+    // ── Step 1: Split each transit panel into arrival (transit) and departure (transit-out) ──
+    const departureItems = {
+      'tokyo':        ['tr-jr-counter', 'tr-to-minobu'],
+      'minobu':       ['tr-minobu-kyoto'],
+      'kyoto':        ['tr-kyoto-hiroshima'],
+      'hiroshima':    ['tr-hiroshima-miyajima'],
+      'miyajima':     ['tr-miyajima-tokyo'],
+      'tokyo-return': ['tr-return-flights'],
+    };
+
+    Object.entries(departureItems).forEach(([locKey, ids]) => {
+      const body = document.getElementById('body-' + locKey);
+      if (!body) return;
+      const outPanel = document.createElement('div');
+      outPanel.className = 'tab-panel';
+      outPanel.id = 'tab-' + locKey + '-transit-out';
+      ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) outPanel.appendChild(el);
+      });
+      body.appendChild(outPanel); // temporary placement; reorder step fixes position
+    });
+
+    // ── Step 2: Reorder panels within each loc-body: arrival → hotel → sightseeing → departure ──
+    const panelOrder = ['-transit', '-hotel', '-sight', '-transit-out'];
+    document.querySelectorAll('.loc-body').forEach(body => {
+      const locKey = body.id.replace('body-', '');
+      panelOrder.forEach(suffix => {
+        const panel = document.getElementById('tab-' + locKey + suffix);
+        if (panel) body.appendChild(panel); // appendChild moves existing node to end in order
+      });
+    });
+
+    // ── Step 3: Convert all tab-panels to labeled detail-sections ──
+    const sectionLabels = {
+      'sight':        '🏯 Sightseeing',
+      'transit':      '🛬 Getting There',
+      'transit-out':  '🚢 Moving On',
+      'hotel':        '🏨 Hotel',
+    };
+    const labelOverrides = {
+      'tokyo-return-sight':       '🗼 Activities',
+      'tokyo-return-transit':     '🛬 Arriving in Tokyo',
+      'tokyo-return-transit-out': '✈️ Return Flights',
+    };
+
+    document.querySelectorAll('.loc-tabs').forEach(el => el.remove());
+
+    document.querySelectorAll('.tab-panel').forEach(panel => {
+      const m = panel.id.match(/^tab-([\w-]+)-(sight|transit(?:-out)?|hotel)$/);
+      if (!m) return;
+      const [, locKey, typeRaw] = m;
+      const typeClass = typeRaw.startsWith('transit') ? typeRaw.replace('-out', '') + (typeRaw.endsWith('-out') ? '' : '') : typeRaw;
+      // Both transit and transit-out get class detail-section-transit for filter purposes
+      panel.className = 'detail-section detail-section-' + (typeRaw === 'transit-out' ? 'transit' : typeRaw);
+      panel.style.display = 'block';
+      const lbl = document.createElement('div');
+      lbl.className = 'section-label';
+      lbl.textContent = labelOverrides[locKey + '-' + typeRaw] || sectionLabels[typeRaw];
+      panel.prepend(lbl);
+    });
+
+    // ── Global detail filter ──
+    let currentFilter = 'all';
+
+    function setFilter(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      const btn = document.querySelector('[onclick="setFilter(\'' + filter + '\')"]');
+      if (btn) btn.classList.add('active');
+      ['sight', 'transit', 'hotel'].forEach(type => {
+        const show = filter === 'all' || filter === type;
+        document.querySelectorAll('.detail-section-' + type).forEach(el => {
+          el.style.display = show ? 'block' : 'none';
+        });
+      });
+    }
+
+    function toggleDay(id) {
+      const item = document.getElementById(id);
+      if (!item) return;
+      const body = item.querySelector('.day-body');
+      const isOpen = item.classList.contains('open');
+      item.classList.toggle('open', !isOpen);
+      body.style.display = isOpen ? 'none' : 'block';
+    }
+
+    function toggleTransit(id) {
+      const item = document.getElementById(id);
+      if (!item) return;
+      const body = item.querySelector('.transit-body');
+      const isOpen = item.classList.contains('open');
+      item.classList.toggle('open', !isOpen);
+      body.style.display = isOpen ? 'none' : 'block';
+    }
+
+    // ══════════════════════════════════════════════
+    // COUNTDOWN + DEPARTURE BANNER
+    // ══════════════════════════════════════════════
+    function showDepartureBanner() {
+      const stop = getCurrentStop();
+      document.getElementById('departureMessage').style.display = 'block';
+      if (!stop || stop.key === 'en-route') {
+        document.getElementById('locationEyebrow').textContent = 'Adventure Begins!';
+        document.getElementById('currentLocationName').textContent = '✈️ En Route to Japan';
+        document.getElementById('currentLocationDates').textContent = 'Safe travels!';
+      } else if (stop.key === 'home') {
+        document.getElementById('locationEyebrow').textContent = 'Sabbatical Complete';
+        document.getElementById('currentLocationName').textContent = '🏠 Welcome Back!';
+        document.getElementById('currentLocationDates').textContent = 'What an adventure!';
+      } else {
+        document.getElementById('locationEyebrow').textContent = 'Currently Exploring';
+        document.getElementById('currentLocationName').textContent = stop.emoji + ' ' + stop.name;
+        document.getElementById('currentLocationDates').textContent = stop.dateRange;
+      }
+    }
+
+    function updateCountdown() {
+      const target = new Date('March 21, 2026 15:00:00').getTime();
+      const diff = target - Date.now();
+      if (diff <= 0) {
+        ['days','hours','minutes','seconds'].forEach(id => document.getElementById(id).textContent = '0');
+        showDepartureBanner();
+        return;
+      }
+      document.getElementById('days').textContent = Math.floor(diff / 86400000);
+      document.getElementById('hours').textContent = Math.floor((diff % 86400000) / 3600000);
+      document.getElementById('minutes').textContent = Math.floor((diff % 3600000) / 60000);
+      document.getElementById('seconds').textContent = Math.floor((diff % 60000) / 1000);
+    }
+
+    // ══════════════════════════════════════════════
+    // DAILY IMAGE / FUN FACT CARD
+    // ══════════════════════════════════════════════
+    function updateContent(forcedKey) {
+      let dest, key;
+      if (forcedKey && destinations[forcedKey]) {
+        dest = destinations[forcedKey]; key = forcedKey;
+      } else {
+        const keys = Object.keys(destinations);
+        key = keys[Math.floor(Math.random() * keys.length)];
+        dest = destinations[key];
+      }
+      document.getElementById('dailyImage').src = dest.images[Math.floor(Math.random() * dest.images.length)];
+      document.getElementById('dailyImage').alt = dest.name;
+      document.getElementById('locationBadge').textContent = dest.name;
+      document.getElementById('funFact').textContent = dest.funFacts[Math.floor(Math.random() * dest.funFacts.length)];
+      document.getElementById('culturalTidbit').textContent = dest.culturalTidbits[Math.floor(Math.random() * dest.culturalTidbits.length)];
+    }
+
+    // ══════════════════════════════════════════════
+    // SAKURA
+    // ══════════════════════════════════════════════
+    function createSakura() {
+      const el = document.createElement('div');
+      el.className = 'sakura';
+      el.innerHTML = '🌸';
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.fontSize = (Math.random() * 20 + 10) + 'px';
+      el.style.animation = 'fall ' + (Math.random() * 5 + 5) + 's linear forwards';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 10000);
+    }
+
+    // ══════════════════════════════════════════════
+    // INIT
+    // ══════════════════════════════════════════════
+    const departed = Date.now() >= new Date('March 21, 2026 15:00:00').getTime();
+
+    if (departed) {
+      // Default to itinerary page once the trip has started
+      showPage('itinerary');
+
+      const stop = getCurrentStop();
+      const contentKey = stop && stop.key !== 'en-route' && stop.key !== 'home'
+        ? (stop.key === 'tokyo-return' ? 'tokyo' : stop.key) : null;
+      updateContent(contentKey);
+
+      // Mark current stop in itinerary
+      if (stop && stop.key !== 'home' && stop.key !== 'en-route') {
+        const badge = document.getElementById('badge-' + stop.key);
+        const locItem = document.getElementById('loc-' + stop.key);
+        if (badge) badge.style.display = 'inline-block';
+        if (locItem) locItem.classList.add('current-stop');
+      }
+    } else {
+      updateContent();
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+    setInterval(createSakura, 2000);
+    for (let i = 0; i < 5; i++) setTimeout(createSakura, i * 400);
+
+    // Clean up temp file ref
+    // (doc_raw.xml was only needed for extraction)
+  </script>
 </body>
 </html>
